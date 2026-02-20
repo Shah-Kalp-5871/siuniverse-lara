@@ -26,7 +26,7 @@
                 </a>
                 
                 <!-- Login Button / Profile Icon -->
-                @auth
+                @if(session('user_id'))
                     <div class="flex items-center space-x-6">
                         <a href="{{ route('profile') }}" class="text-gray-600 hover:text-primary transition-colors flex items-center">
                             <i class="fas fa-user-circle text-2xl"></i>
@@ -36,7 +36,7 @@
                     <a href="{{ route('login') }}" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors font-medium">
                         Login
                     </a>
-                @endauth
+                @endif
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
         <span class="text-xs font-medium">Professional</span>
     </a>
     
-    @auth
+    @if(session('user_id'))
         <a href="{{ route('profile') }}" class="flex flex-col items-center space-y-1 {{ request()->routeIs('profile') ? 'text-primary' : 'text-gray-400' }}">
             <i class="fas fa-user-circle text-xl"></i>
             <span class="text-xs font-medium">Profile</span>
@@ -71,5 +71,5 @@
             <i class="fas fa-user-circle text-xl"></i>
             <span class="text-xs font-medium">Login</span>
         </a>
-    @endauth
+    @endif
 </div>

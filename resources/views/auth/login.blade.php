@@ -123,14 +123,7 @@
         const emailInput = document.getElementById('email');
         const email = emailInput.value.toLowerCase();
 
-        const allowedDomains = [
-            'saii.siu.edu.in', 'sibmpune.siu.edu.in', 'sscanspune.siu.edu.in', 
-            'simcpune.siu.edu.in', 'sidtmpune.siu.edu.in', 'sitpune.siu.edu.in', 
-            'ssbfpune.siu.edu.in', 'ssvappune.siu.edu.in', 'sconpune.siu.edu.in', 
-            'schspune.siu.edu.in', 'sssspune.siu.edu.in', 'sihspune.siu.edu.in', 
-            'smcwpune.siu.edu.in', 'ssodlpune.siu.edu.in', 'stlrcpune.siu.edu.in', 
-            'scripune.siu.edu.in'
-        ];
+        const allowedDomains = @json($allowedDomains);
 
         if (!email) {
             emailInput.setCustomValidity('');
@@ -148,11 +141,12 @@
         const domain = parts[1];
 
         // Format: name.surname.course-year
-        const formatRegex = /^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/;
+        // const formatRegex = /^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/;
 
-        if (!formatRegex.test(localPart) || !allowedDomains.includes(domain)) {
+        // if (!formatRegex.test(localPart) || !allowedDomains.includes(domain)) {
+        if (!allowedDomains.includes(domain)) {
             emailInput.setCustomValidity(
-                'Use format: name.surname.course-year@institute.siu.edu.in'
+                'Please use an authorized institutional email address.'
             );
             emailInput.reportValidity();
             return false;

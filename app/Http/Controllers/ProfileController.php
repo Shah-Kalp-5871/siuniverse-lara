@@ -11,6 +11,6 @@ class ProfileController extends Controller
         if (!session('user_id')) {
             return redirect()->route('login');
         }
-        return view('profile');
+        return view('customer.profile');
     }
 }

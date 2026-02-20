@@ -13,7 +13,14 @@ class HomeController extends Controller
 
     public function discover()
     {
-        return view('customer.discover');
+        $onboarding = session('onboarding_data');
+        $institute = $onboarding['institute'] ?? 'SIT';
+        $course = $onboarding['course'] ?? 'B.Tech';
+
+        // Fetch all students to ensure visibility, we can re-apply filtering later
+        $students = \App\Models\Student::all();
+
+        return view('customer.discover', compact('students', 'institute', 'course'));
     }
 
     public function exploreStays()

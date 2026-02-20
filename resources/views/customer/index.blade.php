@@ -62,9 +62,6 @@
                 </ul>
 
                 <div class="mt-auto">
-                    <div class="flex items-center text-sm text-gray-400 mb-6">
-                        <i class="fas fa-users mr-2"></i> 124 members
-                    </div>
                     <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                         <i class="fab fa-whatsapp mr-2"></i> Join Group
                     </button>
@@ -91,9 +88,6 @@
                     </ul>
 
                     <div class="mt-auto">
-                        <div class="flex items-center text-sm text-gray-400 mb-6">
-                            <i class="fas fa-users mr-2"></i> 450 members
-                        </div>
                         <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp mr-2"></i> Join Group
                         </button>
@@ -121,9 +115,6 @@
                     </ul>
 
                     <div class="mt-auto">
-                        <div class="flex items-center text-sm text-gray-400 mb-6">
-                            <i class="fas fa-users mr-2"></i> 320 members
-                        </div>
                         <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp mr-2"></i> Join Group
                         </button>
@@ -151,9 +142,6 @@
                     </ul>
 
                     <div class="mt-auto">
-                        <div class="flex items-center text-sm text-gray-400 mb-6">
-                            <i class="fas fa-users mr-2"></i> 800 members
-                        </div>
                         <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp mr-2"></i> Join Group
                         </button>
@@ -172,9 +160,6 @@
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Mess Management</h3>
                     <p class="text-gray-500 text-sm mb-6">Heads, Owners, and Admin for Viola Mess management.</p>
                     <div class="mt-auto">
-                        <div class="flex items-center text-sm text-gray-400 mb-6">
-                            <i class="fas fa-users mr-2"></i> 12 members
-                        </div>
                         <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp mr-2"></i> Join Admin Group
                         </button>
@@ -202,9 +187,6 @@
                     </ul>
 
                     <div class="mt-auto">
-                        <div class="flex items-center text-sm text-gray-400 mb-6">
-                            <i class="fas fa-users mr-2"></i> 210 members
-                        </div>
                         <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp mr-2"></i> Join Gym Group
                         </button>

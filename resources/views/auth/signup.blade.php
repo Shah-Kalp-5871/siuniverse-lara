@@ -98,14 +98,7 @@
             const originalText = nextBtn.innerHTML;
             
             // Domain & Format validation
-            const allowedDomains = [
-                'saii.siu.edu.in', 'sibmpune.siu.edu.in', 'sscanspune.siu.edu.in', 
-                'simcpune.siu.edu.in', 'sidtmpune.siu.edu.in', 'sitpune.siu.edu.in', 
-                'ssbfpune.siu.edu.in', 'ssvappune.siu.edu.in', 'sconpune.siu.edu.in', 
-                'schspune.siu.edu.in', 'sssspune.siu.edu.in', 'sihspune.siu.edu.in', 
-                'smcwpune.siu.edu.in', 'ssodlpune.siu.edu.in', 'stlrcpune.siu.edu.in', 
-                'scripune.siu.edu.in'
-            ];
+            const allowedDomains = @json($allowedDomains);
             
             const parts = email.split('@');
             if (parts.length !== 2) {
@@ -115,10 +108,11 @@
 
             const localPart = parts[0];
             const domain = parts[1].toLowerCase();
-            const formatRegex = /^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/;
+            // const formatRegex = /^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/;
 
-            if (!formatRegex.test(localPart) || !allowedDomains.includes(domain)) {
-                Swal.fire('Restricted Access', "Use format: name.surname.course-year@institute.siu.edu.in", 'warning');
+            // if (!formatRegex.test(localPart) || !allowedDomains.includes(domain)) {
+            if (!allowedDomains.includes(domain)) {
+                Swal.fire('Restricted Access', "Please use your authorized institutional email address.", 'warning');
                 return;
             }
 

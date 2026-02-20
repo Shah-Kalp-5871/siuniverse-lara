@@ -8,7 +8,8 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        return view('auth.login');
+        $allowedDomains = \App\Models\AllowedDomain::all()->pluck('domain')->toArray();
+        return view('auth.login', compact('allowedDomains'));
     }
 
     public function login(Request $request)
@@ -30,11 +31,11 @@ class AuthController extends Controller
         }
 
         // Regex for name.surname.course-year
-        $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
+        // $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
 
-        if (!preg_match($format_regex, $local_part)) {
-            return back()->with('error', "Email must be in format: student.surname.course-year@institute.siu.edu.in")->withInput();
-        }
+        // if (!preg_match($format_regex, $local_part)) {
+        //     return back()->with('error', "Email must be in format: student.surname.course-year@institute.siu.edu.in")->withInput();
+        // }
 
         if ($password === 'password') {
             session(['user_id' => 1, 'user_name' => explode('.', $local_part)[0]]);
@@ -46,7 +47,8 @@ class AuthController extends Controller
 
     public function showSignup()
     {
-        return view('auth.signup');
+        $allowedDomains = \App\Models\AllowedDomain::all()->pluck('domain')->toArray();
+        return view('auth.signup', compact('allowedDomains'));
     }
 
     public function signup(Request $request)
@@ -88,14 +90,14 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
+        // $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
 
-        if (!preg_match($format_regex, $local_part)) {
-            return response()->json([
-                'success' => false, 
-                'message' => "Use format: name.surname.course-year@institute.siu.edu.in"
-            ], 422);
-        }
+        // if (!preg_match($format_regex, $local_part)) {
+        //     return response()->json([
+        //         'success' => false, 
+        //         'message' => "Use format: name.surname.course-year@institute.siu.edu.in"
+        //     ], 422);
+        // }
 
         $otp = '123456'; // Dummy OTP for static migration
         session(['verification_otp' => $otp]);

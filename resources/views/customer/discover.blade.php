@@ -22,23 +22,23 @@
                     </div>
                 </div>
                 
-                @php
-                    $p = session('onboarding_data');
-                    $user_inst = $p['institute'] ?? 'SIT';
-                    $user_course = $p['course'] ?? 'B.Tech';
-                @endphp
-
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Institute</label>
-                        <select id="filterInst" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none" disabled>
-                            <option>{{ $user_inst }}</option>
+                        <select id="filterInst" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none">
+                            <option value="">All Institutes</option>
+                            <option @if($institute == 'SIT') selected @endif>SIT</option>
+                            <option @if($institute == 'SCHS') selected @endif>SCHS</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SSVAP</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Course</label>
-                        <select id="filterCourse" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none" disabled>
-                            <option>{{ $user_course }}</option>
+                        <select id="filterCourse" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none">
+                            <option value="">All Courses</option>
+                            <option @if($course == 'B.Tech') selected @endif>B.Tech</option>
+                            <option @if($course == 'BBA') selected @endif>BBA</option>
+                            <option @if($course == 'BCA') selected @endif>BCA</option>
                         </select>
                     </div>
                     <div>
@@ -64,7 +64,7 @@
             </div>
             
             <div id="access-notice" class="bg-blue-50 border border-blue-100 p-3 rounded-xl inline-flex items-center text-xs text-blue-700">
-                <i class="fas fa-shield-alt mr-2"></i> Access Restricted: Showing students from <strong>{{ $user_inst }} - {{ $user_course }}</strong> only.
+                <i class="fas fa-shield-alt mr-2"></i> Showing all students for <strong>Discovery</strong>. (Filters: {{ $institute }} - {{ $course }})
             </div>
         </div>
     </div>
@@ -76,28 +76,25 @@
         
         <!-- Peers Grid -->
         <div id="peersSection" class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @php
-            $samples = [
-                ['name' => 'Aditya Sharma', 'year' => '3rd Year', 'acc' => 'Hostel', 'img' => 'https://ui-avatars.com/api/?name=Aditya+Sharma&background=random'],
-                ['name' => 'Sneha Patil', 'year' => '2nd Year', 'acc' => 'PG / Flat', 'img' => 'https://ui-avatars.com/api/?name=Sneha+Patil&background=random'],
-                ['name' => 'Rohan Mehta', 'year' => '3rd Year', 'acc' => 'Day Scholar', 'img' => 'https://ui-avatars.com/api/?name=Rohan+Mehta&background=random'],
-                ['name' => 'Esha Gupta', 'year' => '4th Year', 'acc' => 'Hostel', 'img' => 'https://ui-avatars.com/api/?name=Esha+Gupta&background=random'],
-                ['name' => 'Yuvraj Bhati', 'year' => '4th Year', 'acc' => 'Hostel', 'img' => 'https://ui-avatars.com/api/?name=Yuvraj+Bhati&background=random'],
-            ];
-            @endphp
-            @foreach ($samples as $s)
-            <div class="peer-card bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-gray-100 text-center" 
-                 data-name="{{ strtolower($s['name']) }}" 
-                 data-year="{{ $s['year'] }}" 
-                 data-acc="{{ $s['acc'] }}">
-                <img src="{{ $s['img'] }}" class="w-20 h-20 rounded-2xl mx-auto mb-4 border-4 border-gray-50">
-                <h3 class="font-bold text-gray-800">{{ $s['name'] }}</h3>
-                <p class="text-xs text-gray-500 mb-4">{{ $s['year'] }} • {{ $s['acc'] }}</p>
+            @foreach ($students as $s)
+            <div class="peer-card bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-50 text-center" 
+                 data-name="{{ strtolower($s->name) }}" 
+                 data-year="{{ $s->current_study_year }}{{ 
+                    $s->current_study_year == 1 ? 'st' : ($s->current_study_year == 2 ? 'nd' : ($s->current_study_year == 3 ? 'rd' : 'th')) 
+                 }} Year" 
+                 data-acc="{{ $s->accommodation }}"
+                 data-inst="{{ $s->institute }}"
+                 data-course="{{ $s->course }}">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode($s->name) }}&background=random" class="w-16 h-16 rounded-2xl mx-auto mb-3 border-2 border-gray-50">
+                <h3 class="font-bold text-gray-800 text-sm mb-1">{{ $s->name }}</h3>
+                <p class="text-[11px] text-gray-500 mb-4">{{ $s->current_study_year }}{{ 
+                    $s->current_study_year == 1 ? 'st' : ($s->current_study_year == 2 ? 'nd' : ($s->current_study_year == 3 ? 'rd' : 'th')) 
+                 }} Year • {{ $s->accommodation }}</p>
                 <div class="flex justify-center space-x-2">
-                    <button class="p-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all">
+                    <button class="p-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all text-xs">
                         <i class="fas fa-comment"></i>
                     </button>
-                    <button class="p-2 bg-gray-50 text-gray-400 rounded-lg hover:bg-gray-100 transition-all">
+                    <button class="p-1.5 bg-gray-50 text-gray-400 rounded-lg hover:bg-gray-100 transition-all text-xs">
                         <i class="fas fa-user-plus"></i>
                     </button>
                 </div>
@@ -202,6 +199,8 @@
         const search = searchInput.value.toLowerCase();
         const year = document.getElementById('filterYear').value;
         const acc = document.getElementById('filterAcc').value;
+        const inst = document.getElementById('filterInst').value;
+        const course = document.getElementById('filterCourse').value;
         const isPeers = !document.getElementById('peersSection').classList.contains('hidden');
         
         let visibleCount = 0;
@@ -211,12 +210,16 @@
             const itemName = item.getAttribute('data-name');
             const itemYear = item.getAttribute('data-year') || '';
             const itemAcc = item.getAttribute('data-acc') || '';
+            const itemInst = item.getAttribute('data-inst') || '';
+            const itemCourse = item.getAttribute('data-course') || '';
             
             const matchSearch = itemName.includes(search);
             const matchYear = !year || itemYear === year;
             const matchAcc = !acc || itemAcc === acc;
+            const matchInst = !inst || itemInst === inst;
+            const matchCourse = !course || itemCourse === course;
             
-            if (matchSearch && matchYear && matchAcc) {
+            if (matchSearch && matchYear && matchAcc && matchInst && matchCourse) {
                 item.style.display = 'block';
                 visibleCount++;
             } else {
@@ -231,10 +234,14 @@
         const searchInput = document.getElementById('searchInput');
         const filterYear = document.getElementById('filterYear');
         const filterAcc = document.getElementById('filterAcc');
+        const filterInst = document.getElementById('filterInst');
+        const filterCourse = document.getElementById('filterCourse');
 
         if(searchInput) searchInput.addEventListener('input', filterResults);
         if(filterYear) filterYear.addEventListener('change', filterResults);
         if(filterAcc) filterAcc.addEventListener('change', filterResults);
+        if(filterInst) filterInst.addEventListener('change', filterResults);
+        if(filterCourse) filterCourse.addEventListener('change', filterResults);
 
         // Animate search box on load
         if(searchInput) {

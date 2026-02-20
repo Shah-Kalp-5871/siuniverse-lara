@@ -11,7 +11,7 @@ class OnboardingController extends Controller
         if (!session('user_id')) {
             return redirect()->route('login');
         }
-        return view('onboarding');
+        return view('customer.onboarding');
     }
 
     public function process(Request $request)
