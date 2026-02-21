@@ -17,6 +17,9 @@ class Student extends Model
         'current_study_year',
         'gym_choice',
         'origin',
+        'branch',
+        'mess',
+        'country',
         'accommodation',
     ];
 

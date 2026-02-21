@@ -17,11 +17,14 @@ class StudentController extends Controller
             'institute' => 'required|string',
             'course' => 'required|string',
             'section' => 'required|string',
-            'accommodation' => 'required|string|in:Hostel,PG/Flats,Day scholar',
+            'accommodation' => 'nullable|string',
             'campus_location' => 'required|string',
             'current_study_year' => 'required|integer|min:1|max:5',
             'origin' => 'required|in:national,international',
             'gym_choice' => 'nullable|string',
+            'branch' => 'nullable|string',
+            'mess' => 'nullable|string',
+            'country' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -47,6 +50,7 @@ class StudentController extends Controller
             ], 500);
         }
     }
+
     public function update(Request $request, Student $student)
     {
         $validator = Validator::make($request->all(), [
@@ -55,11 +59,14 @@ class StudentController extends Controller
             'institute' => 'required|string',
             'course' => 'required|string',
             'section' => 'required|string',
-            'accommodation' => 'required|string|in:Hostel,PG/Flats,Day scholar',
+            'accommodation' => 'nullable|string',
             'campus_location' => 'required|string',
             'current_study_year' => 'required|integer|min:1|max:5',
             'origin' => 'required|in:national,international',
             'gym_choice' => 'nullable|string',
+            'branch' => 'nullable|string',
+            'mess' => 'nullable|string',
+            'country' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {

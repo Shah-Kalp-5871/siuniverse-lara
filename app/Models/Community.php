@@ -10,6 +10,9 @@ class Community extends Model
         'name',
         'category',
         'invite_link',
-        'status'
+        'status',
+        'mess',
+        'gym',
+        'origin',
     ];
 }

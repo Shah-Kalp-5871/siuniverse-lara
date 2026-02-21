@@ -51,6 +51,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('students.destroy');
         Route::post('/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
 
+        Route::post('/communities/bulk-delete', [AdminCommunityController::class, 'bulkDestroy'])->name('communities.bulk-delete');
         Route::resource('communities', AdminCommunityController::class)->except(['create', 'edit', 'show']);
         Route::resource('stays', AdminContentController::class)->except(['create', 'edit', 'show']);
 

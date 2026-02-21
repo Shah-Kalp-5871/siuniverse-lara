@@ -4,93 +4,7 @@
 
 @section('content')
 @php
-    $pg_listings = [
-        [
-            'type' => 'PG',
-            'name' => 'Malti kunj Pg',
-            'image' => 'https://placehold.co/600x400?text=Malti+Kunj+PG',
-            'website' => '#',
-            'rent' => '₹8,000/month',
-            'food' => '3 times/day (Veg/Non-Veg)',
-            'laundry' => 'Available',
-            'wifi' => 'High-speed Wi-Fi',
-            'distance' => 1.5,
-            'amenities' => ['AC', 'Geyser', 'Power Backup', 'CCTV'],
-            'rules' => [
-                'Opposite genders allowed',
-                'In time: 10:00 PM',
-                'friends can come at pg anytime'
-            ],
-            'broker_name' => 'Rahul Sharma',
-            'broker_contact' => '+91 91234 56789'
-        ],
-        [
-            'type' => 'PG',
-            'name' => 'Yukio Pg',
-            'image' => 'https://placehold.co/600x400?text=Yukio+PG',
-            'website' => '#',
-            'rent' => '₹9,500/month',
-            'food' => '3 times/day (Veg)',
-            'laundry' => 'Machine Available',
-            'wifi' => 'Included',
-            'distance' => 4.2,
-            'amenities' => ['RO Water', 'Library', 'Gym'],
-            'rules' => [
-                'No opposite genders in rooms',
-                'In time: 11:00 PM',
-                'No loud music after 10 PM'
-            ],
-            'broker_name' => 'Sunil PG Services',
-            'broker_contact' => '+91 88776 65544'
-        ],
-        [
-            'type' => 'Flat',
-            'name' => 'Sunshine Flats 2BHK',
-            'image' => 'https://placehold.co/600x400?text=Sunshine+Flats',
-            'website' => '#',
-            'rent' => '₹18,000/month',
-            'food' => 'Self Cooking',
-            'laundry' => 'Self Service',
-            'wifi' => 'Not Included',
-            'distance' => 2.5,
-            'amenities' => ['Parking', 'Gated Security', 'Lift', 'Balcony'],
-            'broker_name' => 'Ramesh Kumar',
-            'broker_contact' => '+91 98765 43210'
-        ],
-        [
-            'type' => 'PG',
-            'name' => 'Stanza Living',
-            'image' => 'https://placehold.co/600x400?text=Stanza+Living',
-            'website' => '#',
-            'rent' => '₹15,000/month',
-            'food' => 'All meals included',
-            'laundry' => 'Daily Service',
-            'wifi' => 'High-speed dedicated',
-            'distance' => 0.8,
-            'amenities' => ['Gaming Zone', 'Vending Machine', 'Housekeeping', 'Biometric'],
-            'rules' => [
-                'Biometric entry',
-                'In time: 10:30 PM',
-                'Strict no-alcohol policy'
-            ],
-            'broker_name' => 'Stanza Concierge',
-            'broker_contact' => '+91 70001 00002'
-        ],
-        [
-            'type' => 'Flat',
-            'name' => 'Green Valley 1BHK',
-            'image' => 'https://placehold.co/600x400?text=Green+Valley',
-            'website' => '#',
-            'rent' => '₹12,000/month',
-            'food' => 'Self Cooking',
-            'laundry' => 'Self Service',
-            'wifi' => 'Not Included',
-            'distance' => 6.0,
-            'amenities' => ['Garden', '24x7 Water', 'Security'],
-            'broker_name' => 'Suresh Properties',
-            'broker_contact' => '+91 11223 34455'
-        ]
-    ];
+    $storageUrl = Storage::url('');
 @endphp
 
 <!-- Hero Section -->
@@ -120,37 +34,42 @@
         </div>
 
         <div class="grid gap-8 max-w-5xl mx-auto" id="listingsContainer">
-            @foreach ($pg_listings as $index => $pg)
+            @foreach ($stays as $index => $stay)
                 <div class="listing-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100" 
                      data-aos="fade-up" 
                      data-aos-delay="{{ $index * 100 }}"
-                     data-type="{{ $pg['type'] }}"
-                     data-distance="{{ $pg['distance'] }}">
+                     data-type="{{ $stay->type }}"
+                     data-distance="{{ $stay->distance }}">
                     
                     <div class="flex flex-col md:flex-row">
                         <!-- Left Side: Photo and Website Link -->
                         <div class="md:w-1/3 p-4 flex flex-col space-y-4 relative">
                             <div class="aspect-w-16 aspect-h-12 rounded-xl overflow-hidden bg-gray-200 relative group">
-                                <img src="{{ $pg['image'] }}" alt="{{ $pg['name'] }}" class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+                                @php
+                                    $imageUrl = $stay->image_path ? $storageUrl . $stay->image_path : 'https://placehold.co/600x400?text=No+Image';
+                                @endphp
+                                <img src="{{ $imageUrl }}" alt="{{ $stay->name }}" class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md font-medium">
-                                    <i class="fas fa-map-marker-alt mr-1 text-red-400"></i> {{ $pg['distance'] }} km from college
+                                    <i class="fas fa-map-marker-alt mr-1 text-red-400"></i> {{ $stay->distance }} km from college
                                 </div>
                                 <div class="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-md font-bold uppercase tracking-wider">
-                                    {{ $pg['type'] }}
+                                    {{ $stay->type }}
                                 </div>
                             </div>
-                            <a href="{{ $pg['website'] }}" target="_blank" class="block w-full text-center bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2 rounded-lg border border-gray-200 transition-colors">
+                            @if ($stay->link)
+                            <a href="{{ $stay->link }}" target="_blank" class="block w-full text-center bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2 rounded-lg border border-gray-200 transition-colors">
                                 <i class="fas fa-external-link-alt mr-2 text-sm"></i> Visit Website
                             </a>
+                            @endif
                         </div>
 
                         <!-- Right Side: Details -->
                         <div class="md:w-2/3 p-6 md:pl-0 flex flex-col justify-center">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $pg['name'] }}</h2>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $stay->name }}</h2>
                             
                             <!-- Amenities Tags -->
                             <div class="flex flex-wrap gap-2 mb-4">
-                                @foreach ($pg['amenities'] as $amenity)
+                                @foreach ($stay->amenities ?? [] as $amenity)
                                     <span class="bg-blue-50 text-blue-600 text-xs px-2.5 py-1 rounded-full font-medium border border-blue-100">
                                         {{ $amenity }}
                                     </span>
@@ -162,49 +81,37 @@
                                     <div class="w-8 flex justify-center mr-3">
                                         <i class="fas fa-rupee-sign text-green-500 text-lg"></i>
                                     </div>
-                                    <span class="font-medium">Rent:</span> &nbsp;{{ $pg['rent'] }}
+                                    <span class="font-medium">Rent:</span> &nbsp;₹{{ number_format($stay->rent) }}/month
                                 </div>
                                 <div class="flex items-center text-gray-600">
                                     <div class="w-8 flex justify-center mr-3">
-                                        <i class="fas fa-utensils text-orange-400 text-lg"></i>
+                                        <i class="fas fa-phone text-blue-400 text-lg"></i>
                                     </div>
-                                    <span class="font-medium">Food:</span> &nbsp;{{ $pg['food'] }}
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <div class="w-8 flex justify-center mr-3">
-                                        <i class="fas fa-tshirt text-blue-400 text-lg"></i>
-                                    </div>
-                                    <span class="font-medium">Laundry:</span> &nbsp;{{ $pg['laundry'] }}
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <div class="w-8 flex justify-center mr-3">
-                                        <i class="fas fa-wifi text-indigo-500 text-lg"></i>
-                                    </div>
-                                    <span class="font-medium">Wi-Fi:</span> &nbsp;{{ $pg['wifi'] }}
+                                    <span class="font-medium">Contact:</span> &nbsp;{{ $stay->broker_number }}
                                 </div>
                             </div>
 
                             <!-- Broker Details -->
-                            @if (isset($pg['broker_name']))
+                            @if ($stay->broker_name)
                                 <div class="bg-amber-50 rounded-xl p-4 border border-amber-100 mt-4">
                                     <div class="flex justify-between items-center">
                                         <div>
-                                            <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Broker Details</h3>
-                                            <p class="font-bold text-gray-800">{{ $pg['broker_name'] }}</p>
+                                            <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Broker Name</h3>
+                                            <p class="font-bold text-gray-800">{{ $stay->broker_name }}</p>
                                         </div>
-                                        <a href="tel:{{ $pg['broker_contact'] }}" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-amber-100">
+                                        <!-- <a href="tel:{{ $stay->broker_number }}" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-amber-100">
                                             <i class="fas fa-phone-alt mr-2"></i> Contact
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </div>
                             @endif
 
-                            @if ($pg['type'] === 'PG')
-                                <!-- Rules for PGs -->
+                            @if (!empty($stay->rules))
+                                <!-- Rules for Stays -->
                                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 mt-4">
                                     <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Rules & Regulations</h3>
                                     <ul class="space-y-2">
-                                        @foreach ($pg['rules'] as $rule)
+                                        @foreach ($stay->rules as $rule)
                                             <li class="flex items-start text-gray-600 text-sm">
                                                 <i class="fas fa-check-circle text-primary mt-0.5 mr-2.5"></i>
                                                 <span>{{ $rule }}</span>

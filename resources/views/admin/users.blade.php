@@ -66,16 +66,16 @@
                     <span class="text-xs font-bold text-slate-600">Student Info</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
+                    <input type="checkbox" checked data-column="details" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-xs font-bold text-slate-600">Living Details</span>
+                </label>
+                <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="institute" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                    <span class="text-xs font-bold text-slate-600">Institute & Course</span>
+                    <span class="text-xs font-bold text-slate-600">Academic</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="origin" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                     <span class="text-xs font-bold text-slate-600">Status</span>
-                </label>
-                <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                    <input type="checkbox" checked data-column="created_at" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                    <span class="text-xs font-bold text-slate-600">Joined Date</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="actions" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
@@ -133,14 +133,30 @@
                     widthGrow: 2
                 },
                 {
-                    title: "Institute & Course", 
+                    title: "Academic", 
                     field: "institute",
                     formatter: function(cell) {
                         const data = cell.getData();
                         return `
                             <div class="py-1">
                                 <p class="text-sm font-semibold text-slate-700">${data.institute}</p>
-                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">${data.course}</p>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">${data.course} ${data.branch ? '('+data.branch+')' : ''}</p>
+                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">${data.current_study_year} Year • ${data.section}</p>
+                            </div>
+                        `;
+                    },
+                    widthGrow: 1.5
+                },
+                {
+                    title: "Living Details", 
+                    field: "details",
+                    formatter: function(cell) {
+                        const data = cell.getData();
+                        return `
+                            <div class="py-1">
+                                <p class="text-[10px] font-bold text-slate-700 uppercase">${data.accommodation}</p>
+                                ${data.mess ? `<p class="text-[9px] text-slate-500"><i class="fas fa-utensils mr-1 text-orange-400"></i>${data.mess}</p>` : ''}
+                                <p class="text-[9px] text-slate-500"><i class="fas fa-map-marker-alt mr-1 text-slate-400"></i>${data.campus_location}</p>
                             </div>
                         `;
                     }

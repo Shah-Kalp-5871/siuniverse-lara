@@ -21,8 +21,24 @@
             @csrf
             <!-- Step 1: Accommodation -->
             <div id="step1" class="p-8 step-content">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2"><span class="display-step">1</span>. Accommodation</h2>
-                <p class="text-gray-500 mb-6">Where are you staying?</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2"><span class="display-step">1</span>. Basic Details</h2>
+                <p class="text-gray-500 mb-6">Let's get to know you.</p>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="name">
+                        Full Name <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors" 
+                               id="name" type="text" name="name" placeholder="Enter your full name" 
+                               value="{{ session('user_name') != 'Student' ? session('user_name') : '' }}" required>
+                    </div>
+                </div>
+
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Where are you staying?</h3>
                 
                 <div class="grid grid-cols-1 gap-4 mb-6">
                     <label class="flex items-center p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-blue-500 transition-all">
@@ -301,7 +317,9 @@
         const tab = document.getElementsByClassName("step-content")[currentTab-1];
         
         if (currentTab === 1) {
+            const name = document.getElementById("name").value;
             const acc = document.querySelector('input[name="accommodation"]:checked');
+            if (name === "") { Swal.fire('Error', 'Please enter your full name', 'error'); return false; }
             if (!acc) { Swal.fire('Error', 'Please select accommodation', 'error'); return false; }
             if (acc.value === "Hostel" && document.getElementById("messSelect").value === "") {
                 Swal.fire('Error', 'Please select your Mess', 'error'); return false;

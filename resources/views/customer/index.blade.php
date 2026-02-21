@@ -25,11 +25,9 @@
 </section>
 
 @php
-    $p = session('onboarding_data');
-    $acc = $p['accommodation'] ?? '';
-    $campus = $p['campus'] ?? '';
-    $gym = $p['gym'] ?? '';
-    $is_intl = $p['international_student'] ?? false;
+    $student_acc = $student->accommodation ?? '';
+    $student_campus = $student->campus_location ?? 'Campus';
+    $student_mess = $student->mess ?? '';
 @endphp
 
 <!-- Communities Section -->
@@ -41,160 +39,117 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- 1. International Students Community -->
-            @if ($is_intl)
-            <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-all flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-globe-americas text-xl"></i>
-                    </div>
-                    <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">CAMPUS-WIDE</span>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">International Students Comm.</h3>
-                <p class="text-gray-500 text-sm mb-4">Support and communication for all international students on campus.</p>
-                
-                <ul class="space-y-4 mb-6 text-gray-700 text-sm">
-                    <li class="flex items-center"><i class="fas fa-passport text-purple-500 mr-2"></i>Visa & documentation guidance</li>
-                    <li class="flex items-center"><i class="fas fa-plane-arrival text-purple-500 mr-2"></i>Airport pickup & arrival help</li>
-                    <li class="flex items-center"><i class="fas fa-hands-helping text-purple-500 mr-2"></i>Cultural support & local guidance</li>
-                    <li class="flex items-center"><i class="fas fa-university text-purple-500 mr-2"></i>Opening a bank account</li>
-                </ul>
+            @forelse($communities as $community)
+                @php
+                    // Determine icons and colors based on category/origin
+                    $icon = 'fas fa-users';
+                    $colorClass = 'border-slate-400';
+                    $bgColor = 'bg-slate-100';
+                    $textColor = 'text-slate-600';
+                    $tag = strtoupper($community->category);
 
-                <div class="mt-auto">
-                    <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
-                        <i class="fab fa-whatsapp mr-2"></i> Join Group
-                    </button>
-                </div>
-            </div>
-            @endif
+                    if ($community->origin === 'International') {
+                        $icon = 'fas fa-globe-americas';
+                        $colorClass = 'border-purple-500';
+                        $bgColor = 'bg-purple-100';
+                        $textColor = 'text-purple-600';
+                        $tag = 'CAMPUS-WIDE';
+                    } elseif ($community->category === 'PG/Flats') {
+                        $icon = 'fas fa-home';
+                        $colorClass = 'border-green-500';
+                        $bgColor = 'bg-green-100';
+                        $textColor = 'text-green-600';
+                        $tag = 'ACCOMMODATION';
+                    } elseif ($community->category === 'Day Scholars') {
+                        $icon = 'fas fa-bus';
+                        $colorClass = 'border-blue-400';
+                        $bgColor = 'bg-blue-50';
+                        $textColor = 'text-blue-500';
+                        $tag = 'ACCOMMODATION';
+                    } elseif ($community->category === 'Hostel') {
+                        if ($community->mess) {
+                            $icon = 'fas fa-utensils';
+                            $colorClass = 'border-orange-500';
+                            $bgColor = 'bg-orange-100';
+                            $textColor = 'text-orange-600';
+                            $tag = strtoupper($student_campus) . ' MESS';
+                        } elseif ($community->gym) {
+                            $icon = 'fas fa-dumbbell';
+                            $colorClass = 'border-blue-500';
+                            $bgColor = 'bg-blue-100';
+                            $textColor = 'text-blue-600';
+                            $tag = 'FITNESS';
+                        } else {
+                            $icon = 'fas fa-hotel';
+                            $colorClass = 'border-red-500';
+                            $bgColor = 'bg-red-100';
+                            $textColor = 'text-red-600';
+                            $tag = 'HOSTEL';
+                        }
+                    }
+                @endphp
 
-            <!-- 2a. Flat/PG Community -->
-            @if ($acc === 'PG / Flat')
-                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-all flex flex-col">
+                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 {{ $colorClass }} hover:shadow-xl transition-all flex flex-col" data-aos="fade-up">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-home text-xl"></i>
+                        <div class="w-12 h-12 {{ $bgColor }} {{ $textColor }} rounded-xl flex items-center justify-center">
+                            <i class="{{ $icon }} text-xl"></i>
                         </div>
-                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">ACCOMMODATION</span>
+                        <span class="text-xs font-bold {{ $textColor }} {{ $bgColor }} px-2 py-1 rounded">{{ $tag }}</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Flat/PG Community</h3>
-                    <p class="text-gray-500 text-sm mb-4">Campus-wide group for students living in PGs and flats.</p>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $community->name }}</h3>
+                    <p class="text-gray-500 text-sm mb-4">
+                        @if($community->origin === 'International')
+                            Support and communication for all international students on campus.
+                        @elseif($community->category === 'PG/Flats')
+                            Campus-wide group for students living in PGs and flats.
+                        @elseif($community->category === 'Day Scholars')
+                            Connect with fellow students who commute from home.
+                        @elseif($community->mess)
+                            Report issues, discuss menus, and manage crowd for {{ $community->mess }}.
+                        @elseif($community->gym)
+                            Connect with fellow student athletes at the {{ $community->gym }}.
+                        @else
+                            Official community for {{ $community->category }} students.
+                        @endif
+                    </p>
                     
                     <ul class="space-y-4 mb-6 text-gray-700 text-sm">
-                        <li class="flex items-center"><i class="fas fa-door-open text-green-500 mr-2"></i>Room availability updates</li>
-                        <li class="flex items-center"><i class="fas fa-file-invoice-dollar text-green-500 mr-2"></i>Rent & utility discussions</li>
-                        <li class="flex items-center"><i class="fas fa-user-tie text-green-500 mr-2"></i>Owner/broker contact</li>
+                        @if($community->origin === 'International')
+                            <li class="flex items-center"><i class="fas fa-passport {{ $textColor }} mr-2"></i>Visa & documentation guidance</li>
+                            <li class="flex items-center"><i class="fas fa-hands-helping {{ $textColor }} mr-2"></i>Cultural support & local guidance</li>
+                        @elseif($community->category === 'PG/Flats')
+                            <li class="flex items-center"><i class="fas fa-door-open {{ $textColor }} mr-2"></i>Room availability updates</li>
+                            <li class="flex items-center"><i class="fas fa-user-tie {{ $textColor }} mr-2"></i>Owner/broker contact</li>
+                        @elseif($community->category === 'Day Scholars')
+                            <li class="flex items-center"><i class="fas fa-route {{ $textColor }} mr-2"></i>Smart commute coordination</li>
+                            <li class="flex items-center"><i class="fas fa-users {{ $textColor }} mr-2"></i>Local networking & meetups</li>
+                        @elseif($community->mess)
+                            <li class="flex items-center"><i class="fas fa-exclamation-triangle {{ $textColor }} mr-2"></i>Raise food quality concerns</li>
+                            <li class="flex items-center"><i class="fas fa-vote-yea {{ $textColor }} mr-2"></i>Vote for menu improvements</li>
+                        @elseif($community->gym)
+                            <li class="flex items-center"><i class="fas fa-dumbbell {{ $textColor }} mr-2"></i>Share daily workout routines</li>
+                            <li class="flex items-center"><i class="fas fa-chart-line {{ $textColor }} mr-2"></i>Track progress & transformations</li>
+                        @else
+                            <li class="flex items-center"><i class="fas fa-bullhorn {{ $textColor }} mr-2"></i>Important announcements</li>
+                            <li class="flex items-center"><i class="fas fa-comments {{ $textColor }} mr-2"></i>Peer-to-peer discussions</li>
+                        @endif
                     </ul>
 
                     <div class="mt-auto">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
+                        <a href="{{ $community->invite_link }}" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center">
                             <i class="fab fa-whatsapp mr-2"></i> Join Group
-                        </button>
+                        </a>
                     </div>
                 </div>
-            @endif
-
-            <!-- 2b. Day Scholar Community -->
-            @if ($acc === 'Day Scholar')
-                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-400 hover:shadow-xl transition-all flex flex-col">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-bus text-xl"></i>
-                        </div>
-                        <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded">ACCOMMODATION</span>
+            @empty
+                <div class="col-span-full text-center py-12" data-aos="fade-up">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-search text-gray-400 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Day Scholar Community</h3>
-                    <p class="text-gray-500 text-sm mb-4">Connect with fellow students who commute from home.</p>
-                    
-                    <ul class="space-y-4 mb-6 text-gray-700 text-sm">
-                        <li class="flex items-center"><i class="fas fa-route text-blue-400 mr-2"></i>Smart commute coordination</li>
-                        <li class="flex items-center"><i class="fas fa-clock text-blue-400 mr-2"></i>Real-time transport updates</li>
-                        <li class="flex items-center"><i class="fas fa-city text-blue-400 mr-2"></i>Connect with Pune day scholars</li>
-                        <li class="flex items-center"><i class="fas fa-users text-blue-400 mr-2"></i>Local networking & meetups</li>
-                    </ul>
-
-                    <div class="mt-auto">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
-                            <i class="fab fa-whatsapp mr-2"></i> Join Group
-                        </button>
-                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Groups are not found</h3>
+                    <p class="text-gray-500 mt-2">No active communities match your profile at the moment.</p>
                 </div>
-            @endif
-
-            <!-- 3. Mess Communities (Hostel Only) -->
-            @if ($acc === 'Hostel')
-                <!-- Student Mess Community -->
-                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition-all flex flex-col">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-utensils text-xl"></i>
-                        </div>
-                        <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded">{{ strtoupper($campus) }} MESS</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Student Mess Community</h3>
-                    <p class="text-gray-500 text-sm mb-4">Report issues, discuss menus, and manage crowd for {{ $p['mess'] ?? 'Mess' }}.</p>
-                    
-                    <ul class="space-y-4 mb-6 text-gray-700 text-sm">
-                        <li class="flex items-center"><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>Raise food quality concerns collectively</li>
-                        <li class="flex items-center"><i class="fas fa-vote-yea text-orange-500 mr-2"></i>Vote for weekly menu improvements</li>
-                        <li class="flex items-center"><i class="fas fa-comment-dots text-orange-500 mr-2"></i>Feedback system for better hygiene & taste</li>
-                    </ul>
-
-                    <div class="mt-auto">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
-                            <i class="fab fa-whatsapp mr-2"></i> Join Group
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Mess Management (Only for specific location structure) -->
-                @if ($campus === 'Hill Base' && ($p['mess'] ?? '') === 'Viola Mess')
-                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500 hover:shadow-xl transition-all flex flex-col">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-user-shield text-xl"></i>
-                        </div>
-                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">MANAGEMENT</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Mess Management</h3>
-                    <p class="text-gray-500 text-sm mb-6">Heads, Owners, and Admin for Viola Mess management.</p>
-                    <div class="mt-auto">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
-                            <i class="fab fa-whatsapp mr-2"></i> Join Admin Group
-                        </button>
-                    </div>
-                </div>
-                @endif
-
-                <!-- 4. Gym Community (Hostel Only) -->
-                @if ($gym !== 'no gym')
-                <div class="h-full bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-all flex flex-col">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-dumbbell text-xl"></i>
-                        </div>
-                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">FITNESS</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $gym }} Community</h3>
-                    <p class="text-gray-500 text-sm mb-4">Connect with fellow student athletes at the {{ $gym }}.</p>
-                    
-                    <ul class="space-y-4 mb-6 text-gray-700 text-sm">
-                        <li class="flex items-center"><i class="fas fa-dumbbell text-blue-500 mr-2"></i>Share daily workout routines</li>
-                        <li class="flex items-center"><i class="fas fa-bullseye text-blue-500 mr-2"></i>Mention target muscle group</li>
-                        <li class="flex items-center"><i class="fas fa-chart-line text-blue-500 mr-2"></i>Track progress & transformations</li>
-                        <li class="flex items-center"><i class="fas fa-apple-alt text-blue-500 mr-2"></i>Diet & supplement discussions</li>
-                    </ul>
-
-                    <div class="mt-auto">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
-                            <i class="fab fa-whatsapp mr-2"></i> Join Gym Group
-                        </button>
-                    </div>
-                </div>
-                @endif
-            @endif
-
+            @endforelse
         </div>
     </div>
 </section>

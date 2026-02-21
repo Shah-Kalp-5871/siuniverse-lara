@@ -23,6 +23,9 @@ class CommunityController extends Controller
             'category' => 'required|string|max:255',
             'invite_link' => 'required|url',
             'status' => 'required|in:Active,Inactive',
+            'mess' => 'nullable|string|max:255',
+            'gym' => 'nullable|string|max:255',
+            'origin' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -56,6 +59,9 @@ class CommunityController extends Controller
             'category' => 'required|string|max:255',
             'invite_link' => 'required|url',
             'status' => 'required|in:Active,Inactive',
+            'mess' => 'nullable|string|max:255',
+            'gym' => 'nullable|string|max:255',
+            'origin' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -94,6 +100,32 @@ class CommunityController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while deleting the group.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!$ids || !is_array($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No IDs provided for deletion.'
+            ], 400);
+        }
+
+        try {
+            Community::whereIn('id', $ids)->delete();
+            return response()->json([
+                'success' => true,
+                'message' => count($ids) . ' WhatsApp groups deleted successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while performing bulk deletion.',
                 'error' => $e->getMessage()
             ], 500);
         }
