@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OtpMail;
 
 class AuthController extends Controller
 {
@@ -30,13 +32,6 @@ class AuthController extends Controller
              return back()->with('error', "Access restricted to valid institute domains.")->withInput();
         }
 
-        // Regex for name.surname.course-year
-        // $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
-
-        // if (!preg_match($format_regex, $local_part)) {
-        //     return back()->with('error', "Email must be in format: student.surname.course-year@institute.siu.edu.in")->withInput();
-        // }
-
         if ($password === 'password') {
             session(['user_id' => 1, 'user_name' => explode('.', $local_part)[0]]);
             return redirect()->intended(route('home'));
@@ -56,18 +51,24 @@ class AuthController extends Controller
         $email = $request->input('email');
         $otp = $request->input('otp');
 
+        // Check expiry first
+        $expiresAt = session('otp_expires_at');
+        if (!$expiresAt || now()->isAfter($expiresAt)) {
+            session()->forget(['verification_otp', 'otp_expires_at']);
+            return back()->with('error', "Verification code has expired. Please request a new one.")->withInput();
+        }
+
         if ($otp && session('verification_otp') == $otp) {
             session([
-                'user_id' => rand(10, 1000),
+                'user_id'  => rand(10, 1000),
                 'user_name' => "Student",
-                'email' => $email
+                'email'    => $email
             ]);
-            
-            session()->forget('verification_otp');
+            session()->forget(['verification_otp', 'otp_expires_at']);
             return redirect()->route('onboarding');
         }
 
-        return back()->with('error', "Invalid or expired verification code.")->withInput();
+        return back()->with('error', "Invalid verification code. Please try again.")->withInput();
     }
 
     public function sendOtp(Request $request)
@@ -90,17 +91,34 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // $format_regex = '/^[a-zA-Z]+\.[a-zA-Z]+\.[a-zA-Z0-9]+-[0-9]+$/';
+        // Check if this email is already registered
+        if (\App\Models\Student::where('email', $email)->exists()) {
+            return response()->json([
+                'success'            => false,
+                'already_registered' => true,
+                'message'            => "This email is already registered. Redirecting you to login...",
+            ], 409);
+        }
 
-        // if (!preg_match($format_regex, $local_part)) {
-        //     return response()->json([
-        //         'success' => false, 
-        //         'message' => "Use format: name.surname.course-year@institute.siu.edu.in"
-        //     ], 422);
-        // }
+        // Generate a cryptographically random 6-digit OTP
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        $otp = '123456'; // Dummy OTP for static migration
-        session(['verification_otp' => $otp]);
+        // Store OTP + expiry (5 minutes) in session
+        session([
+            'verification_otp'  => $otp,
+            'otp_expires_at'    => now()->addMinutes(5),
+        ]);
+
+        // Send OTP email via Gmail SMTP
+        try {
+            Mail::to($email)->send(new OtpMail($otp));
+        } catch (\Exception $e) {
+            \Log::error('OTP mail failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send verification email. Please check your email address and try again.',
+            ], 500);
+        }
         
         return response()->json(['success' => true]);
     }

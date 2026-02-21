@@ -131,9 +131,23 @@
                 
                 const data = await response.json();
                 
-                if(data.success) {
+                if (data.success) {
                     document.getElementById('display-email').innerText = email;
                     goToStep(2);
+                } else if (data.already_registered) {
+                    Swal.fire({
+                        title: 'Already Registered!',
+                        text: 'This email is already registered. Please log in to continue.',
+                        icon: 'info',
+                        confirmButtonText: 'Go to Login',
+                        confirmButtonColor: '#3b82f6',
+                        showCancelButton: true,
+                        cancelButtonText: 'Use Different Email',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('login') }}";
+                        }
+                    });
                 } else {
                     Swal.fire('Failed', data.message || "Failed to send verification code. Please try again.", 'error');
                 }
