@@ -12,7 +12,6 @@
             </div>
             <h1 class="text-2xl font-bold">Welcome Back</h1>
             <p class="text-blue-100 mt-2">Sign in with your SI University email</p>
-            <p class="text-blue-200 text-sm mt-1">(@siu.edu.in domain only)</p>
         </div>
 
         <!-- Form -->
@@ -78,7 +77,7 @@
                         <input type="checkbox" class="form-checkbox text-primary rounded border-gray-300 focus:ring-primary" name="remember">
                         <span class="ml-2">Remember me</span>
                     </label>
-                    <a href="#" class="text-sm text-primary hover:text-secondary font-medium">Forgot Password?</a>
+                    <!-- <a href="#" class="text-sm text-primary hover:text-secondary font-medium">Forgot Password?</a> -->
                 </div>
 
                 <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl">
@@ -92,7 +91,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
+        <!-- <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
             <p class="text-gray-600 text-sm">
                 <i class="fas fa-info-circle mr-1"></i>
                 SIU, SIT, or SIBM email addresses only
@@ -100,7 +99,7 @@
             <p class="text-gray-600 text-sm mt-1">
                 Need help? <a href="#" class="text-primary font-semibold hover:text-secondary">Contact Support</a>
             </p>
-        </div>
+        </div> -->
     </div>
 </div>
 @endsection

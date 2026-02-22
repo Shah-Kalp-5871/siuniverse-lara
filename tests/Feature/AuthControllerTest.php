@@ -48,6 +48,66 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
+    public function test_login_requires_existing_student_record()
+    {
+        AllowedDomain::create(['domain' => 'student.edu']);
+
+        // no student created yet, should fail
+        $response = $this->post('/login', [
+            'email' => 'noone@student.edu',
+            'password' => 'whatever',
+        ]);
+        $response->assertSessionHas('error', 'No account found with that email. Please sign up first.');
+        $response->assertRedirect();
+    }
+
+    public function test_login_fails_with_wrong_password()
+    {
+        AllowedDomain::create(['domain' => 'student.edu']);
+        \App\Models\Student::create([
+            'name' => 'Test Student',
+            'email' => 'test@student.edu',
+            'password' => \Illuminate\Support\Facades\Hash::make('correct'),
+            'institute' => 'Test Institute',
+            'course' => 'Test Course',
+            'section' => 'A',
+            'campus_location' => 'Main Campus',
+            'current_study_year' => 1,
+            'origin' => 'national',
+            'accommodation' => 'Hostel'
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'test@student.edu',
+            'password' => 'wrong',
+        ]);
+        $response->assertSessionHas('error', 'Invalid credentials. Please check your password.');
+    }
+
+    public function test_login_succeeds_with_student_in_database()
+    {
+        AllowedDomain::create(['domain' => 'student.edu']);
+        \App\Models\Student::create([
+            'name' => 'Test Student',
+            'email' => 'test@student.edu',
+            'password' => \Illuminate\Support\Facades\Hash::make('secret123'),
+            'institute' => 'Test Institute',
+            'course' => 'Test Course',
+            'section' => 'A',
+            'campus_location' => 'Main Campus',
+            'current_study_year' => 1,
+            'origin' => 'national',
+            'accommodation' => 'Hostel'
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'test@student.edu',
+            'password' => 'secret123',
+        ]);
+        $response->assertRedirect(route('home')); // intended
+        $this->assertEquals(session('user_name'), 'Test Student');
+    }
+
     public function test_onboarding_view_loads()
     {
         $this->withSession(['user_id' => 1]);
@@ -62,6 +122,30 @@ class AuthControllerTest extends TestCase
         $response = $this->get('/profile');
         $response->assertStatus(200);
         $response->assertViewIs('customer.profile');
+    }
+
+    public function test_onboarding_saves_hashed_password()
+    {
+        // simulate user who completed OTP step
+        session(['email' => 'hash@test.edu']);
+
+        $response = $this->post('/onboarding', [
+            'name' => 'Hash Tester',
+            'accommodation' => 'Hostel',
+            'campus' => 'Hill Base',
+            'institute' => 'SIT',
+            'course' => 'CS',
+            'section' => 'Section A',
+            'year' => 2,
+            'country' => 'India',
+            'password' => 'supersecret',
+            'password_confirmation' => 'supersecret',
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+        $student = \App\Models\Student::where('email', 'hash@test.edu')->first();
+        $this->assertNotNull($student);
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('supersecret', $student->password));
     }
 
     public function test_discover_page_shows_students()

@@ -16,6 +16,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // basic validation
+        $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
         $email = $request->input('email');
         $password = $request->input('password');
 
@@ -24,20 +30,31 @@ class AuthController extends Controller
             return back()->with('error', "Invalid email format.")->withInput();
         }
 
-        $local_part = $email_parts[0];
         $domain_part = strtolower($email_parts[1]);
 
-        // Check if domain is allowed
+        // check allowed domain dynamically
         if (!\App\Models\AllowedDomain::where('domain', $domain_part)->exists()) {
-             return back()->with('error', "Access restricted to valid institute domains.")->withInput();
+            return back()->with('error', "Access restricted to valid institute domains.")->withInput();
         }
 
-        if ($password === 'password') {
-            session(['user_id' => 1, 'user_name' => explode('.', $local_part)[0]]);
+        // try to locate a student record with this email
+        $student = \App\Models\Student::where('email', $email)->first();
+        if ($student) {
+            // ensure password is set and matches
+            if (!$student->password || !\Illuminate\Support\Facades\Hash::check($password, $student->password)) {
+                return back()->with('error', "Invalid credentials. Please check your password.")->withInput();
+            }
+
+            session([
+                'user_id'   => $student->id,
+                'user_name' => $student->name,
+                'email'     => $student->email,
+            ]);
             return redirect()->intended(route('home'));
         }
 
-        return back()->with('error', "Invalid credentials. Use 'password' for testing.")->withInput();
+        // if we reach here, there's no matching student account
+        return back()->with('error', "No account found with that email. Please sign up first.")->withInput();
     }
 
     public function showSignup()

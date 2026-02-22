@@ -9,6 +9,7 @@ class Student extends Model
     protected $fillable = [
         'name',
         'email',
+        'password',
         'institute',
         'course',
         'section',
@@ -21,6 +22,11 @@ class Student extends Model
         'mess',
         'country',
         'accommodation',
+    ];
+
+    // hide sensitive fields when serializing
+    protected $hidden = [
+        'password',
     ];
 
     protected $casts = [

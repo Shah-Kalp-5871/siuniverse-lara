@@ -27,9 +27,19 @@
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Institute</label>
                         <select id="filterInst" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none">
                             <option value="">All Institutes</option>
-                            <option @if($institute == 'SIT') selected @endif>SIT</option>
-                            <option @if($institute == 'SCHS') selected @endif>SCHS</option>
+                            <option @if($institute == 'SIT') selected @endif>SAII</option>
+                            <option @if($institute == 'SCHS') selected @endif>SIMC</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SIBM</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SIDTM</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SIT</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SSBF</option>
                             <option @if($institute == 'SSVAP') selected @endif>SSVAP</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SSCANS</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SCON</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SCHS</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SSSS</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SIHS</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SMCW</option>
                         </select>
                     </div>
                     <div>
@@ -49,6 +59,7 @@
                             <option>2nd Year</option>
                             <option>3rd Year</option>
                             <option>4th Year</option>
+                            <option>5th Year</option>
                         </select>
                     </div>
                     <div>

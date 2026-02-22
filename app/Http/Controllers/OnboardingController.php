@@ -22,8 +22,21 @@ class OnboardingController extends Controller
             return redirect()->route('signup')->with('error', 'Session expired. Please sign up again.');
         }
 
-        // Handle Origin
+        // handle origin
         $origin = ($request->input('country') === 'India') ? 'national' : 'international';
+
+        // validate required onboarding inputs including password
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'accommodation' => ['required', 'string'],
+            'campus' => ['required', 'string'],
+            'institute' => ['required', 'string'],
+            'course' => ['required', 'string'],
+            'section' => ['required', 'string'],
+            'year' => ['required', 'integer'],
+            'country' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
         try {
             // Find or create student — saves ALL onboarding data to DB
@@ -31,6 +44,8 @@ class OnboardingController extends Controller
                 ['email' => $email],
                 [
                     'name'               => $request->input('name') ?? 'Student',
+                    // hash password before storing
+                    'password'           => \Illuminate\Support\Facades\Hash::make($request->input('password')),
                     'institute'          => $request->input('institute'),
                     'course'             => $request->input('course'),
                     'branch'             => $request->input('branch'),
@@ -45,7 +60,6 @@ class OnboardingController extends Controller
                     'datestamp'          => now(),
                 ]
             );
-
             // Update session with real student DB id and name
             session([
                 'user_id'        => $student->id,

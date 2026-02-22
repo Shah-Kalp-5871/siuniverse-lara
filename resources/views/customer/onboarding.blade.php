@@ -220,12 +220,12 @@
                     </div>
 
                     <div class="relative">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="confirm_password">Confirm Password</label>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="password_confirmation">Confirm Password</label>
                         <div class="relative">
-                            <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••" 
+                            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" 
                                    class="w-full p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-lg" required>
-                            <button type="button" onclick="togglePasswordVisibility('confirm_password')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                <i id="confirm_password-eye" class="fas fa-eye"></i>
+                            <button type="button" onclick="togglePasswordVisibility('password_confirmation')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i id="password_confirmation-eye" class="fas fa-eye"></i>
                             </button>
                         </div>
                         <p id="match-error" class="hidden mt-1 text-xs text-red-500">Passwords do not match</p>
@@ -364,7 +364,7 @@
 
         if (currentTab === 8) {
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
+            const confirmPassword = document.getElementById('password_confirmation').value;
 
             if (password.length < 8) {
                 Swal.fire('Error', 'Password must be at least 8 characters long', 'error');
