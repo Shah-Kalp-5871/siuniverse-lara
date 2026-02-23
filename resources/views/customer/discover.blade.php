@@ -102,12 +102,12 @@
                     $s->current_study_year == 1 ? 'st' : ($s->current_study_year == 2 ? 'nd' : ($s->current_study_year == 3 ? 'rd' : 'th')) 
                  }} Year • {{ $s->accommodation }}</p>
                 <div class="flex justify-center space-x-2">
-                    <button class="p-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all text-xs">
+                    <!-- <button class="p-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all text-xs">
                         <i class="fas fa-comment"></i>
-                    </button>
-                    <button class="p-1.5 bg-gray-50 text-gray-400 rounded-lg hover:bg-gray-100 transition-all text-xs">
+                    </button> -->
+                    <!-- <button class="p-1.5 bg-gray-50 text-gray-400 rounded-lg hover:bg-gray-100 transition-all text-xs">
                         <i class="fas fa-user-plus"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
             @endforeach

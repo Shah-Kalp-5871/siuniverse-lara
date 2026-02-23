@@ -63,6 +63,16 @@
                             <span class="text-gray-800 font-semibold">{{ $student->institute ?? 'Not set' }} ({{ $student->section ?? 'A' }})</span>
                         </div>
                     </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Branch</span>
+                            <span class="text-gray-800 font-semibold">{{ $student->branch ?? 'N/A' }}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="space-y-6">
