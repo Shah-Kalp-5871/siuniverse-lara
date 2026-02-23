@@ -8,6 +8,10 @@ class HomeController extends Controller
 {
     public function index()
     {
+        if (!session('user_id')) {
+            return redirect()->route('signup');
+        }
+
         $email = session('email');
         $student = $email ? \App\Models\Student::where('email', $email)->first() : null;
 

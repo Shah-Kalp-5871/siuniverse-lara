@@ -86,6 +86,6 @@ class OnboardingController extends Controller
             return back()->with('error', 'Something went wrong saving your data. Please try again.');
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 }
