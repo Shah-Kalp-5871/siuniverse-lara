@@ -24,7 +24,8 @@
                 <ul class="space-y-2">
                     <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
                     <li><a href="{{ route('discover') }}" class="text-gray-400 hover:text-white transition-colors">Discover</a></li>
-
+                    <li><a href="{{ route('explore-stays') }}" class="text-gray-400 hover:text-white transition-colors">Explore Stays</a></li>
+    
                     <li><a href="{{ route('communities') }}" class="text-gray-400 hover:text-white transition-colors">Professional Communities</a></li>
                 </ul>
             </div>
