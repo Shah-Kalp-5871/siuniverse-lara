@@ -4,16 +4,8 @@
 
 @section('content')
 @php
-    $p = session('onboarding_data', [
-        'accommodation' => 'Not set',
-        'campus' => 'Not set',
-        'institute' => 'Not set',
-        'course' => 'Not set',
-        'year' => 'Not set',
-        'gym' => 'Not set',
-        'country' => 'India',
-        'section' => 'A'
-    ]);
+    // Fallback to empty object if student not found
+    $student = $student ?? new \App\Models\Student();
 @endphp
 
 <div class="container mx-auto px-4 py-12 max-w-4xl">
@@ -24,8 +16,8 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold">{{ session('user_name', 'User Name') }}</h1>
-                    <p class="text-blue-100">{{ $p['course'] ?? 'Course' }} • {{ $p['institute'] ?? 'Institute' }}</p>
+                    <h1 class="text-3xl font-bold">{{ $student->name ?? 'User Name' }}</h1>
+                    <p class="text-blue-100">{{ $student->course ?? 'Course' }} • {{ $student->institute ?? 'Institute' }}</p>
                 </div>
             </div>
             <div class="absolute top-8 right-8">
@@ -48,7 +40,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Accommodation</span>
-                            <span class="text-gray-800 font-semibold">{{ $p['accommodation'] }}</span>
+                            <span class="text-gray-800 font-semibold">{{ $student->accommodation ?? 'Not set' }}</span>
                         </div>
                     </div>
                     
@@ -58,7 +50,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Campus Location</span>
-                            <span class="text-gray-800 font-semibold">{{ $p['campus'] }}</span>
+                            <span class="text-gray-800 font-semibold">{{ $student->campus_location ?? 'Not set' }}</span>
                         </div>
                     </div>
 
@@ -68,7 +60,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Institute & Section</span>
-                            <span class="text-gray-800 font-semibold">{{ $p['institute'] }} ({{ $p['section'] ?? 'A' }})</span>
+                            <span class="text-gray-800 font-semibold">{{ $student->institute ?? 'Not set' }} ({{ $student->section ?? 'A' }})</span>
                         </div>
                     </div>
                 </div>
@@ -80,7 +72,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Year of Study</span>
-                            <span class="text-gray-800 font-semibold">Year {{ $p['year'] }}</span>
+                            <span class="text-gray-800 font-semibold">Year {{ $student->current_study_year ?? 'Not set' }}</span>
                         </div>
                     </div>
 
@@ -90,7 +82,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Gym Preference</span>
-                            <span class="text-gray-800 font-semibold">{{ $p['gym'] }}</span>
+                            <span class="text-gray-800 font-semibold">{{ $student->gym_choice ?? 'Not set' }}</span>
                         </div>
                     </div>
 
@@ -100,7 +92,7 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Origin</span>
-                            <span class="text-gray-800 font-semibold">{{ ($p['country'] == 'India' ? 'India' : 'International Student') }}</span>
+                            <span class="text-gray-800 font-semibold">{{ ($student->country ?? 'India') == 'India' ? 'India' : 'International Student' }}</span>
                         </div>
                     </div>
                 </div>

@@ -8,9 +8,13 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        if (!session('user_id')) {
+        $userId = session('user_id');
+        if (!$userId) {
             return redirect()->route('login');
         }
-        return view('customer.profile');
+
+        $student = \App\Models\Student::find($userId);
+        
+        return view('customer.profile', compact('student'));
     }
 }
