@@ -42,9 +42,9 @@
             <li class="flex items-center"><i class="fas fa-users text-blue-500 mr-3"></i>Career Guidance</li>
           </ul>
 
-          <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all">
+          <a href="https://chat.whatsapp.com/IYrZgnVXrQ39BYawGEZcBN" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all inline-flex items-center justify-center">
             <i class="fab fa-whatsapp mr-2"></i>Join Career & Opportunities Group
-          </button>
+          </a>
         </div>
       </div>
 
@@ -68,9 +68,9 @@
             <li class="flex items-center"><i class="fas fa-chart-line text-yellow-500 mr-3"></i>Funding support</li>
           </ul>
 
-          <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all">
+          <a href="https://chat.whatsapp.com/HAggBod9u203eelngEUjfu" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all inline-flex items-center justify-center">
             <i class="fab fa-whatsapp mr-2"></i>Join Startup Group
-          </button>
+          </a>
         </div>
       </div>
 
@@ -94,9 +94,9 @@
             <li class="flex items-center"><i class="fas fa-award text-red-500 mr-3"></i>Workshops</li>
           </ul>
 
-          <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all">
+          <a href="https://chat.whatsapp.com/LJncspa1x4p43AmeQwhg3I" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 sm:py-4 rounded-xl font-semibold transition-all inline-flex items-center justify-center">
             <i class="fab fa-whatsapp mr-2"></i>Join Events & Workshops Group
-          </button>
+          </a>
         </div>
       </div>
 
