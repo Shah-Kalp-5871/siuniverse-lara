@@ -11,6 +11,7 @@
             </a>
 
             <!-- Desktop Navigation -->
+            @if(!request()->routeIs('login', 'signup', 'onboarding'))
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{ route('home') }}" class="text-gray-600 hover:text-primary transition-colors {{ request()->routeIs('home') ? 'text-primary font-semibold' : 'font-medium' }}">
                     Home
@@ -38,11 +39,13 @@
                     </a>
                 @endif
             </div>
+            @endif
         </div>
     </div>
 </nav>
 
 <!-- Mobile Account Link (Bottom) -->
+@if(!request()->routeIs('login', 'signup', 'onboarding'))
 <div class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 px-6 py-3 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
     <a href="{{ route('home') }}" class="flex flex-col items-center space-y-1 {{ request()->routeIs('home') ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
         <i class="fas fa-home text-xl"></i>
@@ -73,3 +76,4 @@
         </a>
     @endif
 </div>
+@endif

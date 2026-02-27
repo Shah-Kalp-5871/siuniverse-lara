@@ -1,3 +1,4 @@
+@if(!request()->routeIs('login', 'signup', 'onboarding'))
 <footer class="bg-gray-900 text-white mt-20">
     <div class="container mx-auto px-4 py-12">
         <div class="grid md:grid-cols-4 gap-8">
@@ -75,3 +76,4 @@
         </div>
     </div>
 </footer>
+@endif
