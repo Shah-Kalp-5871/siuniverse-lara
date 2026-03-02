@@ -34,18 +34,10 @@ class HomeController extends Controller
         $communities = \App\Models\Community::where('status', 'Active')
             ->where(function($query) use ($accCategory, $origin, $student) {
                 // 1. Match by Accommodation Category
-                $query->where(function($q) use ($accCategory, $student, $origin) {
+                $query->where(function($q) use ($accCategory, $student) {
                     $q->where('category', $accCategory);
                     
-                    // If student is NOT international, don't show International-only groups in this category
-                    if ($origin !== 'international') {
-                        $q->where(function($sub) {
-                            $sub->where('origin', '!=', 'International')
-                                ->orWhereNull('origin');
-                        });
-                    }
-
-                    // Special filtering for Hostel (Mess/Gym specific groups)
+                    // Special filtering for Hostel (Mess specific groups)
                     if ($accCategory === 'Hostel') {
                         $q->where(function($sq) use ($student) {
                             $sq->where(function($ssq) use ($student) {
@@ -56,28 +48,17 @@ class HomeController extends Controller
                                     $ssq->whereRaw('1 = 0');
                                 }
                             })
-                            ->orWhere(function($ssq) use ($student) {
-                                // Specific Gym group
-                                if ($student->gym_choice && $student->gym_choice !== 'no gym') {
-                                    $ssq->where('gym', $student->gym_choice);
-                                } else {
-                                    $ssq->whereRaw('1 = 0');
-                                }
-                            })
                             ->orWhere(function($ssq) {
-                                // General Hostel group (no mess/gym specified)
-                                $ssq->whereNull('mess')->whereNull('gym');
+                                // General Hostel group (no mess specified)
+                                $ssq->whereNull('mess');
                             });
                         });
                     }
                 });
 
-                // 2. OR Match General International Group (only for International students)
+                // 2. OR Match International Group (for International students)
                 if ($origin === 'international') {
-                    $query->orWhere(function($q) {
-                        $q->where('origin', 'International')
-                          ->where('category', 'General');
-                    });
+                    $query->orWhere('category', 'International');
                 }
             })
             ->get();
