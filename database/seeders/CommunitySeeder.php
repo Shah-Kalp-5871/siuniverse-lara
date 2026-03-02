@@ -12,23 +12,22 @@ class CommunitySeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. International Students Group (General)
+        // 1. International Students Group
         Community::updateOrCreate(
             ['name' => 'International Students Community'],
             [
-                'category' => 'General',
+                'category' => 'International',
                 'invite_link' => 'https://chat.whatsapp.com/intl-students',
                 'status' => 'Active',
-                'origin' => 'International',
             ]
         );
 
-        // 2. PG/Flats Community
+        // 2. PG Community
         Community::updateOrCreate(
-            ['name' => 'Lara PG/Flats Community'],
+            ['name' => 'Lara PG Community'],
             [
-                'category' => 'PG/Flats',
-                'invite_link' => 'https://chat.whatsapp.com/lara-pg-flats',
+                'category' => 'PG',
+                'invite_link' => 'https://chat.whatsapp.com/lara-pg',
                 'status' => 'Active',
             ]
         );
@@ -51,7 +50,6 @@ class CommunitySeeder extends Seeder
                 'invite_link' => 'https://chat.whatsapp.com/hostel-general',
                 'status' => 'Active',
                 'mess' => null,
-                'gym' => null,
             ]
         );
 
@@ -65,20 +63,6 @@ class CommunitySeeder extends Seeder
                     'invite_link' => 'https://chat.whatsapp.com/mess-' . strtolower(str_replace(' ', '-', $mess)),
                     'status' => 'Active',
                     'mess' => $mess,
-                ]
-            );
-        }
-
-        // 6. Gym Communities
-        $gyms = ['SIT Gym', 'Viola Gym', 'Medical Gym', 'Hill Top Gym'];
-        foreach ($gyms as $gym) {
-            Community::updateOrCreate(
-                ['name' => "$gym Community"],
-                [
-                    'category' => 'Hostel',
-                    'invite_link' => 'https://chat.whatsapp.com/gym-' . strtolower(str_replace(' ', '-', $gym)),
-                    'status' => 'Active',
-                    'gym' => $gym,
                 ]
             );
         }

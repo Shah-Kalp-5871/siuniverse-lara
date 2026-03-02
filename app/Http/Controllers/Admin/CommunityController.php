@@ -15,7 +15,6 @@ class CommunityController extends Controller
         $communities = Community::latest()->get();
         return view('admin.communities', compact('communities'));
     }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -24,8 +23,6 @@ class CommunityController extends Controller
             'invite_link' => 'required|url',
             'status' => 'required|in:Active,Inactive',
             'mess' => 'nullable|string|max:255',
-            'gym' => 'nullable|string|max:255',
-            'origin' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -60,8 +57,6 @@ class CommunityController extends Controller
             'invite_link' => 'required|url',
             'status' => 'required|in:Active,Inactive',
             'mess' => 'nullable|string|max:255',
-            'gym' => 'nullable|string|max:255',
-            'origin' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {

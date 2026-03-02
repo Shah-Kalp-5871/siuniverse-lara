@@ -12,7 +12,5 @@ class Community extends Model
         'invite_link',
         'status',
         'mess',
-        'gym',
-        'origin',
     ];
 }

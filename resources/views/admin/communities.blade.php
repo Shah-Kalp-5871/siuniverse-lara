@@ -262,21 +262,15 @@
     function toggleCommunityFields(prefix) {
         const categoryEl = document.getElementById(`${prefix}-category`);
         const hostelFields = document.getElementById(`${prefix}-hostel-fields`);
-        const originFields = document.getElementById(`${prefix}-origin-fields`);
 
-        if (!categoryEl || !hostelFields || !originFields) return;
+        if (!categoryEl || !hostelFields) return;
 
         const category = categoryEl.value;
 
         if (category === 'Hostel') {
             hostelFields.style.display = 'block';
-            originFields.style.display = 'block';
-        } else if (category === 'PG/Flats' || category === 'Day Scholars') {
-            hostelFields.style.display = 'none';
-            originFields.style.display = 'block';
         } else {
             hostelFields.style.display = 'none';
-            originFields.style.display = 'none';
         }
     }
 
@@ -362,8 +356,9 @@
                             <select id="swal-category" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white" onchange="toggleCommunityFields('swal')">
                                 <option value="">Select Category</option>
                                 <option value="Hostel">Hostel</option>
-                                <option value="PG/Flats">PG/Flats</option>
+                                <option value="PG">PG</option>
                                 <option value="Day Scholars">Day Scholars</option>
+                                <option value="International">International</option>
                             </select>
                         </div>
                         
@@ -379,25 +374,6 @@
                                     <option value="Medical Mess">Medical Mess</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1">Select Gym</label>
-                                <select id="swal-gym" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
-                                    <option value="">Select Gym</option>
-                                    <option value="SIT Gym">SIT Gym</option>
-                                    <option value="Viola Gym">Viola Gym</option>
-                                    <option value="Medical Gym">Medical Gym</option>
-                                    <option value="Hill Top Gym">Hill Top Gym</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="swal-origin-fields" style="display: none;">
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Origin</label>
-                            <select id="swal-origin" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
-                                <option value="">Select Origin</option>
-                                <option value="National">National</option>
-                                <option value="International">International</option>
-                            </select>
                         </div>
 
                         <div>
@@ -425,21 +401,14 @@
                     const invite_link = document.getElementById('swal-link')?.value;
                     const status = document.getElementById('swal-status')?.value;
                     const mess = document.getElementById('swal-mess')?.value || '';
-                    const gym = document.getElementById('swal-gym')?.value || '';
-                    const origin = document.getElementById('swal-origin')?.value || '';
 
                     if (!name || !category || !invite_link) {
                         Swal.showValidationMessage('Please fill in required fields');
                         return false;
                     }
 
-                    if (category === 'Hostel' && (!mess || !gym || !origin)) {
-                        Swal.showValidationMessage('Please select Mess, Gym and Origin for Hostel');
-                        return false;
-                    }
-
-                    if ((category === 'PG/Flats' || category === 'Day Scholars') && !origin) {
-                        Swal.showValidationMessage(`Please select Origin for ${category}`);
+                    if (category === 'Hostel' && !mess) {
+                        Swal.showValidationMessage('Please select Mess for Hostel');
                         return false;
                     }
 
@@ -459,7 +428,7 @@
                         return false;
                     }
 
-                    return { name, category, invite_link, status, mess, gym, origin };
+                    return { name, category, invite_link, status, mess };
                 }
             });
 
@@ -512,8 +481,9 @@
                             <label class="block text-xs font-bold text-slate-500 mb-1">Category</label>
                             <select id="swal-edit-category" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white" onchange="toggleCommunityFields('swal-edit')">
                                 <option value="Hostel" ${community.category === 'Hostel' ? 'selected' : ''}>Hostel</option>
-                                <option value="PG/Flats" ${community.category === 'PG/Flats' ? 'selected' : ''}>PG/Flats</option>
+                                <option value="PG" ${community.category === 'PG' ? 'selected' : ''}>PG</option>
                                 <option value="Day Scholars" ${community.category === 'Day Scholars' ? 'selected' : ''}>Day Scholars</option>
+                                <option value="International" ${community.category === 'International' ? 'selected' : ''}>International</option>
                             </select>
                         </div>
 
@@ -529,25 +499,6 @@
                                     <option value="Medical Mess" ${community.mess === 'Medical Mess' ? 'selected' : ''}>Medical Mess</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1">Select Gym</label>
-                                <select id="swal-edit-gym" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
-                                    <option value="">Select Gym</option>
-                                    <option value="SIT Gym" ${community.gym === 'SIT Gym' ? 'selected' : ''}>SIT Gym</option>
-                                    <option value="Viola Gym" ${community.gym === 'Viola Gym' ? 'selected' : ''}>Viola Gym</option>
-                                    <option value="Medical Gym" ${community.gym === 'Medical Gym' ? 'selected' : ''}>Medical Gym</option>
-                                    <option value="Hill Top Gym" ${community.gym === 'Hill Top Gym' ? 'selected' : ''}>Hill Top Gym</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="swal-edit-origin-fields" style="display: none;">
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Origin</label>
-                            <select id="swal-edit-origin" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
-                                <option value="">Select Origin</option>
-                                <option value="National" ${community.origin === 'National' ? 'selected' : ''}>National</option>
-                                <option value="International" ${community.origin === 'International' ? 'selected' : ''}>International</option>
-                            </select>
                         </div>
 
                         <div>
@@ -575,21 +526,14 @@
                     const invite_link = document.getElementById('swal-edit-link')?.value;
                     const status = document.getElementById('swal-edit-status')?.value;
                     const mess = document.getElementById('swal-edit-mess')?.value || '';
-                    const gym = document.getElementById('swal-edit-gym')?.value || '';
-                    const origin = document.getElementById('swal-edit-origin')?.value || '';
 
                     if (!name || !category || !invite_link) {
                         Swal.showValidationMessage('Please fill in required fields');
                         return false;
                     }
 
-                    if (category === 'Hostel' && (!mess || !gym || !origin)) {
-                        Swal.showValidationMessage('Please select Mess, Gym and Origin for Hostel');
-                        return false;
-                    }
-
-                    if ((category === 'PG/Flats' || category === 'Day Scholars') && !origin) {
-                        Swal.showValidationMessage(`Please select Origin for ${category}`);
+                    if (category === 'Hostel' && !mess) {
+                        Swal.showValidationMessage('Please select Mess for Hostel');
                         return false;
                     }
 
@@ -609,7 +553,7 @@
                         return false;
                     }
 
-                    return { name, category, invite_link, status, mess, gym, origin };
+                    return { name, category, invite_link, status, mess };
                 }
             });
 

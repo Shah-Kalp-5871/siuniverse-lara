@@ -8,7 +8,7 @@
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <h1 class="text-4xl font-bold text-gray-800 mb-4">Discover Peers & Communities</h1>
-            <p class="text-gray-600 mb-8">Find students from your institute or explore campus-wide groups.</p>
+            <p class="text-gray-600 mb-8">Explore Students Across Campus.</p>
             
             <!-- Filters -->
             <div class="bg-white rounded-2xl shadow-xl p-10 mb-8 text-left">
@@ -18,7 +18,7 @@
                         <input type="text" id="searchInput" placeholder="Search by name..." class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 ring-primary/20 outline-none">
                     </div>
                     <div class="ml-4 flex bg-gray-100 p-1 rounded-lg">
-                        <button onclick="switchTab('peers')" id="tabPeers" class="px-4 py-1.5 rounded-md text-sm font-bold transition-all bg-white shadow-sm text-primary">Peers</button>
+                        <button onclick="switchTab('peers')" id="tabPeers" class="px-4 py-1.5 rounded-md text-sm font-bold transition-all bg-white shadow-sm text-primary">Explore</button>
                     </div>
                 </div>
                 
@@ -59,7 +59,7 @@
                             <option>2nd Year</option>
                             <option>3rd Year</option>
                             <option>4th Year</option>
-                            <option>5th Year</option>
+                            <!-- <option>5th Year</option> -->
                         </select>
                     </div>
                     <div>
@@ -158,7 +158,7 @@
                 <ul class="space-y-3 text-gray-600">
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                        <span>Search by community name (e.g., "Hostel", "PG", "Day Scholar")</span>
+                        <span>Search by community name (e.g., "Hostel", "PG", "Day Scholars", "International")</span>
                     </li>
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
