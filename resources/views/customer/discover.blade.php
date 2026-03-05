@@ -27,19 +27,19 @@
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Institute</label>
                         <select id="filterInst" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none">
                             <option value="">All Institutes</option>
-                            <option @if($institute == 'SIT') selected @endif>SAII</option>
-                            <option @if($institute == 'SCHS') selected @endif>SIMC</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SIBM</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SIDTM</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SIT</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SSBF</option>
+                            <option @if($institute == 'SAII') selected @endif>SAII</option>
+                            <option @if($institute == 'SIMC') selected @endif>SIMC</option>
+                            <option @if($institute == 'SIBM') selected @endif>SIBM</option>
+                            <option @if($institute == 'SIDTM') selected @endif>SIDTM</option>
+                            <option @if($institute == 'SIT') selected @endif>SIT</option>
+                            <option @if($institute == 'SSBF') selected @endif>SSBF</option>
                             <option @if($institute == 'SSVAP') selected @endif>SSVAP</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SSCANS</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SCON</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SCHS</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SSSS</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SIHS</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SMCW</option>
+                            <option @if($institute == 'SSCANS') selected @endif>SSCANS</option>
+                            <option @if($institute == 'SCON') selected @endif>SCON</option>
+                            <option @if($institute == 'SCHS') selected @endif>SCHS</option>
+                            <option @if($institute == 'SSSS') selected @endif>SSSS</option>
+                            <option @if($institute == 'SIHS') selected @endif>SIHS</option>
+                            <option @if($institute == 'SMCW') selected @endif>SMCW</option>
                         </select>
                     </div>
                     <div>
@@ -241,6 +241,55 @@
         document.getElementById('noResults').classList.toggle('hidden', visibleCount > 0);
     }
 
+    const instituteCourses = {
+        'SAII': ['BBA', 'BSC'],
+        'SIT': ['B.Tech CSE', 'B.Tech AIML', 'B.Tech Robotics', 'B.Tech Electronics', 'B.Tech Mechanical', 'B.Tech Civil'],
+        'SIMC': [],
+        'SIBM': [],
+        'SIDTM': [],
+        'SSBF': [],
+        'SSVAP': [],
+        'SSCANS': [],
+        'SCON': [],
+        'SCHS': [],
+        'SSSS': [],
+        'SIHS': [],
+        'SMCW': []
+    };
+
+    function updateCourseOptions() {
+        const inst = document.getElementById('filterInst').value;
+        const courseSelect = document.getElementById('filterCourse');
+        const currentCourse = courseSelect.value;
+        
+        // Clear current options except "All Courses"
+        courseSelect.innerHTML = '<option value="">All Courses</option>';
+        
+        if (inst && instituteCourses[inst]) {
+            instituteCourses[inst].forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                option.textContent = course;
+                if (course === currentCourse) option.selected = true;
+                courseSelect.appendChild(option);
+            });
+        } else if (!inst) {
+            // If No Institute is selected, show a default list or all possible courses
+            // For now, let's collect all unique courses from the mapping
+            const allCourses = new Set();
+            Object.values(instituteCourses).forEach(courses => {
+                courses.forEach(c => allCourses.add(c));
+            });
+            [...allCourses].sort().forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                option.textContent = course;
+                if (course === currentCourse) option.selected = true;
+                courseSelect.appendChild(option);
+            });
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchInput');
         const filterYear = document.getElementById('filterYear');
@@ -251,8 +300,18 @@
         if(searchInput) searchInput.addEventListener('input', filterResults);
         if(filterYear) filterYear.addEventListener('change', filterResults);
         if(filterAcc) filterAcc.addEventListener('change', filterResults);
-        if(filterInst) filterInst.addEventListener('change', filterResults);
+        
+        if(filterInst) {
+            filterInst.addEventListener('change', function() {
+                updateCourseOptions();
+                filterResults();
+            });
+        }
+        
         if(filterCourse) filterCourse.addEventListener('change', filterResults);
+
+        // Initial population of courses if an institute is pre-selected
+        updateCourseOptions();
 
         // Animate search box on load
         if(searchInput) {
