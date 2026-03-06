@@ -72,7 +72,7 @@
                             $colorClass = 'border-orange-500';
                             $bgColor = 'bg-orange-100';
                             $textColor = 'text-orange-600';
-                            $tag = strtoupper($student_campus) . ' MESS';
+                            $tag = strtoupper($community->mess);
                         } elseif ($community->gym) {
                             $icon = 'fas fa-dumbbell';
                             $colorClass = 'border-blue-500';

@@ -349,7 +349,7 @@
                     <div class="text-left space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Group Name</label>
-                            <input id="swal-name" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. SIT Hostel Community">
+                            <input id="swal-name" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. SIT Hostel Community">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Category</label>
@@ -412,8 +412,8 @@
                         return false;
                     }
 
-                    if (!/^[a-zA-Z\s]+$/.test(name)) {
-                        Swal.showValidationMessage('Group Name must contain only text');
+                    if (!/^[a-zA-Z ]+$/.test(name)) {
+                        Swal.showValidationMessage('Group Name must contain only text and spaces');
                         return false;
                     }
 
@@ -475,7 +475,7 @@
                     <div class="text-left space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Group Name</label>
-                            <input id="swal-edit-name" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${community.name}">
+                            <input id="swal-edit-name" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${community.name}">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Category</label>
@@ -537,8 +537,8 @@
                         return false;
                     }
 
-                    if (!/^[a-zA-Z\s]+$/.test(name)) {
-                        Swal.showValidationMessage('Group Name must contain only text');
+                    if (!/^[a-zA-Z ]+$/.test(name)) {
+                        Swal.showValidationMessage('Group Name must contain only text and spaces');
                         return false;
                     }
 
