@@ -28,18 +28,19 @@
                         <select id="filterInst" class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-sm focus:ring-2 ring-primary/20 outline-none">
                             <option value="">All Institutes</option>
                             <option @if($institute == 'SAII') selected @endif>SAII</option>
+                            <option @if($institute == 'SSVAP') selected @endif>SSVAP</option>
+                            <option @if($institute == 'SCHS') selected @endif>SCHS</option>
+                            <option @if($institute == 'SMCW') selected @endif>SMCW</option>
                             <option @if($institute == 'SIMC') selected @endif>SIMC</option>
                             <option @if($institute == 'SIBM') selected @endif>SIBM</option>
                             <option @if($institute == 'SIDTM') selected @endif>SIDTM</option>
-                            <option @if($institute == 'SIT') selected @endif>SIT</option>
                             <option @if($institute == 'SSBF') selected @endif>SSBF</option>
-                            <option @if($institute == 'SSVAP') selected @endif>SSVAP</option>
+                            <option @if($institute == 'SSBS') selected @endif>SSBS</option>
+                            <option @if($institute == 'SIT') selected @endif>SIT</option>
+                            <option @if($institute == 'SIHS') selected @endif>SIHS</option>
                             <option @if($institute == 'SSCANS') selected @endif>SSCANS</option>
                             <option @if($institute == 'SCON') selected @endif>SCON</option>
-                            <option @if($institute == 'SCHS') selected @endif>SCHS</option>
                             <option @if($institute == 'SSSS') selected @endif>SSSS</option>
-                            <option @if($institute == 'SIHS') selected @endif>SIHS</option>
-                            <option @if($institute == 'SMCW') selected @endif>SMCW</option>
                         </select>
                     </div>
                     <div>
@@ -242,19 +243,86 @@
     }
 
     const instituteCourses = {
-        'SAII': ['BBA', 'BSC'],
-        'SIT': ['B.Tech CSE', 'B.Tech AIML', 'B.Tech Robotics', 'B.Tech Electronics', 'B.Tech Mechanical', 'B.Tech Civil'],
-        'SIMC': [],
-        'SIBM': [],
-        'SIDTM': [],
-        'SSBF': [],
-        'SSVAP': [],
-        'SSCANS': [],
-        'SCON': [],
-        'SCHS': [],
-        'SSSS': [],
-        'SIHS': [],
-        'SMCW': []
+        'SAII': [
+            'BBA (Artificial Intelligence)',
+            'B.Sc (Artificial Intelligence) Honours/Honours with Research'
+        ],
+        'SSVAP': [
+            'BA (Visual Arts and Photography)'
+        ],
+        'SCHS': [
+            'B.Sc (Medical Technology)'
+        ],
+        'SMCW': [
+            'MBBS (Bachelor of Medicine, Bachelor of Surgery)'
+        ],
+        'SIMC': [
+            'MBA (Communication Management)',
+            'MA (Journalism and Media Industries)',
+            'MA (Film, Television and Digital Production)'
+        ],
+        'SIBM': [
+            'MBA',
+            'MBA (Innovation and Entrepreneurship)',
+            'MBA (Executive)'
+        ],
+        'SIDTM': [
+            'MBA (Digital and Telecom Management)'
+        ],
+        'SSBF': [
+            'MBA (Banking & Finance)',
+            'MBA (Banking & Finance) Dual Degree — Aston University, UK',
+            'MBA (Banking & Finance) Dual Degree — Macquarie University, Australia'
+        ],
+        'SSBS': [
+            'M.Sc (Biotechnology)',
+            'M.Sc (Biochemistry)',
+            'M.Sc (Biotechnology) Dual Degree Programme'
+        ],
+        'SIT': [
+            'B.Tech (Civil Engineering)',
+            'B.Tech (Computer Science and Engineering)',
+            'B.Tech (Electronics & Tele-Communication Engineering)',
+            'B.Tech (Mechanical Engineering)',
+            'B.Tech (Artificial Intelligence and Machine Learning)',
+            'B.Tech (Robotics and Automation)',
+            'B.Tech (Information Technology)',
+            'B.Tech (Robotics and Artificial Intelligence)',
+            'M.Tech (Geoinformatics)',
+            'M.Tech (Embedded Systems)',
+            'M.Tech (Robotics and Automation)',
+            'M.Tech (Artificial Intelligence and Machine Learning)',
+            'M.Tech (Engineering Design) Full Time',
+            'M.Tech (Engineering Design) Part Time',
+            'M.Tech (Automotive Technology)',
+            'M.Tech (Robotics and Artificial Intelligence)'
+        ],
+        'SIHS': [
+            'B.Sc (Behavioural Health Sciences) Honours/Honours with Research',
+            'B.Sc Paramedical Technology (Radiotherapy Technology) Honours/Honours with Research',
+            'B.Sc in Paramedical Technology Honours/Honours with Research',
+            'Master of Public Health (MPH)',
+            'M.Sc — Assisted Reproduction Technology & Embryology',
+            'M.Sc in Paramedical Technology',
+            'M.Sc (Behavioural Health Sciences)',
+            'MBA — Hospital & Healthcare Management'
+        ],
+        'SSCANS': [
+            'B.Sc (Culinary Arts)',
+            'B.Sc (Hospitality & Culinary Management)',
+            'M.Sc (Nutrition and Dietetics)',
+            'MBA (Food Technology and Food Enterprise Management)'
+        ],
+        'SCON': [
+            'B.Sc (Nursing)',
+            'M.Sc Nursing',
+            'Post Basic B.Sc Nursing',
+            'Nurse Practitioner in Critical Care (NPCCPGRP)'
+        ],
+        'SSSS': [
+            'B.Sc (Sports and Exercise Science)',
+            'MBA in Sports Management'
+        ]
     };
 
     function updateCourseOptions() {
