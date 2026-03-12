@@ -49,6 +49,6 @@ class DashboardController extends Controller
             ->sortByDesc('time')
             ->take(8);
 
-        return view('admin.dashboard', compact('totalStudents', 'totalGroups', 'totalStays', 'activities'));
+        return view('admin.dashboard-admin', compact('totalStudents', 'totalGroups', 'totalStays', 'activities'));
     }
 }
