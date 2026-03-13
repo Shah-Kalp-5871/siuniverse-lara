@@ -120,6 +120,17 @@
                                     </ul>
                                 </div>
                             @endif
+
+                            <!-- Book My Visit Button -->
+                            <div class="mt-6">
+                                <button onclick="bookVisit({{ json_encode($stay) }})" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center group">
+                                    <i class="fas fa-calendar-check mr-2 group-hover:scale-110 transition-transform"></i>
+                                    Book My Visit
+                                </button>
+                                <p class="text-[10px] text-gray-400 text-center mt-2 italic">
+                                    "Owner will contact you within 24 hours to confirm your visit."
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -242,6 +253,115 @@ document.addEventListener('DOMContentLoaded', function() {
             noResults.classList.remove('hidden');
         } else {
             noResults.classList.add('hidden');
+        }
+    }
+
+    window.bookVisit = async function(stay) {
+        const { value: formValues } = await Swal.fire({
+            title: 'Schedule a Visit',
+            html: `
+                <div class="text-left space-y-4">
+                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-4">
+                        <p class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-1">Property</p>
+                        <p class="text-sm font-bold text-slate-800">${stay.name}</p>
+                        <div class="mt-2">
+                            <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-0.5">Visiting Schedule</p>
+                            <p class="text-xs text-slate-600">${stay.visiting_schedule || 'Contact owner for schedule'}</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Your Name</label>
+                        <input id="swal-user-name" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Contact Number</label>
+                        <input id="swal-user-contact" type="text" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="10-digit mobile number">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Preferred Date</label>
+                            <input id="swal-visit-date" type="date" min="${new Date().toISOString().split('T')[0]}" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Preferred Time</label>
+                            <input id="swal-visit-time" type="time" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <div class="bg-amber-50 p-3 rounded-lg border border-amber-100 mt-4">
+                        <p class="text-xs text-amber-800 text-center font-medium">
+                            <i class="fas fa-info-circle mr-1"></i> Owner will contact you within 24 hours to confirm your visit.
+                        </p>
+                    </div>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm Visit Request',
+            confirmButtonColor: '#1e293b',
+            cancelButtonText: 'Cancel',
+            preConfirm: () => {
+                const name = document.getElementById('swal-user-name').value;
+                const contact = document.getElementById('swal-user-contact').value;
+                const date = document.getElementById('swal-visit-date').value;
+                const time = document.getElementById('swal-visit-time').value;
+
+                if (!name || !contact || !date || !time) {
+                    Swal.showValidationMessage('Please fill in all fields');
+                    return false;
+                }
+
+                if (!/^\d{10}$/.test(contact)) {
+                    Swal.showValidationMessage('Please enter a valid 10-digit contact number');
+                    return false;
+                }
+
+                return {
+                    stay_id: stay.id,
+                    user_name: name,
+                    user_contact_number: contact,
+                    visit_date: date,
+                    visit_time: time,
+                    visiting_schedule: stay.visiting_schedule || 'Not specified'
+                };
+            }
+        });
+
+        if (formValues) {
+            try {
+                Swal.fire({
+                    title: 'Submitting...',
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false
+                });
+
+                const response = await fetch("{{ route('inquiries.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formValues)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    Swal.fire({
+                        title: 'Request Sent!',
+                        text: result.message,
+                        icon: 'success',
+                        confirmButtonColor: '#1e293b'
+                    });
+                } else {
+                    Swal.fire('Error', result.message || 'Failed to submit request', 'error');
+                }
+            } catch (error) {
+                Swal.fire('Error', 'An unexpected error occurred', 'error');
+            }
         }
     }
 });

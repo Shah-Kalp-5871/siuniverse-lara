@@ -28,6 +28,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Onboarding Routes
 Route::get('/onboarding', [OnboardingController::class, 'index'])->name('onboarding');
 Route::post('/onboarding', [OnboardingController::class, 'process'])->name('onboarding.post');
+Route::post('/inquiries', [InquiryController::class, 'store'])->name('inquiries.store');
 
 // Dashboard & Profile
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -54,6 +55,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/communities/bulk-delete', [AdminCommunityController::class, 'bulkDestroy'])->name('communities.bulk-delete');
         Route::resource('communities', AdminCommunityController::class)->except(['create', 'edit', 'show']);
         Route::resource('stays', AdminContentController::class)->except(['create', 'edit', 'show']);
+        Route::resource('inquiries', \App\Http\Controllers\Admin\InquiryController::class)->only(['index', 'destroy']);
 
         // Settings
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');

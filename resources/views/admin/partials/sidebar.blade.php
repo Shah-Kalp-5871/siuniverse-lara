@@ -30,6 +30,11 @@
             <i class="fas fa-home w-5"></i>
             <span class="font-medium">Explore Stays</span>
         </a>
+
+        <a href="{{ route('admin.inquiries.index') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->routeIs('admin.inquiries.*') ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+            <i class="fas fa-envelope-open-text w-5"></i>
+            <span class="font-medium">Inquiry For Stays</span>
+        </a>
         <div class="pt-6 pb-2">
             <span class="px-4 text-[10px] text-slate-500 uppercase tracking-widest font-bold">System</span>
         </div>

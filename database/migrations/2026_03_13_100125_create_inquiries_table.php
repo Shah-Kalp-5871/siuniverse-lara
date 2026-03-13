@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('stay_id')->constrained()->onDelete('cascade');
             $table->string('user_name');
-            $table->string('contact_number');
+            $table->string('user_contact_number');
             $table->date('visit_date');
-            $table->time('visit_time');
-            $table->json('custom_data')->nullable();
+            $table->string('visit_time');
+            $table->string('visiting_schedule'); // Snapshot of schedule at time of inquiry
             $table->timestamps();
         });
     }

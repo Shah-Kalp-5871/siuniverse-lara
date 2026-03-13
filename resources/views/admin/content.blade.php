@@ -272,6 +272,10 @@
                         <input id="swal-link" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="https://...">
                     </div>
                     <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule (e.g. Mon–Sat 8am–8pm)</label>
+                        <input id="swal-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="Mon–Sat 8am–8pm, Sun 12pm–6pm">
+                    </div>
+                    <div>
                         <div class="flex items-center justify-between mb-1">
                             <label class="block text-xs font-bold text-slate-500">Amenities</label>
                             <button type="button" onclick="manageOptions('amenities')" class="text-[10px] text-blue-600 hover:text-blue-800 font-bold flex items-center">
@@ -365,6 +369,7 @@
                 formData.append('broker_name', brokerName);
                 formData.append('broker_number', brokerNumber);
                 formData.append('link', link);
+                formData.append('visiting_schedule', document.getElementById('swal-visiting-schedule').value);
                 
                 const amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
                 const rules = Array.from(document.querySelectorAll('input[name="rules"]:checked')).map(el => el.value);
@@ -449,6 +454,10 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">External Link (Optional)</label>
                         <input id="swal-edit-link" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.link || ''}">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
+                        <input id="swal-edit-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.visiting_schedule || ''}" placeholder="Mon–Sat 8am–8pm, Sun 12pm–6pm">
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-1">
@@ -545,6 +554,7 @@
                 formData.append('broker_name', brokerName);
                 formData.append('broker_number', brokerNumber);
                 formData.append('link', link);
+                formData.append('visiting_schedule', document.getElementById('swal-edit-visiting-schedule').value);
                 
                 const amenities = Array.from(document.querySelectorAll('input[name="edit-amenities"]:checked')).map(el => el.value);
                 const rules = Array.from(document.querySelectorAll('input[name="edit-rules"]:checked')).map(el => el.value);

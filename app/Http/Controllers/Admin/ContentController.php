@@ -32,6 +32,7 @@ class ContentController extends Controller
             'rules' => 'required|array',
             'amenities' => 'required|array',
             'distance' => 'required|numeric',
+            'visiting_schedule' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +79,7 @@ class ContentController extends Controller
             'rules' => 'required|array',
             'amenities' => 'required|array',
             'distance' => 'required|numeric',
+            'visiting_schedule' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {

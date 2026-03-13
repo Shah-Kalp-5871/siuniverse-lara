@@ -3,25 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Inquiry extends Model
 {
     protected $fillable = [
         'stay_id',
         'user_name',
-        'contact_number',
+        'user_contact_number',
         'visit_date',
         'visit_time',
-        'custom_data'
+        'visiting_schedule'
     ];
 
-    protected $casts = [
-        'visit_date' => 'date',
-        'custom_data' => 'array',
-    ];
-
-    public function stay(): BelongsTo
+    public function stay()
     {
         return $this->belongsTo(Stay::class);
     }
