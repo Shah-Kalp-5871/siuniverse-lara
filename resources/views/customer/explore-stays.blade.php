@@ -367,7 +367,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         confirmButtonColor: '#1e293b'
                     });
                 } else {
-                    Swal.fire('Error', result.message || 'Failed to submit request', 'error');
+                    let errorMessage = result.message || 'Failed to submit request';
+                    if (result.error) {
+                        errorMessage += "\n\nDetails: " + result.error;
+                    }
+                    if (result.errors) {
+                        // Validation errors
+                        errorMessage += "\n" + Object.values(result.errors).flat().join("\n");
+                    }
+                    Swal.fire('Error', errorMessage, 'error');
                 }
             } catch (error) {
                 console.error("Inquiry submission error:", error);
