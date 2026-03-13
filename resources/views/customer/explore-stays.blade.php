@@ -343,12 +343,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
                     body: JSON.stringify(formValues)
                 });
 
-                const result = await response.json();
+                let result;
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    result = await response.json();
+                } else {
+                    const errorText = await response.text();
+                    console.error("Non-JSON response received:", errorText);
+                    throw new Error("Server returned an invalid response. Please check the logs.");
+                }
+
                 if (result.success) {
                     Swal.fire({
                         title: 'Request Sent!',
@@ -360,7 +370,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire('Error', result.message || 'Failed to submit request', 'error');
                 }
             } catch (error) {
-                Swal.fire('Error', 'An unexpected error occurred', 'error');
+                console.error("Inquiry submission error:", error);
+                Swal.fire('Error', error.message || 'An unexpected error occurred', 'error');
             }
         }
     }

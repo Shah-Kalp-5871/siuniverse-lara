@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InquiryController extends Controller
 {
     public function store(Request $request)
     {
+        \Log::info('Inquiry submission attempt', $request->all());
         $request->validate([
             'stay_id' => 'required|exists:stays,id',
             'user_name' => 'required|string|max:255',
