@@ -88,16 +88,19 @@
                             </div>
                         </div>
 
-                        <!-- Distance Filter -->
-                        <div class="space-y-3 px-4 py-2 bg-white/5 rounded-[1.5rem] border border-white/10">
-                            <div class="flex justify-between items-center">
-                                <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">Max Distance</span>
-                                <span id="distanceValue" class="text-amber-400 font-extrabold text-xs tracking-tighter">15 km</span>
-                            </div>
-                            <input type="range" id="distanceFilter" min="0" max="15" step="0.5" value="15" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500">
-                            <div class="flex justify-between text-[8px] text-white/20 font-bold uppercase">
-                                <span>0 km</span>
-                                <span>15 km</span>
+                        <!-- Max Distance Dropdown -->
+                        <div class="space-y-2">
+                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Max Distance</span>
+                            <div class="relative">
+                                <select id="distanceDropdown" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
+                                    <option value="" class="bg-slate-900">Any Distance</option>
+                                    <option value="1" class="bg-slate-900">Under 1 km</option>
+                                    <option value="2" class="bg-slate-900">Under 2 km</option>
+                                    <option value="5" class="bg-slate-900">Under 5 km</option>
+                                    <option value="10" class="bg-slate-900">Under 10 km</option>
+                                    <option value="15" class="bg-slate-900">Under 15 km</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
                             </div>
                         </div>
 
@@ -189,8 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const genderBtns = document.querySelectorAll('.gender-btn');
     const typeBtns = document.querySelectorAll('.type-btn');
     const priceDropdown = document.getElementById('priceDropdown');
-    const distanceFilter = document.getElementById('distanceFilter');
-    const distanceValue = document.getElementById('distanceValue');
+    const distanceDropdown = document.getElementById('distanceDropdown');
     const staysListing = document.getElementById('staysListing');
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
@@ -247,10 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (except !== 'area') areaFilter.value = "";
         if (except !== 'gender') genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
         if (except !== 'price') priceDropdown.value = "";
-        if (except !== 'distance') {
-            distanceFilter.value = 15;
-            distanceValue.textContent = '15 km';
-        }
+        if (except !== 'distance') distanceDropdown.value = "";
     }
 
     // Type Filter (Outside) - Requirement says only 1 filter should apply overall
@@ -316,16 +315,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    distanceFilter.addEventListener('input', () => {
-        const val = parseFloat(distanceFilter.value);
-        distanceValue.textContent = val + ' km';
-        
-        clearTimeout(distanceTimeout);
-        distanceTimeout = setTimeout(() => {
+    distanceDropdown.addEventListener('change', () => {
+        if (distanceDropdown.value) {
             resetConsolidatedFilters('distance');
             typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-            updateListing({ max_distance: val });
-        }, 400);
+            updateListing({ max_distance: distanceDropdown.value });
+        } else {
+            updateListing({});
+        }
     });
 
     clearFiltersBtn.addEventListener('click', () => {
