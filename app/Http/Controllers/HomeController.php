@@ -89,28 +89,44 @@ class HomeController extends Controller
         $query = \App\Models\Stay::query();
         $areas = \App\Models\Stay::whereNotNull('area')->distinct()->pluck('area');
 
-        // Check for specific filters. Only one filter working at a time per requirement.
+        // Area filter (supports multiple)
         if ($request->filled('area')) {
-            $areas = is_array($request->area) ? $request->area : explode(',', $request->area);
-            $query->whereIn('area', $areas);
-        } elseif ($request->filled('max_rent')) {
+            $selectedAreas = is_array($request->area) ? $request->area : explode(',', $request->area);
+            $query->whereIn('area', $selectedAreas);
+        }
+
+        // Price filter
+        if ($request->filled('max_rent')) {
             $query->where(function($q) use ($request) {
                 $q->where('single_sharing_rent', '<=', $request->max_rent)
                   ->orWhere('double_sharing_rent', '<=', $request->max_rent)
                   ->orWhere('triple_sharing_rent', '<=', $request->max_rent);
             });
-        } elseif ($request->filled('gender')) {
-            $genders = is_array($request->gender) ? $request->gender : explode(',', $request->gender);
-            $query->whereIn('gender', $genders);
-        } elseif ($request->filled('type')) {
-            $query->where('type', $request->type);
-        } elseif ($request->filled('max_distance')) {
+        }
+
+        // Gender filter (supports multiple)
+        if ($request->filled('gender')) {
+            $selectedGenders = is_array($request->gender) ? $request->gender : explode(',', $request->gender);
+            $query->whereIn('gender', $selectedGenders);
+        }
+
+        // Type filter (supports multiple)
+        if ($request->filled('type')) {
+            $selectedTypes = is_array($request->type) ? $request->type : explode(',', $request->type);
+            $query->whereIn('type', $selectedTypes);
+        }
+
+        // Distance filter
+        if ($request->filled('max_distance')) {
             $query->where('distance', '<=', $request->max_distance);
-        } elseif ($request->filled('luxury')) {
+        }
+
+        // Luxury filter - Keep it special, it might override default sort
+        if ($request->boolean('luxury')) {
             $query->where('is_luxury', true)->orderBy('luxury_order', 'asc');
         } else {
-            // Default view: Standard (Non-Luxury) PGs
-            $query->where('is_luxury', false)->orderBy('created_at', 'desc');
+            // Apply a default ordering if not luxury
+            $query->orderBy('created_at', 'desc');
         }
 
         $stays = $query->get();

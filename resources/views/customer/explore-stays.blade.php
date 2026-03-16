@@ -70,20 +70,19 @@
                             </div>
                         </div>
 
-                        <!-- Max Budget Dropdown -->
-                        <div class="space-y-2">
-                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Max Budget</span>
-                            <div class="relative">
-                                <select id="priceDropdown" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
-                                    <option value="" class="bg-slate-900">Any Budget</option>
-                                    <option value="5000" class="bg-slate-900">Under ₹5,000</option>
-                                    <option value="10000" class="bg-slate-900">Under ₹10,000</option>
-                                    <option value="15000" class="bg-slate-900">Under ₹15,000</option>
-                                    <option value="20000" class="bg-slate-900">Under ₹20,000</option>
-                                    <option value="30000" class="bg-slate-900">Under ₹30,000</option>
-                                    <option value="50000" class="bg-slate-900">Under ₹50,000</option>
-                                </select>
-                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
+                        <!-- Max Budget Slider -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center px-4">
+                                <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">Max Budget</span>
+                                <span id="priceDisplay" class="text-amber-400 text-[10px] font-black">Any Budget</span>
+                            </div>
+                            <div class="px-4 pb-2">
+                                <input type="range" id="priceSlider" min="0" max="50000" step="500" value="50000" 
+                                    class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500 hover:bg-white/20 transition-colors">
+                                <div class="flex justify-between mt-2 text-[8px] text-white/20 font-black uppercase tracking-widest">
+                                    <span>₹0</span>
+                                    <span>₹50,000+</span>
+                                </div>
                             </div>
                         </div>
 
@@ -177,6 +176,25 @@
         z-index: 10;
         border-radius: 1rem;
     }
+
+    /* Range Slider Styling */
+    input[type='range']::-webkit-slider-runnable-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        height: 6px;
+    }
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        margin-top: -5px;
+        background-color: #f59e0b;
+        border-radius: 9999px;
+        height: 16px;
+        width: 16px;
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        border: 2px solid white;
+        cursor: pointer;
+    }
 </style>
 @endpush
 
@@ -190,13 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const areaFilter = document.getElementById('areaFilter');
     const genderBtns = document.querySelectorAll('.gender-btn');
     const typeBtns = document.querySelectorAll('.type-btn');
-    const priceDropdown = document.getElementById('priceDropdown');
+    const priceSlider = document.getElementById('priceSlider');
+    const priceDisplay = document.getElementById('priceDisplay');
     const distanceDropdown = document.getElementById('distanceDropdown');
     const staysListing = document.getElementById('staysListing');
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
-    let priceTimeout;
-    let distanceTimeout;
+    let debounceTimer;
 
     // Toggle Filter Panel
     filterToggleBtn.addEventListener('click', (e) => {
@@ -213,20 +231,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function updateListing(params) {
+    function getActiveFilters() {
+        const params = {};
+        
+        // Luxury
+        if (luxuryBtn.classList.contains('active')) {
+            params.luxury = 1;
+        }
+
+        // Area
+        if (areaFilter.value) {
+            params.area = areaFilter.value;
+        }
+
+        // Gender (Multiple supported by UI toggles)
+        const selectedGenders = Array.from(genderBtns)
+            .filter(btn => btn.classList.contains('active'))
+            .map(btn => btn.dataset.gender);
+        if (selectedGenders.length > 0) {
+            params.gender = selectedGenders.join(',');
+        }
+
+        // Type (Multiple supported by UI toggles)
+        const selectedTypes = Array.from(typeBtns)
+            .filter(btn => btn.classList.contains('active'))
+            .map(btn => btn.dataset.type);
+        if (selectedTypes.length > 0) {
+            params.type = selectedTypes.join(',');
+        }
+
+        // Max Rent (Only if slider is not at max)
+        if (parseInt(priceSlider.value) < 50000) {
+            params.max_rent = priceSlider.value;
+        }
+
+        // Distance
+        if (distanceDropdown.value) {
+            params.max_distance = distanceDropdown.value;
+        }
+
+        return params;
+    }
+
+    function updateListing() {
         staysListing.classList.add('loading-overlay');
         
+        const params = getActiveFilters();
         const url = new URL(window.location.href);
-        // Clear existing relevant search params
+        
+        // Clear all filter params first
         ['luxury', 'area', 'gender', 'type', 'max_rent', 'max_distance'].forEach(p => url.searchParams.delete(p));
         
-        // Add new params
+        // Add active params
         Object.keys(params).forEach(key => url.searchParams.set(key, params[key]));
         
         fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => response.text())
         .then(html => {
@@ -240,94 +300,74 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function resetConsolidatedFilters(except) {
-        if (except !== 'luxury') {
-            luxuryBtn.classList.remove('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
-            luxuryBtn.classList.add('bg-white/5', 'text-white/40');
-        }
-        if (except !== 'area') areaFilter.value = "";
-        if (except !== 'gender') genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-        if (except !== 'price') priceDropdown.value = "";
-        if (except !== 'distance') distanceDropdown.value = "";
-    }
-
-    // Type Filter (Outside) - Requirement says only 1 filter should apply overall
+    // Type Filter (Multi-select)
     typeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            if (btn.classList.contains('active')) {
-                btn.classList.remove('active', 'text-amber-400', 'bg-white/10');
-                updateListing({});
-            } else {
-                typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-                resetConsolidatedFilters();
-                btn.classList.add('active', 'text-amber-400', 'bg-white/10');
-                updateListing({ type: btn.dataset.type });
-            }
+            btn.classList.toggle('active');
+            btn.classList.toggle('text-amber-400');
+            btn.classList.toggle('bg-white/10');
+            updateListing();
         });
     });
 
-    // Consolidated Filters
+    // Luxury Filter (Additive)
     luxuryBtn.addEventListener('click', () => {
+        luxuryBtn.classList.toggle('active');
         if (luxuryBtn.classList.contains('active')) {
-            resetConsolidatedFilters();
-            updateListing({});
-        } else {
-            resetConsolidatedFilters('luxury');
-            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-            luxuryBtn.classList.add('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
+            luxuryBtn.classList.add('bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
             luxuryBtn.classList.remove('bg-white/5', 'text-white/40');
-            updateListing({ luxury: 1 });
-        }
-    });
-
-    areaFilter.addEventListener('change', () => {
-        if (areaFilter.value) {
-            resetConsolidatedFilters('area');
-            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-            updateListing({ area: areaFilter.value });
         } else {
-            updateListing({});
+            luxuryBtn.classList.remove('bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
+            luxuryBtn.classList.add('bg-white/5', 'text-white/40');
         }
+        updateListing();
     });
 
+    // Area Filter
+    areaFilter.addEventListener('change', updateListing);
+
+    // Gender Filter (Multi-select)
     genderBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            if (btn.classList.contains('active')) {
-                resetConsolidatedFilters();
-                updateListing({});
-            } else {
-                resetConsolidatedFilters('gender');
-                typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-                btn.classList.add('active', 'text-amber-400', 'bg-white/10');
-                updateListing({ gender: btn.dataset.gender });
-            }
+            btn.classList.toggle('active');
+            btn.classList.toggle('text-amber-400');
+            btn.classList.toggle('bg-white/10');
+            updateListing();
         });
     });
 
-    priceDropdown.addEventListener('change', () => {
-        if (priceDropdown.value) {
-            resetConsolidatedFilters('price');
-            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-            updateListing({ max_rent: priceDropdown.value });
+    // Price Slider
+    priceSlider.addEventListener('input', () => {
+        const val = parseInt(priceSlider.value);
+        if (val >= 50000) {
+            priceDisplay.textContent = 'Any Budget';
         } else {
-            updateListing({});
+            priceDisplay.textContent = `Under ₹${val.toLocaleString()}`;
         }
+        
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updateListing, 500);
     });
 
-    distanceDropdown.addEventListener('change', () => {
-        if (distanceDropdown.value) {
-            resetConsolidatedFilters('distance');
-            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-            updateListing({ max_distance: distanceDropdown.value });
-        } else {
-            updateListing({});
-        }
-    });
+    // Distance Filter
+    distanceDropdown.addEventListener('change', updateListing);
 
+    // Clear All
     clearFiltersBtn.addEventListener('click', () => {
-        resetConsolidatedFilters();
-        typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-        updateListing({});
+        // Reset all buttons
+        typeBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+        genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+        
+        luxuryBtn.classList.remove('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
+        luxuryBtn.classList.add('bg-white/5', 'text-white/40');
+        
+        areaFilter.value = "";
+        distanceDropdown.value = "";
+        
+        priceSlider.value = 50000;
+        priceDisplay.textContent = 'Any Budget';
+        
+        updateListing();
         filterPanel.classList.add('hidden');
         filterChevron.classList.remove('rotate-180');
     });

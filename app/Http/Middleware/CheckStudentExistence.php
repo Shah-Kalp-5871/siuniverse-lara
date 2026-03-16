@@ -15,8 +15,8 @@ class CheckStudentExistence
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Don't check for admin routes (starting with admin/)
-        if ($request->is('admin') || $request->is('admin/*')) {
+        // Don't check for admin routes or onboarding routes
+        if ($request->is('admin') || $request->is('admin/*') || $request->is('onboarding') || $request->is('onboarding/*')) {
             return $next($request);
         }
 
