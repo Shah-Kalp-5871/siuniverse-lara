@@ -78,10 +78,40 @@ class HomeController extends Controller
         return view('customer.discover', compact('students', 'institute', 'course'));
     }
 
-    public function exploreStays()
+    public function exploreStays(Request $request)
     {
-        $stays = \App\Models\Stay::latest()->get();
-        return view('customer.explore-stays', compact('stays'));
+        $query = \App\Models\Stay::query();
+        $areas = \App\Models\Stay::whereNotNull('area')->distinct()->pluck('area');
+
+        // Check for specific filters. Only one filter working at a time per requirement.
+        if ($request->filled('area')) {
+            $areas = is_array($request->area) ? $request->area : explode(',', $request->area);
+            $query->whereIn('area', $areas);
+        } elseif ($request->filled('max_rent')) {
+            $query->where(function($q) use ($request) {
+                $q->where('single_sharing_rent', '<=', $request->max_rent)
+                  ->orWhere('double_sharing_rent', '<=', $request->max_rent)
+                  ->orWhere('triple_sharing_rent', '<=', $request->max_rent);
+            });
+        } elseif ($request->filled('gender')) {
+            $genders = is_array($request->gender) ? $request->gender : explode(',', $request->gender);
+            $query->whereIn('gender', $genders);
+        } elseif ($request->filled('type')) {
+            $query->where('type', $request->type);
+        } elseif ($request->filled('luxury')) {
+            $query->where('is_luxury', true)->orderBy('luxury_order', 'asc');
+        } else {
+            // Default view: Standard (Non-Luxury) PGs
+            $query->where('is_luxury', false)->orderBy('created_at', 'desc');
+        }
+
+        $stays = $query->get();
+
+        if ($request->ajax()) {
+            return view('customer.partials.stay-listings', compact('stays'))->render();
+        }
+
+        return view('customer.explore-stays', compact('stays', 'areas'));
     }
 
     public function communities()

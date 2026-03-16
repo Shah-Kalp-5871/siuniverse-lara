@@ -66,12 +66,12 @@
                     <span class="text-xs font-bold text-slate-600">Type</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                    <input type="checkbox" checked data-column="broker_name" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                    <span class="text-xs font-bold text-slate-600">Broker</span>
+                    <input type="checkbox" checked data-column="sharing_prices" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-xs font-bold text-slate-600">Sharing Prices</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
-                    <input type="checkbox" checked data-column="rent" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                    <span class="text-xs font-bold text-slate-600">Rent</span>
+                    <input type="checkbox" checked data-column="deposit" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-xs font-bold text-slate-600">Deposit</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="distance" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
@@ -143,30 +143,83 @@
                     width: 100
                 },
                 {
-                    title: "Broker", 
-                    field: "broker_name",
+                    title: "Status", 
+                    field: "is_luxury",
+                    formatter: function(cell) {
+                        if (cell.getValue()) {
+                            return `<span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100 uppercase flex items-center gap-1"><i class="fas fa-crown text-[8px]"></i> Luxury</span>`;
+                        }
+                        return `<span class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100 uppercase">Standard</span>`;
+                    },
+                    width: 100
+                },
+                {
+                    title: "Area", 
+                    field: "area",
+                    formatter: function(cell) {
+                        return `<span class="text-xs text-slate-600 font-medium">${cell.getValue() || "N/A"}</span>`;
+                    },
+                    width: 120
+                },
+                {
+                    title: "Gender", 
+                    field: "gender",
+                    formatter: function(cell) {
+                        const val = cell.getValue();
+                        let color = "slate";
+                        if(val === 'Boys') color = "blue";
+                        if(val === 'Girls') color = "purple";
+                        if(val === 'Co-living') color = "green";
+                        return `<span class="text-[10px] font-bold text-${color}-600 bg-${color}-50 px-2.5 py-1 rounded-md border border-${color}-200 uppercase">${val || "Co-living"}</span>`;
+                    },
+                    width: 100
+                },
+                {
+                    title: "Sharing Prices", 
+                    field: "sharing_prices",
+                    headerSort: false,
                     formatter: function(cell) {
                         const data = cell.getData();
                         return `
-                            <div class="py-1">
-                                <p class="text-xs font-semibold text-slate-700">${data.broker_name}</p>
-                                <p class="text-[10px] text-slate-400 font-bold">${data.broker_number}</p>
-                            </div>
-                        `;
-                    }
-                },
-                {
-                    title: "Rent", 
-                    field: "rent",
-                    formatter: function(cell) {
-                        return `
-                            <div class="flex items-center text-xs text-slate-600 font-semibold px-2">
-                                <i class="fas fa-tag mr-1.5 text-[10px] text-slate-400"></i>
-                                ₹${new Intl.NumberFormat().format(cell.getValue())}/mo
+                            <div class="py-1 space-y-1">
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-[9px] text-slate-400 font-bold uppercase">Single</span>
+                                    <span class="text-[10px] font-bold text-slate-700">₹${data.single_sharing_rent || '—'}</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-[9px] text-slate-400 font-bold uppercase">Double</span>
+                                    <span class="text-[10px] font-bold text-slate-700">₹${data.double_sharing_rent || '—'}</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-[9px] text-slate-400 font-bold uppercase">Triple</span>
+                                    <span class="text-[10px] font-bold text-slate-700">₹${data.triple_sharing_rent || '—'}</span>
+                                </div>
+                                ${data.food_type !== 'None' ? `
+                                <div class="pt-1 mt-1 border-t border-slate-100">
+                                    <p class="text-[9px] font-bold text-blue-500 uppercase">${data.food_type}</p>
+                                    <div class="flex justify-between text-[8px] text-slate-500 font-bold">
+                                        <span>WD: ₹${data.weekday_meals_price || 0}</span>
+                                        <span>WE: ₹${data.weekend_meals_price || 0}</span>
+                                    </div>
+                                </div>
+                                ` : ''}
                             </div>
                         `;
                     },
-                    width: 140
+                    width: 150
+                },
+                {
+                    title: "Deposit", 
+                    field: "deposit",
+                    formatter: function(cell) {
+                        return `
+                            <div class="flex items-center text-xs text-slate-600 font-semibold px-2">
+                                <i class="fas fa-wallet mr-1.5 text-[10px] text-slate-400"></i>
+                                ₹${new Intl.NumberFormat().format(cell.getValue())}
+                            </div>
+                        `;
+                    },
+                    width: 120
                 },
                 {
                     title: "Distance", 
@@ -249,8 +302,8 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Rent Amount (₹)</label>
-                            <input id="swal-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. 8500">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit (₹)</label>
+                            <input id="swal-deposit" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. 8500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Distance (Km)</label>
@@ -259,21 +312,71 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Broker Name</label>
-                            <input id="swal-broker-name" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="Full name">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Single Sharing Rent (Optional)</label>
+                            <input id="swal-single-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Contact Number</label>
-                            <input id="swal-broker-number" type="text" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="+91 00000 00000">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Double Sharing Rent (Required)</label>
+                            <input id="swal-double-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">External Link (Optional)</label>
-                        <input id="swal-link" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="https://...">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Triple Sharing Rent (Optional)</label>
+                            <input id="swal-triple-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
+                            <input id="swal-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. Mon–Sat 8am–8pm">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule (e.g. Mon–Sat 8am–8pm)</label>
-                        <input id="swal-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="Mon–Sat 8am–8pm, Sun 12pm–6pm">
+
+                    <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-blue-700 mb-2">Food / Tiffin Service</label>
+                            <select id="swal-food-type" onchange="toggleFoodPrices()" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                                <option value="None">None</option>
+                                <option value="Food Service">Food Service (Provided by PG)</option>
+                                <option value="Tiffin Service">Tiffin Service (Arranged by PG)</option>
+                            </select>
+                        </div>
+                        <div id="food-prices-container" class="grid grid-cols-2 gap-4 hidden">
+                            <div>
+                                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekday (2 Meals) Monthly Price</label>
+                                <input id="swal-weekday-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekend (3 Meals) Monthly Price</label>
+                                <input id="swal-weekend-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Area / Location</label>
+                            <input id="swal-area" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. Baner">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Gender Type</label>
+                            <select id="swal-gender" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
+                                <option value="Co-living">Co-living</option>
+                                <option value="Boys">Boys Only</option>
+                                <option value="Girls">Girls Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-bold text-amber-700">Luxury Curated</label>
+                            <p class="text-[10px] text-amber-600">Show in the "Luxury" section on Explore Stays</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <input id="swal-is-luxury" type="checkbox" class="w-5 h-5 rounded border-amber-300 text-amber-600 focus:ring-amber-500">
+                            <div class="w-20">
+                                <label class="block text-[8px] font-bold text-amber-600 uppercase">Order</label>
+                                <input id="swal-luxury-order" type="number" class="w-full px-2 py-1 text-xs rounded border border-amber-200 focus:outline-none" placeholder="1">
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-1">
@@ -282,7 +385,7 @@
                                 <i class="fas fa-cog mr-1"></i> Manage
                             </button>
                         </div>
-                        <div id="amenities-container" class="grid grid-cols-4 gap-2">
+                        <div id="add-amenities-container" class="grid grid-cols-4 gap-2">
                             ${currentAmenities.map(opt => `
                                 <label class="flex items-center text-[10px] text-slate-600">
                                     <input type="checkbox" name="amenities" value="${opt}" class="mr-1"> ${opt}
@@ -297,7 +400,7 @@
                                 <i class="fas fa-cog mr-1"></i> Manage
                             </button>
                         </div>
-                        <div id="rules-container" class="grid grid-cols-3 gap-2">
+                        <div id="add-rules-container" class="grid grid-cols-3 gap-2">
                             ${currentRules.map(opt => `
                                 <label class="flex items-center text-[10px] text-slate-600">
                                     <input type="checkbox" name="rules" value="${opt}" class="mr-1"> ${opt}
@@ -316,63 +419,47 @@
             confirmButtonText: 'List Property',
             preConfirm: () => {
                 const name = document.getElementById('swal-name').value;
-                const rent = document.getElementById('swal-rent').value;
+                const deposit = document.getElementById('swal-deposit').value;
                 const distance = document.getElementById('swal-distance').value;
-                const brokerName = document.getElementById('swal-broker-name').value;
-                const brokerNumber = document.getElementById('swal-broker-number').value;
-                const link = document.getElementById('swal-link').value;
+                const singleSharing = document.getElementById('swal-single-rent').value;
+                const doubleSharing = document.getElementById('swal-double-rent').value;
+                const tripleSharing = document.getElementById('swal-triple-rent').value;
+                const foodType = document.getElementById('swal-food-type').value;
+                const weekdayPrice = document.getElementById('swal-weekday-price').value;
+                const weekendPrice = document.getElementById('swal-weekend-price').value;
+                const isLuxury = document.getElementById('swal-is-luxury').checked;
+                const luxuryOrder = document.getElementById('swal-luxury-order').value;
+                const area = document.getElementById('swal-area').value;
+                const gender = document.getElementById('swal-gender').value;
 
                 // Validation
-                if (!name || !rent) {
-                    Swal.showValidationMessage('Name and Rent are required');
+                if (!name || !deposit || !doubleSharing) {
+                    Swal.showValidationMessage('Name, Deposit and Double Sharing Rent are required');
                     return false;
-                }
-
-                if (!/^\d+$/.test(rent)) {
-                    Swal.showValidationMessage('Rent Amount must contain only numbers');
-                    return false;
-                }
-
-                if (distance && isNaN(distance)) { // Distance is number check
-                     Swal.showValidationMessage('Distance must be a valid number');
-                     return false;
-                }
-                
-                if (brokerName && !/^[a-zA-Z\s]+$/.test(brokerName)) {
-                    Swal.showValidationMessage('Broker Name must contain only text (no numbers or special characters)');
-                    return false;
-                }
-
-                if (brokerNumber && !/^\d{10}$/.test(brokerNumber)) {
-                    Swal.showValidationMessage('Contact Number must be exactly 10 digits (0-9)');
-                    return false;
-                }
-
-                if (link) {
-                    try {
-                        const url = new URL(link);
-                        if (url.protocol !== 'https:') {
-                            Swal.showValidationMessage('External Link must start with https://');
-                            return false;
-                        }
-                    } catch (_) {
-                        Swal.showValidationMessage('External Link must be a valid URL');
-                        return false;
-                    }
                 }
 
                 const formData = new FormData();
                 formData.append('name', name);
                 formData.append('type', document.getElementById('swal-type').value);
-                formData.append('rent', rent);
+                formData.append('deposit', deposit);
                 formData.append('distance', distance);
-                formData.append('broker_name', brokerName);
-                formData.append('broker_number', brokerNumber);
-                formData.append('link', link);
+                formData.append('single_sharing_rent', singleSharing);
+                formData.append('double_sharing_rent', doubleSharing);
+                formData.append('triple_sharing_rent', tripleSharing);
+                formData.append('food_type', foodType);
+                formData.append('weekday_meals_price', weekdayPrice);
+                formData.append('weekend_meals_price', weekendPrice);
                 formData.append('visiting_schedule', document.getElementById('swal-visiting-schedule').value);
+                formData.append('area', area);
+                formData.append('gender', gender);
+                if (isLuxury) {
+                    formData.append('is_luxury', '1');
+                    formData.append('luxury_order', luxuryOrder);
+                }                
                 
-                const amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
-                const rules = Array.from(document.querySelectorAll('input[name="rules"]:checked')).map(el => el.value);
+                const modal = Swal.getHtmlContainer();
+                const amenities = Array.from(modal.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
+                const rules = Array.from(modal.querySelectorAll('input[name="rules"]:checked')).map(el => el.value);
                 
                 amenities.forEach(a => formData.append('amenities[]', a));
                 rules.forEach(r => formData.append('rules[]', r));
@@ -404,7 +491,19 @@
                 if (result.success) {
                     Swal.fire('Listed!', result.message, 'success').then(() => window.location.reload());
                 } else {
-                    Swal.fire('Error', result.message || 'Failed to list property', 'error');
+                    let errorMessage = result.message || 'Failed to list property';
+                    if (result.errors) {
+                        errorMessage += '<br><ul class="text-left text-xs mt-2 list-disc list-inside">';
+                        Object.values(result.errors).flat().forEach(err => {
+                            errorMessage += `<li>${err}</li>`;
+                        });
+                        errorMessage += '</ul>';
+                    }
+                    Swal.fire({
+                        title: 'Error',
+                        html: errorMessage,
+                        icon: 'error'
+                    });
                 }
             } catch (error) {
                 Swal.fire('Error', 'An unexpected error occurred', 'error');
@@ -433,8 +532,8 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Rent Amount (₹)</label>
-                            <input id="swal-edit-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.rent}">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit (₹)</label>
+                            <input id="swal-edit-deposit" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.deposit}">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Distance (Km)</label>
@@ -443,21 +542,71 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Broker Name</label>
-                            <input id="swal-edit-broker-name" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.broker_name}">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Single Sharing Rent (Optional)</label>
+                            <input id="swal-edit-single-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.single_sharing_rent || ''}">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Contact Number</label>
-                            <input id="swal-edit-broker-number" type="text" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.broker_number}">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Double Sharing Rent (Required)</label>
+                            <input id="swal-edit-double-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.double_sharing_rent}">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">External Link (Optional)</label>
-                        <input id="swal-edit-link" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.link || ''}">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Triple Sharing Rent (Optional)</label>
+                            <input id="swal-edit-triple-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.triple_sharing_rent || ''}">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
+                            <input id="swal-edit-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.visiting_schedule || ''}" placeholder="e.g. Mon–Sat 8am–8pm">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
-                        <input id="swal-edit-visiting-schedule" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.visiting_schedule || ''}" placeholder="Mon–Sat 8am–8pm, Sun 12pm–6pm">
+
+                    <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-blue-700 mb-2">Food / Tiffin Service</label>
+                            <select id="swal-edit-food-type" onchange="toggleFoodPrices('edit')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                                <option value="None" ${stay.food_type === 'None' ? 'selected' : ''}>None</option>
+                                <option value="Food Service" ${stay.food_type === 'Food Service' ? 'selected' : ''}>Food Service (Provided by PG)</option>
+                                <option value="Tiffin Service" ${stay.food_type === 'Tiffin Service' ? 'selected' : ''}>Tiffin Service (Arranged by PG)</option>
+                            </select>
+                        </div>
+                        <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${stay.food_type === 'None' ? 'hidden' : ''}">
+                            <div>
+                                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekday (2 Meals)</label>
+                                <input id="swal-edit-weekday-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekday_meals_price || ''}" placeholder="Price ₹">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekend (3 Meals)</label>
+                                <input id="swal-edit-weekend-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekend_meals_price || ''}" placeholder="Price ₹">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Area / Location</label>
+                            <input id="swal-edit-area" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.area || ''}" placeholder="e.g. Baner">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Gender Type</label>
+                            <select id="swal-edit-gender" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none bg-white">
+                                <option value="Co-living" ${stay.gender === 'Co-living' ? 'selected' : ''}>Co-living</option>
+                                <option value="Boys" ${stay.gender === 'Boys' ? 'selected' : ''}>Boys Only</option>
+                                <option value="Girls" ${stay.gender === 'Girls' ? 'selected' : ''}>Girls Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-bold text-amber-700">Luxury Curated</label>
+                            <p class="text-[10px] text-amber-600">Show in the "Luxury" section on Explore Stays</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <input id="swal-edit-is-luxury" type="checkbox" ${stay.is_luxury ? 'checked' : ''} class="w-5 h-5 rounded border-amber-300 text-amber-600 focus:ring-amber-500">
+                            <div class="w-20">
+                                <label class="block text-[8px] font-bold text-amber-600 uppercase">Order</label>
+                                <input id="swal-edit-luxury-order" type="number" class="w-full px-2 py-1 text-xs rounded border border-amber-200 focus:outline-none" value="${stay.luxury_order || ''}" placeholder="1">
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-1">
@@ -466,7 +615,7 @@
                                 <i class="fas fa-cog mr-1"></i> Manage
                             </button>
                         </div>
-                        <div id="amenities-container" class="grid grid-cols-4 gap-2">
+                        <div id="edit-amenities-container" class="grid grid-cols-4 gap-2">
                             ${currentAmenities.map(opt => `
                                 <label class="flex items-center text-[10px] text-slate-600">
                                     <input type="checkbox" name="edit-amenities" value="${opt}" ${stay.amenities && stay.amenities.includes(opt) ? 'checked' : ''} class="mr-1"> ${opt}
@@ -481,7 +630,7 @@
                                 <i class="fas fa-cog mr-1"></i> Manage
                             </button>
                         </div>
-                        <div id="rules-container" class="grid grid-cols-3 gap-2">
+                        <div id="edit-rules-container" class="grid grid-cols-3 gap-2">
                             ${currentRules.map(opt => `
                                 <label class="flex items-center text-[10px] text-slate-600">
                                     <input type="checkbox" name="edit-rules" value="${opt}" ${stay.rules && stay.rules.includes(opt) ? 'checked' : ''} class="mr-1"> ${opt}
@@ -500,64 +649,48 @@
             confirmButtonText: 'Update Details',
             preConfirm: () => {
                 const name = document.getElementById('swal-edit-name').value;
-                const rent = document.getElementById('swal-edit-rent').value;
+                const deposit = document.getElementById('swal-edit-deposit').value;
                 const distance = document.getElementById('swal-edit-distance').value;
-                const brokerName = document.getElementById('swal-edit-broker-name').value;
-                const brokerNumber = document.getElementById('swal-edit-broker-number').value;
-                const link = document.getElementById('swal-edit-link').value;
+                const singleSharing = document.getElementById('swal-edit-single-rent').value;
+                const doubleSharing = document.getElementById('swal-edit-double-rent').value;
+                const tripleSharing = document.getElementById('swal-edit-triple-rent').value;
+                const foodType = document.getElementById('swal-edit-food-type').value;
+                const weekdayPrice = document.getElementById('swal-edit-weekday-price').value;
+                const weekendPrice = document.getElementById('swal-edit-weekend-price').value;
+                const isLuxury = document.getElementById('swal-edit-is-luxury').checked;
+                const luxuryOrder = document.getElementById('swal-edit-luxury-order').value;
+                const area = document.getElementById('swal-edit-area').value;
+                const gender = document.getElementById('swal-edit-gender').value;
 
                 // Validation
-                if (!name || !rent) {
-                    Swal.showValidationMessage('Name and Rent are required');
+                if (!name || !deposit || !doubleSharing) {
+                    Swal.showValidationMessage('Name, Deposit and Double Sharing Rent are required');
                     return false;
-                }
-
-                if (!/^\d+$/.test(rent)) {
-                    Swal.showValidationMessage('Rent Amount must contain only numbers');
-                    return false;
-                }
-
-                if (distance && isNaN(distance)) {
-                     Swal.showValidationMessage('Distance must be a valid number');
-                     return false;
-                }
-                
-                if (brokerName && !/^[a-zA-Z\s]+$/.test(brokerName)) {
-                    Swal.showValidationMessage('Broker Name must contain only text (no numbers or special characters)');
-                    return false;
-                }
-
-                if (brokerNumber && !/^\d{10}$/.test(brokerNumber)) {
-                    Swal.showValidationMessage('Contact Number must be exactly 10 digits (0-9)');
-                    return false;
-                }
-
-                if (link) {
-                    try {
-                        const url = new URL(link);
-                        if (url.protocol !== 'https:') {
-                            Swal.showValidationMessage('External Link must start with https://');
-                            return false;
-                        }
-                    } catch (_) {
-                        Swal.showValidationMessage('External Link must be a valid URL');
-                        return false;
-                    }
                 }
 
                 const formData = new FormData();
                 formData.append('_method', 'PUT');
                 formData.append('name', name);
                 formData.append('type', document.getElementById('swal-edit-type').value);
-                formData.append('rent', rent);
+                formData.append('deposit', deposit);
                 formData.append('distance', distance);
-                formData.append('broker_name', brokerName);
-                formData.append('broker_number', brokerNumber);
-                formData.append('link', link);
+                formData.append('single_sharing_rent', singleSharing);
+                formData.append('double_sharing_rent', doubleSharing);
+                formData.append('triple_sharing_rent', tripleSharing);
+                formData.append('food_type', foodType);
+                formData.append('weekday_meals_price', weekdayPrice);
+                formData.append('weekend_meals_price', weekendPrice);
                 formData.append('visiting_schedule', document.getElementById('swal-edit-visiting-schedule').value);
+                formData.append('area', area);
+                formData.append('gender', gender);
+                if (isLuxury) {
+                    formData.append('is_luxury', '1');
+                    formData.append('luxury_order', luxuryOrder);
+                }                
                 
-                const amenities = Array.from(document.querySelectorAll('input[name="edit-amenities"]:checked')).map(el => el.value);
-                const rules = Array.from(document.querySelectorAll('input[name="edit-rules"]:checked')).map(el => el.value);
+                const modal = Swal.getHtmlContainer();
+                const amenities = Array.from(modal.querySelectorAll('input[name="edit-amenities"]:checked')).map(el => el.value);
+                const rules = Array.from(modal.querySelectorAll('input[name="edit-rules"]:checked')).map(el => el.value);
                 
                 amenities.forEach(a => formData.append('amenities[]', a));
                 rules.forEach(r => formData.append('rules[]', r));
@@ -589,7 +722,19 @@
                 if (result.success) {
                     Swal.fire('Updated!', result.message, 'success').then(() => window.location.reload());
                 } else {
-                    Swal.fire('Error', result.message || 'Failed to update property', 'error');
+                    let errorMessage = result.message || 'Failed to update property';
+                    if (result.errors) {
+                        errorMessage += '<br><ul class="text-left text-xs mt-2 list-disc list-inside">';
+                        Object.values(result.errors).flat().forEach(err => {
+                            errorMessage += `<li>${err}</li>`;
+                        });
+                        errorMessage += '</ul>';
+                    }
+                    Swal.fire({
+                        title: 'Error',
+                        html: errorMessage,
+                        icon: 'error'
+                    });
                 }
             } catch (error) {
                 Swal.fire('Error', 'An unexpected error occurred', 'error');
@@ -633,6 +778,11 @@
         const currentItems = type === 'amenities' ? currentAmenities : currentRules;
         const addRoute = type === 'amenities' ? "{{ route('admin.amenities.store') }}" : "{{ route('admin.rules.store') }}";
         const deleteRoute = type === 'amenities' ? "{{ route('admin.amenities.destroy') }}" : "{{ route('admin.rules.destroy') }}";
+        
+        // Check which modal is currently open to use correct container ID and name attribute
+        const isEditModal = !!document.getElementById('swal-edit-name');
+        const containerId = isEditModal ? `edit-${type}-container` : `add-${type}-container`;
+        const nameAttr = isEditModal ? `edit-${type}` : type;
 
         const { value: newItems } = await Swal.fire({
             title: `Manage ${type === 'amenities' ? 'Amenities' : 'Rules'}`,
@@ -732,14 +882,9 @@
             }
         }).then(() => {
             // Re-render the options in the main modal
-            const containerId = `${type}-container`;
             const container = document.getElementById(containerId);
             if (container) {
-                const nameAttr = container.id === 'amenities-container' ? 
-                    (document.getElementById('swal-edit-name') ? 'edit-amenities' : 'amenities') : 
-                    (document.getElementById('swal-edit-name') ? 'edit-rules' : 'rules');
-                
-                // Keep track of currently checked ones if in Edit mode
+                // Keep track of currently checked ones
                 const checked = Array.from(container.querySelectorAll('input:checked')).map(el => el.value);
                 
                 container.innerHTML = (type === 'amenities' ? currentAmenities : currentRules).map(opt => `
@@ -749,6 +894,20 @@
                 `).join('');
             }
         });
+    }
+
+    function toggleFoodPrices(context = 'add') {
+        const typeId = context === 'add' ? 'swal-food-type' : 'swal-edit-food-type';
+        const containerId = context === 'add' ? 'food-prices-container' : 'edit-food-prices-container';
+        
+        const type = document.getElementById(typeId).value;
+        const container = document.getElementById(containerId);
+        
+        if (type === 'None') {
+            container.classList.add('hidden');
+        } else {
+            container.classList.remove('hidden');
+        }
     }
 </script>
 @endpush

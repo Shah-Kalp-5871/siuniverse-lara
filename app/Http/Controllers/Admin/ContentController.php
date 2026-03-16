@@ -24,15 +24,22 @@ class ContentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|in:PG,Flat',
-            'rent' => 'required|integer',
+            'deposit' => 'required|integer',
             'image' => 'nullable|image|max:10240', // 10MB
-            'link' => 'nullable|url',
-            'broker_number' => 'required|string',
-            'broker_name' => 'required|string',
             'rules' => 'required|array',
             'amenities' => 'required|array',
             'distance' => 'required|numeric',
             'visiting_schedule' => 'nullable|string|max:255',
+            'is_luxury' => 'nullable|boolean',
+            'luxury_order' => 'nullable|integer',
+            'area' => 'nullable|string|max:255',
+            'gender' => 'nullable|in:Boys,Girls,Co-living',
+            'single_sharing_rent' => 'nullable|integer',
+            'double_sharing_rent' => 'required|integer',
+            'triple_sharing_rent' => 'nullable|integer',
+            'food_type' => 'required|in:None,Food Service,Tiffin Service',
+            'weekday_meals_price' => 'nullable|integer',
+            'weekend_meals_price' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -50,6 +57,8 @@ class ContentController extends Controller
                 $path = $request->file('image')->store('stays', 'public');
                 $data['image_path'] = $path;
             }
+
+            $data['is_luxury'] = $request->has('is_luxury');
 
             $stay = Stay::create($data);
             return response()->json([
@@ -71,15 +80,22 @@ class ContentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|in:PG,Flat',
-            'rent' => 'required|integer',
+            'deposit' => 'required|integer',
             'image' => 'nullable|image|max:10240',
-            'link' => 'nullable|url',
-            'broker_number' => 'required|string',
-            'broker_name' => 'required|string',
             'rules' => 'required|array',
             'amenities' => 'required|array',
             'distance' => 'required|numeric',
             'visiting_schedule' => 'nullable|string|max:255',
+            'is_luxury' => 'nullable|boolean',
+            'luxury_order' => 'nullable|integer',
+            'area' => 'nullable|string|max:255',
+            'gender' => 'nullable|in:Boys,Girls,Co-living',
+            'single_sharing_rent' => 'nullable|integer',
+            'double_sharing_rent' => 'required|integer',
+            'triple_sharing_rent' => 'nullable|integer',
+            'food_type' => 'required|in:None,Food Service,Tiffin Service',
+            'weekday_meals_price' => 'nullable|integer',
+            'weekend_meals_price' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -101,6 +117,8 @@ class ContentController extends Controller
                 $path = $request->file('image')->store('stays', 'public');
                 $data['image_path'] = $path;
             }
+
+            $data['is_luxury'] = $request->has('is_luxury');
 
             $stay->update($data);
             return response()->json([
