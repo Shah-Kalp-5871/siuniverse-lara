@@ -14,7 +14,7 @@
             <h1 class="text-3xl md:text-5xl font-black text-white mb-1 tracking-tighter uppercase">Explore Stays</h1>
             <div class="flex items-center justify-center gap-4">
                 <span class="h-[1px] w-12 bg-white/20"></span>
-                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[8px]">Curated Premium Living</p>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[8px]">Find Your Perfect Stay</p>
                 <span class="h-[1px] w-12 bg-white/20"></span>
             </div>
         </div>
