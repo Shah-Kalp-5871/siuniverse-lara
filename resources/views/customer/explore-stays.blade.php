@@ -8,57 +8,104 @@
 @endphp
 
 <!-- Hero Section -->
-<section class="pt-16 pb-20">
+<section class="pt-4 pb-6 relative z-[50]">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h1 class="text-6xl font-black text-white mb-4 tracking-tighter uppercase">Explore Stays</h1>
+        <div class="text-center mb-6" data-aos="fade-up">
+            <h1 class="text-3xl md:text-5xl font-black text-white mb-1 tracking-tighter uppercase">Explore Stays</h1>
             <div class="flex items-center justify-center gap-4">
                 <span class="h-[1px] w-12 bg-white/20"></span>
-                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px]">Curated Premium Living</p>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[8px]">Curated Premium Living</p>
                 <span class="h-[1px] w-12 bg-white/20"></span>
             </div>
         </div>
 
         <!-- Advanced Filters -->
-        <div class="max-w-6xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="200">
-            <div class="bg-white/5 backdrop-blur-3xl p-2 rounded-[2.5rem] border border-white/10 shadow-2xl flex flex-col md:flex-row items-center gap-2">
-                <!-- Luxury Curated Button -->
-                <button id="luxuryBtn" class="filter-main-btn w-full md:w-auto flex items-center justify-center gap-3 px-8 py-4 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white/40 hover:bg-white/10" data-filter="luxury">
-                    <i class="fas fa-crown text-sm"></i>
-                    <span>Luxury Curated</span>
-                </button>
- 
-                <!-- Property Type Filter -->
+        <div class="max-w-6xl mx-auto mb-8 px-4 md:px-0 relative z-[60]" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                <!-- Outside Filter: Property Type -->
                 <div class="flex bg-white/5 rounded-[2rem] p-1 border border-white/10 w-full md:w-auto overflow-hidden">
                     <button class="type-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-type="PG">PG</button>
                     <button class="type-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-type="Flat">Flat</button>
                 </div>
 
-                <!-- Area Filter -->
-                <div class="relative group w-full md:w-64">
-                    <select id="areaFilter" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[2rem] px-8 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
-                        <option value="" class="bg-slate-900 leading-loose">Select Area</option>
-                        @foreach($areas as $area)
-                            <option value="{{ $area }}" class="bg-slate-900">{{ $area }}</option>
-                        @endforeach
-                    </select>
-                    <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
-                </div>
+                <!-- Consolidated Filter Button -->
+                <div class="relative w-full md:w-auto z-[70]">
+                    <button id="filterToggleBtn" class="w-full md:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white border border-white/10 hover:bg-white/10">
+                        <i class="fas fa-filter text-sm text-amber-500"></i>
+                        <span>Filters</span>
+                        <i class="fas fa-chevron-down text-[10px] transition-transform duration-300" id="filterChevron"></i>
+                    </button>
 
-                <!-- Gender Filter -->
-                <div class="flex bg-white/5 rounded-[2rem] p-1 border border-white/10 w-full md:w-auto overflow-hidden">
-                    <button class="gender-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Boys">Boys</button>
-                    <button class="gender-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Girls">Girls</button>
-                    <button class="gender-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Co-living">Co-living</button>
-                </div>
+                    <!-- Consolidated Filter Panel -->
+                    <div id="filterPanel" class="hidden absolute top-full left-0 right-0 md:left-auto md:right-0 mt-4 w-full md:w-[350px] bg-slate-900/95 backdrop-blur-3xl p-6 rounded-[2.5rem] border border-white/10 shadow-2xl z-[100] space-y-6">
+                        
+                        <!-- Luxury Curated -->
+                        <div>
+                            <button id="luxuryBtn" class="w-full flex items-center justify-center gap-3 px-8 py-4 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white/40 hover:bg-white/10" data-filter="luxury">
+                                <i class="fas fa-crown text-sm"></i>
+                                <span>Luxury Curated</span>
+                            </button>
+                        </div>
 
-                <!-- Price Slider -->
-                <div class="w-full md:w-80 flex flex-col justify-center px-8 py-3 bg-white/5 rounded-[2rem] border border-white/10">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">Max Budget</span>
-                        <span id="priceValue" class="text-amber-400 font-extrabold text-xs tracking-tighter">₹50,000</span>
+                        <!-- Area Filter -->
+                        <div class="space-y-2">
+                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Select Area</span>
+                            <div class="relative">
+                                <select id="areaFilter" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
+                                    <option value="" class="bg-slate-900">All Areas</option>
+                                    @foreach($areas as $area)
+                                        <option value="{{ $area }}" class="bg-slate-900">{{ $area }}</option>
+                                    @endforeach
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- Gender Filter -->
+                        <div class="space-y-2">
+                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Gender</span>
+                            <div class="flex bg-white/5 rounded-[1.5rem] p-1 border border-white/10 w-full overflow-hidden">
+                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Boys">Boys</button>
+                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Girls">Girls</button>
+                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Co-living">Co-living</button>
+                            </div>
+                        </div>
+
+                        <!-- Max Budget Dropdown -->
+                        <div class="space-y-2">
+                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Max Budget</span>
+                            <div class="relative">
+                                <select id="priceDropdown" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
+                                    <option value="" class="bg-slate-900">Any Budget</option>
+                                    <option value="5000" class="bg-slate-900">Under ₹5,000</option>
+                                    <option value="10000" class="bg-slate-900">Under ₹10,000</option>
+                                    <option value="15000" class="bg-slate-900">Under ₹15,000</option>
+                                    <option value="20000" class="bg-slate-900">Under ₹20,000</option>
+                                    <option value="30000" class="bg-slate-900">Under ₹30,000</option>
+                                    <option value="50000" class="bg-slate-900">Under ₹50,000</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- Distance Filter -->
+                        <div class="space-y-3 px-4 py-2 bg-white/5 rounded-[1.5rem] border border-white/10">
+                            <div class="flex justify-between items-center">
+                                <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">Max Distance</span>
+                                <span id="distanceValue" class="text-amber-400 font-extrabold text-xs tracking-tighter">15 km</span>
+                            </div>
+                            <input type="range" id="distanceFilter" min="0" max="15" step="0.5" value="15" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                            <div class="flex justify-between text-[8px] text-white/20 font-bold uppercase">
+                                <span>0 km</span>
+                                <span>15 km</span>
+                            </div>
+                        </div>
+
+                        <!-- Clear All Filters -->
+                        <button id="clearFiltersBtn" class="w-full py-3 text-[9px] font-black uppercase tracking-widest text-amber-500/60 hover:text-amber-500 transition-colors">
+                            Clear All Filters
+                        </button>
                     </div>
-                    <input type="range" id="priceFilter" min="0" max="50000" step="1000" value="50000" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500">
                 </div>
             </div>
         </div>
@@ -134,23 +181,45 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const filterToggleBtn = document.getElementById('filterToggleBtn');
+    const filterPanel = document.getElementById('filterPanel');
+    const filterChevron = document.getElementById('filterChevron');
     const luxuryBtn = document.getElementById('luxuryBtn');
     const areaFilter = document.getElementById('areaFilter');
     const genderBtns = document.querySelectorAll('.gender-btn');
     const typeBtns = document.querySelectorAll('.type-btn');
-    const priceFilter = document.getElementById('priceFilter');
-    const priceValue = document.getElementById('priceValue');
+    const priceDropdown = document.getElementById('priceDropdown');
+    const distanceFilter = document.getElementById('distanceFilter');
+    const distanceValue = document.getElementById('distanceValue');
     const staysListing = document.getElementById('staysListing');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
-    let currentFilter = {
-        type: 'luxury',
-        value: null
-    };
+    let priceTimeout;
+    let distanceTimeout;
+
+    // Toggle Filter Panel
+    filterToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        filterPanel.classList.toggle('hidden');
+        filterChevron.classList.toggle('rotate-180');
+    });
+
+    // Close panel on outside click
+    document.addEventListener('click', (e) => {
+        if (!filterPanel.contains(e.target) && !filterToggleBtn.contains(e.target)) {
+            filterPanel.classList.add('hidden');
+            filterChevron.classList.remove('rotate-180');
+        }
+    });
 
     function updateListing(params) {
         staysListing.classList.add('loading-overlay');
         
         const url = new URL(window.location.href);
+        // Clear existing relevant search params
+        ['luxury', 'area', 'gender', 'type', 'max_rent', 'max_distance'].forEach(p => url.searchParams.delete(p));
+        
+        // Add new params
         Object.keys(params).forEach(key => url.searchParams.set(key, params[key]));
         
         fetch(url, {
@@ -162,10 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(html => {
             staysListing.innerHTML = html;
             staysListing.classList.remove('loading-overlay');
-            // Re-initialize AOS if available
-            if (window.AOS) {
-                window.AOS.refresh();
-            }
+            if (window.AOS) window.AOS.refresh();
         })
         .catch(err => {
             console.error('Filter error:', err);
@@ -173,49 +239,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function resetFilters(except) {
+    function resetConsolidatedFilters(except) {
         if (except !== 'luxury') {
             luxuryBtn.classList.remove('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
             luxuryBtn.classList.add('bg-white/5', 'text-white/40');
-        } else {
-            luxuryBtn.classList.add('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
-            luxuryBtn.classList.remove('bg-white/5', 'text-white/40');
         }
-
-        if (except !== 'area') {
-            areaFilter.value = "";
-        }
-
-        if (except !== 'gender') {
-            genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400'));
-        }
-
-        if (except !== 'type') {
-            typeBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400'));
-        }
-
-        if (except !== 'price') {
-            priceFilter.value = 50000;
-            priceValue.textContent = '₹50,000';
+        if (except !== 'area') areaFilter.value = "";
+        if (except !== 'gender') genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+        if (except !== 'price') priceDropdown.value = "";
+        if (except !== 'distance') {
+            distanceFilter.value = 15;
+            distanceValue.textContent = '15 km';
         }
     }
 
+    // Type Filter (Outside) - Requirement says only 1 filter should apply overall
+    typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active', 'text-amber-400', 'bg-white/10');
+                updateListing({});
+            } else {
+                typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+                resetConsolidatedFilters();
+                btn.classList.add('active', 'text-amber-400', 'bg-white/10');
+                updateListing({ type: btn.dataset.type });
+            }
+        });
+    });
+
+    // Consolidated Filters
     luxuryBtn.addEventListener('click', () => {
         if (luxuryBtn.classList.contains('active')) {
-            resetFilters();
+            resetConsolidatedFilters();
             updateListing({});
         } else {
-            resetFilters('luxury');
+            resetConsolidatedFilters('luxury');
+            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+            luxuryBtn.classList.add('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
+            luxuryBtn.classList.remove('bg-white/5', 'text-white/40');
             updateListing({ luxury: 1 });
         }
     });
 
     areaFilter.addEventListener('change', () => {
         if (areaFilter.value) {
-            resetFilters('area');
+            resetConsolidatedFilters('area');
+            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
             updateListing({ area: areaFilter.value });
         } else {
-            resetFilters();
             updateListing({});
         }
     });
@@ -223,44 +295,48 @@ document.addEventListener('DOMContentLoaded', function() {
     genderBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             if (btn.classList.contains('active')) {
-                resetFilters();
+                resetConsolidatedFilters();
                 updateListing({});
             } else {
-                resetFilters('gender');
-                btn.classList.add('active', 'text-amber-400');
+                resetConsolidatedFilters('gender');
+                typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+                btn.classList.add('active', 'text-amber-400', 'bg-white/10');
                 updateListing({ gender: btn.dataset.gender });
             }
         });
     });
 
-    typeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (btn.classList.contains('active')) {
-                resetFilters();
-                updateListing({});
-            } else {
-                resetFilters('type');
-                btn.classList.add('active', 'text-amber-400');
-                updateListing({ type: btn.dataset.type });
-            }
-        });
+    priceDropdown.addEventListener('change', () => {
+        if (priceDropdown.value) {
+            resetConsolidatedFilters('price');
+            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+            updateListing({ max_rent: priceDropdown.value });
+        } else {
+            updateListing({});
+        }
     });
 
-    priceFilter.addEventListener('input', () => {
-        const val = parseInt(priceFilter.value);
-        priceValue.textContent = '₹' + val.toLocaleString();
+    distanceFilter.addEventListener('input', () => {
+        const val = parseFloat(distanceFilter.value);
+        distanceValue.textContent = val + ' km';
         
-        clearTimeout(priceTimeout);
-        priceTimeout = setTimeout(() => {
-            resetFilters('price');
-            updateListing({ max_rent: val });
+        clearTimeout(distanceTimeout);
+        distanceTimeout = setTimeout(() => {
+            resetConsolidatedFilters('distance');
+            typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+            updateListing({ max_distance: val });
         }, 400);
     });
 
-    // Initial state: Luxury button is inactive, standard properties showing by default
-    // We don't need to force a click anymore as HomeController defaults to is_luxury=false
+    clearFiltersBtn.addEventListener('click', () => {
+        resetConsolidatedFilters();
+        typeBtns.forEach(b => b.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+        updateListing({});
+        filterPanel.classList.add('hidden');
+        filterChevron.classList.remove('rotate-180');
+    });
 
-    // Modal / Visit logic stays same but needs to be global
+    // Modal / Visit logic (keeping it global as before)
     window.bookVisit = async function(stay) {
         // Disclaimer Popup
         const disclaimerResult = await Swal.fire({

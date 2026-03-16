@@ -98,6 +98,8 @@ class HomeController extends Controller
             $query->whereIn('gender', $genders);
         } elseif ($request->filled('type')) {
             $query->where('type', $request->type);
+        } elseif ($request->filled('max_distance')) {
+            $query->where('distance', '<=', $request->max_distance);
         } elseif ($request->filled('luxury')) {
             $query->where('is_luxury', true)->orderBy('luxury_order', 'asc');
         } else {
