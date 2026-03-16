@@ -24,7 +24,7 @@ class ContentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|in:PG,Flat',
-            'deposit' => 'required|integer',
+            'deposit' => 'required|string|max:255',
             'image' => 'nullable|image|max:10240', // 10MB
             'rules' => 'required|array',
             'amenities' => 'required|array',
@@ -38,9 +38,11 @@ class ContentController extends Controller
             'double_sharing_rent' => 'required|integer',
             'triple_sharing_rent' => 'nullable|integer',
             'food_type' => 'required|in:None,Food Service,Tiffin Service',
+            'food_inclusion' => 'required|in:Included,Excluded',
             'weekday_meals_price' => 'nullable|integer',
             'weekend_meals_price' => 'nullable|integer',
         ]);
+        
 
         if ($validator->fails()) {
             return response()->json([
@@ -80,7 +82,7 @@ class ContentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|in:PG,Flat',
-            'deposit' => 'required|integer',
+            'deposit' => 'required|string|max:255',
             'image' => 'nullable|image|max:10240',
             'rules' => 'required|array',
             'amenities' => 'required|array',
@@ -94,6 +96,7 @@ class ContentController extends Controller
             'double_sharing_rent' => 'required|integer',
             'triple_sharing_rent' => 'nullable|integer',
             'food_type' => 'required|in:None,Food Service,Tiffin Service',
+            'food_inclusion' => 'required|in:Included,Excluded',
             'weekday_meals_price' => 'nullable|integer',
             'weekend_meals_price' => 'nullable|integer',
         ]);

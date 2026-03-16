@@ -38,6 +38,17 @@
             <i class="fas fa-search absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
         </div>
 
+        <!-- Food Filter -->
+        <div class="relative flex-1 md:flex-none">
+            <select id="food-filter" onchange="filterByFood(this.value)" class="appearance-none pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:border-slate-800 transition-all w-full md:w-44 shadow-sm cursor-pointer font-medium text-slate-700">
+                <option value="">All Meals</option>
+                <option value="Included">Included</option>
+                <option value="Excluded">Excluded</option>
+            </select>
+            <i class="fas fa-utensils absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+            <i class="fas fa-chevron-down absolute right-3.5 top-4 text-slate-300 text-[10px]"></i>
+        </div>
+
         <!-- Sort -->
         <div class="relative flex-1 md:flex-none">
             <select id="sort-control" class="appearance-none pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:border-slate-800 transition-all w-full md:w-40 shadow-sm cursor-pointer font-medium text-slate-700">
@@ -76,6 +87,10 @@
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="distance" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                     <span class="text-xs font-bold text-slate-600">Distance</span>
+                </label>
+                <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
+                    <input type="checkbox" checked data-column="food_inclusion" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                    <span class="text-xs font-bold text-slate-600">Meal Inclusion</span>
                 </label>
                 <label class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors">
                     <input type="checkbox" checked data-column="actions" class="col-checkbox w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
@@ -209,13 +224,25 @@
                     width: 150
                 },
                 {
+                    title: "Meals", 
+                    field: "food_inclusion",
+                    formatter: function(cell) {
+                        const val = cell.getValue() || 'Excluded';
+                        const colorClass = val === 'Included' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-slate-50 text-slate-500 border-slate-100';
+                        return `<span class="text-[10px] font-bold ${colorClass} px-2.5 py-1 rounded-md border uppercase">${val}</span>`;
+                    },
+                    width: 100
+                },
+                {
                     title: "Deposit", 
                     field: "deposit",
                     formatter: function(cell) {
+                        const val = cell.getValue();
+                        const displayVal = isNaN(val) ? val : new Intl.NumberFormat().format(val);
                         return `
                             <div class="flex items-center text-xs text-slate-600 font-semibold px-2">
                                 <i class="fas fa-wallet mr-1.5 text-[10px] text-slate-400"></i>
-                                ₹${new Intl.NumberFormat().format(cell.getValue())}
+                                ${displayVal}
                             </div>
                         `;
                     },
@@ -281,6 +308,14 @@
         });
     });
 
+    function filterByFood(value) {
+        if (!value) {
+            table.clearFilter();
+        } else {
+            table.setFilter("food_inclusion", "=", value);
+        }
+    }
+
     async function addStay() {
         const { value: formValues } = await Swal.fire({
             title: 'Register New Accommodation',
@@ -302,8 +337,8 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit (₹)</label>
-                            <input id="swal-deposit" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. 8500">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit</label>
+                            <input id="swal-deposit" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="e.g. 1.5 Months or 8500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Distance (Km)</label>
@@ -338,6 +373,13 @@
                                 <option value="None">None</option>
                                 <option value="Food Service">Food Service (Provided by PG)</option>
                                 <option value="Tiffin Service">Tiffin Service (Arranged by PG)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-700 mb-2">Meal Inclusion</label>
+                            <select id="swal-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                                <option value="Excluded">Excluded from Rent</option>
+                                <option value="Included">Included in Rent</option>
                             </select>
                         </div>
                         <div id="food-prices-container" class="grid grid-cols-2 gap-4 hidden">
@@ -447,6 +489,7 @@
                 formData.append('double_sharing_rent', doubleSharing);
                 formData.append('triple_sharing_rent', tripleSharing);
                 formData.append('food_type', foodType);
+                formData.append('food_inclusion', document.getElementById('swal-food-inclusion').value);
                 formData.append('weekday_meals_price', weekdayPrice);
                 formData.append('weekend_meals_price', weekendPrice);
                 formData.append('visiting_schedule', document.getElementById('swal-visiting-schedule').value);
@@ -532,8 +575,8 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit (₹)</label>
-                            <input id="swal-edit-deposit" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.deposit}">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Security Deposit</label>
+                            <input id="swal-edit-deposit" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.deposit}">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Distance (Km)</label>
@@ -568,6 +611,13 @@
                                 <option value="None" ${stay.food_type === 'None' ? 'selected' : ''}>None</option>
                                 <option value="Food Service" ${stay.food_type === 'Food Service' ? 'selected' : ''}>Food Service (Provided by PG)</option>
                                 <option value="Tiffin Service" ${stay.food_type === 'Tiffin Service' ? 'selected' : ''}>Tiffin Service (Arranged by PG)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-blue-700 mb-2">Meal Inclusion</label>
+                            <select id="swal-edit-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                                <option value="Excluded" ${stay.food_inclusion === 'Excluded' ? 'selected' : ''}>Excluded from Rent</option>
+                                <option value="Included" ${stay.food_inclusion === 'Included' ? 'selected' : ''}>Included in Rent</option>
                             </select>
                         </div>
                         <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${stay.food_type === 'None' ? 'hidden' : ''}">
@@ -678,6 +728,7 @@
                 formData.append('double_sharing_rent', doubleSharing);
                 formData.append('triple_sharing_rent', tripleSharing);
                 formData.append('food_type', foodType);
+                formData.append('food_inclusion', document.getElementById('swal-edit-food-inclusion').value);
                 formData.append('weekday_meals_price', weekdayPrice);
                 formData.append('weekend_meals_price', weekendPrice);
                 formData.append('visiting_schedule', document.getElementById('swal-edit-visiting-schedule').value);

@@ -12,7 +12,12 @@ class Inquiry extends Model
         'user_contact_number',
         'visit_date',
         'visit_time',
-        'visiting_schedule'
+        'visiting_schedule',
+        'is_dismissed'
+    ];
+
+    protected $casts = [
+        'is_dismissed' => 'boolean'
     ];
 
     public function stay()

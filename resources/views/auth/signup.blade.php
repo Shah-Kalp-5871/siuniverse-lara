@@ -8,10 +8,11 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-primary to-secondary p-8 text-center text-white">
             <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                <i class="fas fa-user-plus text-3xl"></i>
+                <i class="fas fa-user-circle text-3xl text-white"></i>
             </div>
-            <h1 class="text-2xl font-bold">Join SIU UNIVERSE</h1>
-            <p class="text-blue-100 mt-2">Create your account to connect</p>
+            <p class="text-[10px] uppercase tracking-widest font-black text-white/60 mb-1">Networking & Community Platform</p>
+            <h1 class="text-3xl font-black uppercase tracking-tighter mb-1">Join SIU UNIVERSE</h1>
+            <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Create your account to connect</p>
         </div>
 
         <!-- Form Container -->
@@ -31,7 +32,7 @@
                 <div id="step-1">
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
-                            SI Email Address
+                            College Email Address
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

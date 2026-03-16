@@ -48,12 +48,21 @@
                 </div>
                 <div class="max-h-64 overflow-y-auto">
                     @forelse($notifications as $notif)
-                        <div class="p-4 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-bold text-slate-800 uppercase tracking-tighter">{{ $notif['name'] }}</span>
-                                <span class="bg-slate-900 text-white text-[10px] px-2 py-0.5 rounded-full font-black">{{ $notif['count'] }} students</span>
+                        <div class="p-4 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors group/item">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-sm font-bold text-slate-800 uppercase tracking-tighter">{{ $notif['name'] }}</span>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">{{ $notif['count'] }} students filled the form</p>
+                                </div>
+                                <div class="flex items-center gap-1.5 opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                    <button onclick="dismissNotification({{ $notif['stay_id'] }})" class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors" title="Mark as Read">
+                                        <i class="fas fa-check text-[10px]"></i>
+                                    </button>
+                                    <button onclick="dismissNotification({{ $notif['stay_id'] }})" class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center hover:bg-rose-100 transition-colors" title="Dismiss">
+                                        <i class="fas fa-times text-[10px]"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Filled the visit form</p>
                         </div>
                     @empty
                         <div class="p-8 text-center">
@@ -175,6 +184,28 @@
             table.setFilter("user_name", "like", e.target.value);
         });
     });
+
+    async function dismissNotification(stayId) {
+        try {
+            const response = await fetch("{{ route('admin.inquiries.dismiss') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ stay_id: stayId })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                window.location.reload();
+            } else {
+                Swal.fire('Error', result.message || 'Failed to dismiss notification', 'error');
+            }
+        } catch (error) {
+            Swal.fire('Error', 'An unexpected error occurred', 'error');
+        }
+    }
 
     function deleteInquiry(id) {
         Swal.fire({

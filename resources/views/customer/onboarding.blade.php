@@ -70,7 +70,7 @@
                         <option value="">-- Choose Mess --</option>
                         <option value="Viola Mess">Viola Mess</option>
                         <option value="SIT Mess">SIT Mess</option>
-                        <option value="Petunia Mess">Petunia Mess</option>
+                        <option value="Hilltop Mess">Hilltop Mess</option>
                         <option value="Medical Mess">Medical Mess</option>
                     </select>
                 </div>
@@ -102,7 +102,7 @@
             <div id="step3" class="p-8 step-content hidden">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2"><span class="display-step">3</span>. Institute</h2>
                 <p class="text-gray-500 mb-6">Select your institute at SIU.</p>
-                <select name="institute" class="w-full p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+                <select name="institute" id="instituteSelect" class="w-full p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-lg" onchange="updateCourseOptions()">
                     <option value="">-- Choose Institute --</option>
                     @php
                         $insts = ["SAII", "SIMC", "SIBM", "SIDTM", "SIT", "SSBF", "SSVAP", "SSCANS", "SCON", "SCHS", "SSSS", "SIHS", "SMCW", "SSODL", "STLRC", "SCRI"];
@@ -116,11 +116,13 @@
             <!-- Step 4: Course & Section -->
             <div id="step4" class="p-8 step-content hidden">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2"><span class="display-step">4</span>. Course & Section</h2>
-                <p class="text-gray-500 mb-6">Enter your course and select your section.</p>
+                <p class="text-gray-500 mb-6">Select your course and section.</p>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1 ml-1">Course <span class="text-red-500">*</span></label>
-                        <input type="text" name="course" placeholder="Enter Your Branch Name" class="w-full p-3 md:p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg">
+                        <select name="course" id="courseSelect" class="w-full p-3 md:p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-lg bg-white">
+                            <option value="">-- Select Course --</option>
+                        </select>
                     </div>
                     
                     <div>
@@ -159,22 +161,6 @@
                 </div>
             </div>
 
-            <!-- Step 6: Gym -->
-            <div id="step6" class="p-8 step-content hidden">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2"><span class="display-step">6</span>. Gym Choice</h2>
-                <p class="text-gray-500 mb-6">Which gym do you visit?</p>
-                <div class="space-y-3">
-                    @php
-                        $gyms = ["Sit Gym", "Viola Gym", "Medical Gym", "Hill Top Gym", "no gym"];
-                    @endphp
-                    @foreach($gyms as $g)
-                        <label class="flex items-center p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-blue-500 transition-all">
-                            <input type="radio" name="gym" value="{{$g}}" class="mr-4 w-5 h-5">
-                            <span class="font-bold text-gray-700">{{$g}}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
 
             <!-- Step 7: Country -->
             <div id="step7" class="p-8 step-content hidden">
@@ -250,22 +236,15 @@
 @push('scripts')
 <script>
     let currentTab = 1;
-    const totalTabs = 8;
+    const totalTabs = 7; // Reduced after gym removal
 
     function showTab(n) {
         const tabs = document.getElementsByClassName("step-content");
         tabs[n-1].classList.remove("hidden");
         
         // Calculate Display Step Number
-        const acc = document.querySelector('input[name="accommodation"]:checked');
-        const isHostel = acc && acc.value === "Hostel";
         let displayStep = n;
         let displayTotal = totalTabs;
-
-        if (!isHostel) {
-            if (n > 6) displayStep = n - 1;
-            displayTotal = totalTabs - 1;
-        }
 
         const stepSpan = tabs[n-1].querySelector(".display-step");
         if (stepSpan) stepSpan.innerText = displayStep;
@@ -293,10 +272,6 @@
         const acc = document.querySelector('input[name="accommodation"]:checked');
         const isHostel = acc && acc.value === "Hostel";
 
-        // Logic to skip Gym Choice (Step 6) if not a Hostel student
-        if (targetTab === 6 && !isHostel) {
-            targetTab += n; // Skip 6, go to 7 (if forward) or 5 (if backward)
-        }
 
         // Check if we are finishing
         if (targetTab > totalTabs) {
@@ -336,11 +311,11 @@
         }
         
         if (currentTab === 4) {
-            const course = document.querySelector('input[name="course"]').value;
+            const course = document.getElementById("courseSelect").value;
             const section = document.querySelector('select[name="section"]').value;
             
             if (course === "") {
-                Swal.fire('Error', 'Please enter your course', 'error'); return false;
+                Swal.fire('Error', 'Please select your course', 'error'); return false;
             }
             if (section === "") {
                 Swal.fire('Error', 'Please select your section', 'error'); return false;
@@ -352,17 +327,13 @@
             if (!year) { Swal.fire('Error', 'Please select your academic year', 'error'); return false; }
         }
 
-        if (currentTab === 6) {
-            const gym = document.querySelector('input[name="gym"]:checked');
-            if (!gym) { Swal.fire('Error', 'Please select a gym option', 'error'); return false; }
-        }
 
-        if (currentTab === 7) {
+        if (currentTab === 6) {
             const country = document.querySelector('input[name="country"]:checked');
             if (!country) { Swal.fire('Error', 'Please select your origin', 'error'); return false; }
         }
 
-        if (currentTab === 8) {
+        if (currentTab === 7) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('password_confirmation').value;
 
@@ -428,6 +399,108 @@
         else el.classList.add("hidden");
     }
 
+    const instituteCourses = {
+        'SAII': [
+            'BBA (Artificial Intelligence)',
+            'B.Sc (Artificial Intelligence) Honours/Honours with Research'
+        ],
+        'SSVAP': [
+            'BA (Visual Arts and Photography)'
+        ],
+        'SCHS': [
+            'B.Sc (Medical Technology)'
+        ],
+        'SMCW': [
+            'MBBS (Bachelor of Medicine, Bachelor of Surgery)'
+        ],
+        'SIMC': [
+            'MBA (Communication Management)',
+            'MA (Journalism and Media Industries)',
+            'MA (Film, Television and Digital Production)'
+        ],
+        'SIBM': [
+            'MBA',
+            'MBA (Innovation and Entrepreneurship)',
+            'MBA (Executive)'
+        ],
+        'SIDTM': [
+            'MBA (Digital and Telecom Management)'
+        ],
+        'SSBF': [
+            'MBA (Banking & Finance)',
+            'MBA (Banking & Finance) Dual Degree — Aston University, UK',
+            'MBA (Banking & Finance) Dual Degree — Macquarie University, Australia'
+        ],
+        'SSBS': [
+            'M.Sc (Biotechnology)',
+            'M.Sc (Biochemistry)',
+            'M.Sc (Biotechnology) Dual Degree Programme'
+        ],
+        'SIT': [
+            'B.Tech (Civil Engineering)',
+            'B.Tech (Computer Science and Engineering)',
+            'B.Tech (Electronics & Tele-Communication Engineering)',
+            'B.Tech (Mechanical Engineering)',
+            'B.Tech (Artificial Intelligence and Machine Learning)',
+            'B.Tech (Robotics and Automation)',
+            'B.Tech (Information Technology)',
+            'B.Tech (Robotics and Artificial Intelligence)',
+            'M.Tech (Geoinformatics)',
+            'M.Tech (Embedded Systems)',
+            'M.Tech (Robotics and Automation)',
+            'M.Tech (Artificial Intelligence and Machine Learning)',
+            'M.Tech (Engineering Design) Full Time',
+            'M.Tech (Engineering Design) Part Time',
+            'M.Tech (Automotive Technology)',
+            'M.Tech (Robotics and Artificial Intelligence)'
+        ],
+        'SIHS': [
+            'B.Sc (Behavioural Health Sciences) Honours/Honours with Research',
+            'B.Sc Paramedical Technology (Radiotherapy Technology) Honours/Honours with Research',
+            'B.Sc in Paramedical Technology Honours/Honours with Research',
+            'Master of Public Health (MPH)',
+            'M.Sc — Assisted Reproduction Technology & Embryology',
+            'M.Sc in Paramedical Technology',
+            'M.Sc (Behavioural Health Sciences)',
+            'MBA — Hospital & Healthcare Management'
+        ],
+        'SSCANS': [
+            'B.Sc (Culinary Arts)',
+            'B.Sc (Hospitality & Culinary Management)',
+            'M.Sc (Nutrition and Dietetics)',
+            'MBA (Food Technology and Food Enterprise Management)'
+        ],
+        'SCON': [
+            'B.Sc (Nursing)',
+            'M.Sc Nursing',
+            'Post Basic B.Sc Nursing',
+            'Nurse Practitioner in Critical Care (NPCCPGRP)'
+        ],
+        'SSSS': [
+            'B.Sc (Sports and Exercise Science)',
+            'MBA in Sports Management'
+        ]
+    };
+
+    function updateCourseOptions() {
+        const inst = document.getElementById('instituteSelect').value;
+        const courseSelect = document.getElementById('courseSelect');
+        
+        // Clear current options
+        courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+        
+        if (inst && instituteCourses[inst]) {
+            instituteCourses[inst].forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                option.textContent = course;
+                courseSelect.appendChild(option);
+            });
+        }
+    }
+
     showTab(currentTab);
+    // Initial call
+    updateCourseOptions();
 </script>
 @endpush

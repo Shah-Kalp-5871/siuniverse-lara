@@ -56,6 +56,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/communities/bulk-delete', [AdminCommunityController::class, 'bulkDestroy'])->name('communities.bulk-delete');
         Route::resource('communities', AdminCommunityController::class)->except(['create', 'edit', 'show']);
         Route::resource('stays', AdminContentController::class)->except(['create', 'edit', 'show']);
+        Route::post('/inquiries/dismiss', [\App\Http\Controllers\Admin\InquiryController::class, 'dismiss'])->name('inquiries.dismiss');
         Route::resource('inquiries', \App\Http\Controllers\Admin\InquiryController::class)->only(['index', 'destroy']);
 
         // Settings

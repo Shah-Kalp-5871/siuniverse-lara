@@ -54,7 +54,6 @@ class OnboardingController extends Controller
                     'accommodation'      => $request->input('accommodation'),
                     'mess'               => $request->input('mess'),
                     'campus_location'    => $request->input('campus'),
-                    'gym_choice'         => $request->input('gym'),
                     'origin'             => $origin,
                     'country'            => $request->input('country'),
                     'datestamp'          => now(),
@@ -73,7 +72,6 @@ class OnboardingController extends Controller
                     'branch'               => $request->input('branch'),
                     'section'              => $request->input('section'),
                     'year'                 => $request->input('year'),
-                    'gym'                  => $request->input('gym'),
                     'country'              => $request->input('country'),
                     'international_student' => ($request->input('country') === 'Other'),
                 ]

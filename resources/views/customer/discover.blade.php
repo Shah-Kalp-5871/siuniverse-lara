@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Discover Peers & Communities - SIU UNIVERSE')
+@section('title', 'Discover Peer - SIU UNIVERSE')
 
 @section('content')
 <!-- Hero Search Section -->
 <section class="relative bg-gradient-to-br from-primary/10 to-secondary/10 py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Discover Peers & Communities</h1>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Discover Peer</h1>
             <p class="text-gray-600 mb-8">Explore Students Across Campus.</p>
             
             <!-- Filters -->
@@ -18,7 +18,7 @@
                         <input type="text" id="searchInput" placeholder="Search by name..." class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 ring-primary/20 outline-none">
                     </div>
                     <div class="ml-4 flex bg-gray-100 p-1 rounded-lg">
-                        <button onclick="switchTab('peers')" id="tabPeers" class="px-4 py-1.5 rounded-md text-sm font-bold transition-all bg-white shadow-sm text-primary">Explore</button>
+                        <button id="tabPeers" class="px-4 py-1.5 rounded-md text-sm font-bold transition-all bg-white shadow-sm text-primary">Explore</button>
                     </div>
                 </div>
                 
@@ -141,7 +141,7 @@
         <!-- No Results -->
         <div id="noResults" class="hidden text-center py-20">
             <i class="fas fa-search-minus text-4xl text-gray-200 mb-4"></i>
-            <h3 class="text-gray-400 font-medium">No results found for your filters</h3>
+            <h3 class="text-gray-400 font-medium">No students found for your filters</h3>
         </div>
 
     </div>
@@ -154,24 +154,24 @@
             <div class="bg-gray-50 rounded-xl p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                     <i class="fas fa-lightbulb text-accent mr-2"></i>
-                    Search Tips
+                    How to Discover Student
                 </h3>
                 <ul class="space-y-3 text-gray-600">
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                        <span>Search by community name (e.g., "Hostel", "PG", "Day Scholars", "International")</span>
+                        <span>Search by student name directly in the search bar.</span>
                     </li>
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                        <span>No filter system — search is name-based only</span>
+                        <span>Filter by Institute to find students from specific colleges.</span>
                     </li>
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                        <span>All communities are predefined — no auto-creation</span>
+                        <span>Filter by Course or Year to narrow down your search.</span>
                     </li>
                     <li class="flex items-start">
                         <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                        <span>Each community has only one WhatsApp group</span>
+                        <span>Click on filters to apply them instantly.</span>
                     </li>
                 </ul>
             </div>

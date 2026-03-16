@@ -49,7 +49,7 @@
                     
                     <div class="flex flex-col items-end">
                         <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Security Deposit</div>
-                        <div class="text-2xl font-black text-emerald-600">₹{{ number_format($stay->deposit) }}</div>
+                        <div class="text-2xl font-black text-emerald-600">{{ is_numeric($stay->deposit) ? '₹' . number_format($stay->deposit) : $stay->deposit }}</div>
                     </div>
                 </div>
                 
@@ -57,7 +57,7 @@
                 <div class="flex flex-wrap gap-1.5 mb-6">
                     @foreach (array_slice($stay->amenities ?? [], 0, 5) as $amenity)
                         <span class="bg-slate-50 text-slate-500 text-[10px] px-3 py-1 rounded-md font-bold uppercase border border-slate-100 italic">
-                            #{{ $amenity }}
+                            {{ $amenity }}
                         </span>
                     @endforeach
                     @if(count($stay->amenities ?? []) > 5)
@@ -71,7 +71,12 @@
                     <div class="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden">
                         <div class="bg-slate-100/50 px-4 py-2 border-b border-slate-100 flex items-center justify-between">
                             <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Monthly Tariffs</span>
-                            <i class="fas fa-bed text-slate-400 text-[10px]"></i>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
+                                    Meals {{ $stay->food_inclusion ?? 'Excluded' }}
+                                </span>
+                                <i class="fas fa-bed text-slate-400 text-[10px]"></i>
+                            </div>
                         </div>
                         <div class="p-4 space-y-3">
                             @if($stay->single_sharing_rent)

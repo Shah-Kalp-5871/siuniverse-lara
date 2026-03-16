@@ -63,6 +63,12 @@ class HomeController extends Controller
             })
             ->get();
 
+        // Add "What is happening in SIU" general community for all students
+        $generalCommunity = \App\Models\Community::where('name', 'What is happening in SIU')->first();
+        if ($generalCommunity && !$communities->contains('id', $generalCommunity->id)) {
+            $communities->prepend($generalCommunity);
+        }
+
         return view('customer.index', compact('communities', 'student'));
     }
 

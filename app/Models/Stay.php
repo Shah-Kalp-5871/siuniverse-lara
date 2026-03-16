@@ -24,14 +24,14 @@ class Stay extends Model
         'triple_sharing_rent',
         'food_type',
         'weekday_meals_price',
-        'weekend_meals_price'
+        'weekend_meals_price',
+        'food_inclusion'
     ];
 
     protected $casts = [
         'rules' => 'array',
         'amenities' => 'array',
         'distance' => 'float',
-        'deposit' => 'integer',
         'is_luxury' => 'boolean',
         'luxury_order' => 'integer',
         'single_sharing_rent' => 'integer',

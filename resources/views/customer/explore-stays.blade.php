@@ -8,7 +8,7 @@
 @endphp
 
 <!-- Hero Section -->
-<section class="pt-4 pb-6 relative z-[50]">
+<section class="pt-24 pb-32 relative z-0">
     <div class="container mx-auto px-4">
         <div class="text-center mb-6" data-aos="fade-up">
             <h1 class="text-3xl md:text-5xl font-black text-white mb-1 tracking-tighter uppercase">Explore Stays</h1>
@@ -28,6 +28,12 @@
                     <button class="type-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-type="Flat">Flat</button>
                 </div>
 
+                <!-- Luxury Curated Button (Relocated Outside) -->
+                <button id="luxuryBtn" class="flex-1 md:flex-none flex items-center justify-center gap-3 px-8 py-3 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white/40 border border-white/10" data-filter="luxury">
+                    <i class="fas fa-crown text-sm"></i>
+                    <span>Luxury Curated</span>
+                </button>
+
                 <!-- Consolidated Filter Button -->
                 <div class="relative w-full md:w-auto z-[70]">
                     <button id="filterToggleBtn" class="w-full md:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white border border-white/10 hover:bg-white/10">
@@ -39,13 +45,6 @@
                     <!-- Consolidated Filter Panel -->
                     <div id="filterPanel" class="hidden absolute top-full left-0 right-0 md:left-auto md:right-0 mt-4 w-full md:w-[350px] bg-slate-900/95 backdrop-blur-3xl p-6 rounded-[2.5rem] border border-white/10 shadow-2xl z-[100] space-y-6">
                         
-                        <!-- Luxury Curated -->
-                        <div>
-                            <button id="luxuryBtn" class="w-full flex items-center justify-center gap-3 px-8 py-4 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white/40 hover:bg-white/10" data-filter="luxury">
-                                <i class="fas fa-crown text-sm"></i>
-                                <span>Luxury Curated</span>
-                            </button>
-                        </div>
 
                         <!-- Area Filter -->
                         <div class="space-y-2">
