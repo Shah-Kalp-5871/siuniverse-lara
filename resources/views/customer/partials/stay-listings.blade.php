@@ -70,11 +70,11 @@
                     <!-- Room Tariffs -->
                     <div class="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden">
                         <div class="bg-slate-100/50 px-4 py-2 border-b border-slate-100 flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Tariffs</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent</span>
                             <div class="flex items-center gap-2">
-                                <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
+                                <!-- <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
                                     Meals {{ $stay->food_inclusion ?? 'Excluded' }}
-                                </span>
+                                </span> -->
                                 <i class="fas fa-bed text-slate-400 text-[10px]"></i>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                     <span class="text-[9px] font-bold text-blue-600 uppercase tracking-wider">Most Popular</span>
                                     <span class="text-xs font-bold text-slate-800">Double Sharing</span>
                                 </div>
-                                <span class="text-lg font-bold text-blue-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
+                                <span class="text-lg font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
                             </div>
 
                             @if($stay->triple_sharing_rent)
@@ -108,6 +108,10 @@
                         <div class="bg-slate-100/50 px-4 py-2 border-b border-slate-100 flex items-center justify-between">
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Meal Services</span>
                             <i class="fas fa-utensils text-slate-400 text-[10px]"></i>
+
+                            <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
+                                    Meals {{ $stay->food_inclusion ?? 'Excluded' }}
+                                </span>
                         </div>
                         <div class="p-4 h-full flex flex-col justify-center">
                             @if($stay->food_type !== 'None')

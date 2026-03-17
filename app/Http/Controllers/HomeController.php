@@ -12,20 +12,25 @@ class HomeController extends Controller
             return redirect()->route('signup');
         }
 
-        $email = session('email');
-        $student = $email ? \App\Models\Student::where('email', $email)->first() : null;
+        $student = session('user_id') ? \App\Models\Student::find(session('user_id')) : null;
+        
+        if (!$student && session('email')) {
+             $student = \App\Models\Student::where('email', session('email'))->first();
+        }
 
         if (!$student) {
-            // If no student profile found (e.g. testing or session cleared), return empty
+            \Log::warning('No student profile found for session user_id: ' . session('user_id'));
             return view('customer.index', ['communities' => collect()]);
         }
 
         $acc = $student->accommodation;
-        $origin = $student->origin; // 'national' or 'international'
+        $origin = strtolower($student->origin ?? 'national');
+        
+        \Log::info("Home accessed by Student ID: {$student->id}, Acc: {$acc}, Origin: {$origin}");
 
         // Map student values to community categories
         $accCategory = match($acc) {
-            'PG / Flat' => 'PG/Flats',
+            'PG / Flat' => 'PG',
             'Day Scholar' => 'Day Scholars',
             'Hostel' => 'Hostel',
             default => $acc

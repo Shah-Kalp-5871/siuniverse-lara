@@ -54,7 +54,7 @@
                         $bgColor = 'bg-purple-100';
                         $textColor = 'text-purple-600';
                         $tag = 'CAMPUS-WIDE';
-                    } elseif ($community->category === 'PG/Flats') {
+                    } elseif ($community->category === 'PG') {
                         $icon = 'fas fa-home';
                         $colorClass = 'border-green-500';
                         $bgColor = 'bg-green-100';
@@ -100,7 +100,7 @@
                     <p class="text-gray-500 text-sm mb-4">
                         @if($community->origin === 'International')
                             Support and communication for all international students on campus.
-                        @elseif($community->category === 'PG/Flats')
+                        @elseif($community->category === 'PG')
                             Campus-wide group for students living in PGs and flats.
                         @elseif($community->category === 'Day Scholars')
                             Connect with fellow students who commute from home.
@@ -117,7 +117,7 @@
                         @if($community->origin === 'International')
                             <li class="flex items-center"><i class="fas fa-passport {{ $textColor }} mr-2"></i>Visa & documentation guidance</li>
                             <li class="flex items-center"><i class="fas fa-hands-helping {{ $textColor }} mr-2"></i>Cultural support & local guidance</li>
-                        @elseif($community->category === 'PG/Flats')
+                        @elseif($community->category === 'PG')
                             <li class="flex items-center"><i class="fas fa-door-open {{ $textColor }} mr-2"></i>Room availability updates</li>
                             <li class="flex items-center"><i class="fas fa-user-tie {{ $textColor }} mr-2"></i>Owner/broker contact</li>
                         @elseif($community->category === 'Day Scholars')

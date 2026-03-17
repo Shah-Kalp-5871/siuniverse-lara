@@ -380,6 +380,7 @@
                             <select id="swal-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="Excluded">Excluded from Rent</option>
                                 <option value="Included">Included in Rent</option>
+                                <option value="None">None</option>
                             </select>
                         </div>
                         <div id="food-prices-container" class="grid grid-cols-2 gap-4 hidden">

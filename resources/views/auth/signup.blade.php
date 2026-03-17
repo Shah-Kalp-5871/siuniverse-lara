@@ -10,9 +10,9 @@
             <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
                 <i class="fas fa-user-circle text-3xl text-white"></i>
             </div>
-            <p class="text-[10px] uppercase tracking-widest font-black text-white/60 mb-1">Networking & Community Platform</p>
-            <h1 class="text-3xl font-black uppercase tracking-tighter mb-1">Join SIU UNIVERSE</h1>
-            <p class="text-xs font-bold text-white/40 uppercase tracking-widest">Create your account to connect</p>
+            <p class="text-xs font-semibold text-white/80 mb-1">Networking & Community Platform</p>
+            <h1 class="text-2xl font-bold mb-1">Join SIU UNIVERSE</h1>
+            <p class="text-sm font-medium text-white/60">Create your account to connect</p>
         </div>
 
         <!-- Form Container -->

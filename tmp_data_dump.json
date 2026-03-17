@@ -1,0 +1,45 @@
+{
+    "students": [
+        {
+            "id": 1,
+            "name": "Sharma Shivansh",
+            "email": "shivansh2915@gmail.com",
+            "institute": "SCON",
+            "course": "M.Sc Nursing",
+            "branch": null,
+            "section": "Section B",
+            "datestamp": "2026-03-17T12:52:01.000000Z",
+            "accommodation": "Hostel",
+            "mess": "SIT Mess",
+            "campus_location": "Hilltop",
+            "current_study_year": 4,
+            "gym_choice": null,
+            "origin": "international",
+            "country": "Other",
+            "created_at": "2026-03-17T12:52:01.000000Z",
+            "updated_at": "2026-03-17T12:52:01.000000Z"
+        }
+    ],
+    "communities": [
+        {
+            "id": 1,
+            "name": "Shivansh Sharma",
+            "category": "PG",
+            "mess": null,
+            "invite_link": "https:\/\/chat.whatsapp.com\/B7pCBVmDIeC6zNMnINZOEo",
+            "status": "Active",
+            "created_at": "2026-03-17T12:53:19.000000Z",
+            "updated_at": "2026-03-17T13:03:37.000000Z"
+        },
+        {
+            "id": 2,
+            "name": "qwertyuio",
+            "category": "International",
+            "mess": null,
+            "invite_link": "https:\/\/chat.whatsapp.com\/B7pCBVmDIeC6zNMnINZOEo",
+            "status": "Active",
+            "created_at": "2026-03-17T12:53:48.000000Z",
+            "updated_at": "2026-03-17T12:53:48.000000Z"
+        }
+    ]
+}
