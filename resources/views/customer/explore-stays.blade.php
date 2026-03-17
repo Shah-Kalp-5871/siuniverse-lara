@@ -7,191 +7,146 @@
     $storageUrl = Storage::url('');
 @endphp
 
-<!-- Hero Section -->
-<section class="pt-24 pb-32 relative z-0">
+<!-- Hero Search Section -->
+<section class="relative bg-gradient-to-br from-accent/10 to-primary/10 py-12">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-6" data-aos="fade-up">
-            <h1 class="text-3xl md:text-5xl font-black text-white mb-1 tracking-tighter uppercase">Explore Stays</h1>
-            <div class="flex items-center justify-center gap-4">
-                <span class="h-[1px] w-12 bg-white/20"></span>
-                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[8px]">Find Your Perfect Stay</p>
-                <span class="h-[1px] w-12 bg-white/20"></span>
-            </div>
-        </div>
+        <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight uppercase">Explore Stays</h1>
+            <p class="text-gray-600 mb-8 font-medium">Find Your Perfect Stay Around Campus.</p>
+            
+            <!-- Advanced Filters -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 text-left max-w-4xl mx-auto relative z-[60]">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                    <!-- Outside Filter: Property Type -->
+                    <div class="flex bg-gray-50 rounded-lg p-1 border border-gray-100 w-full md:w-auto overflow-hidden">
+                        <button class="type-btn flex-1 md:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-type="PG">PG</button>
+                        <button class="type-btn flex-1 md:flex-none px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-type="Flat">Flat</button>
+                    </div>
 
-        <!-- Advanced Filters -->
-        <div class="max-w-6xl mx-auto mb-8 px-4 md:px-0 relative z-[60]" data-aos="fade-up" data-aos-delay="200">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                <!-- Outside Filter: Property Type -->
-                <div class="flex bg-white/5 rounded-[2rem] p-1 border border-white/10 w-full md:w-auto overflow-hidden">
-                    <button class="type-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-type="PG">PG</button>
-                    <button class="type-btn flex-1 md:flex-none px-6 py-3 rounded-[1.8rem] text-[10px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-type="Flat">Flat</button>
-                </div>
-
-                <!-- Luxury Curated Button (Relocated Outside) -->
-                <button id="luxuryBtn" class="flex-1 md:flex-none flex items-center justify-center gap-3 px-8 py-3 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white/40 border border-white/10" data-filter="luxury">
-                    <i class="fas fa-crown text-sm"></i>
-                    <span>Luxury Curated</span>
-                </button>
-
-                <!-- Consolidated Filter Button -->
-                <div class="relative w-full md:w-auto z-[70]">
-                    <button id="filterToggleBtn" class="w-full md:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-[2rem] font-black uppercase tracking-widest text-[10px] transition-all bg-white/5 text-white border border-white/10 hover:bg-white/10">
-                        <i class="fas fa-filter text-sm text-amber-500"></i>
-                        <span>Filters</span>
-                        <i class="fas fa-chevron-down text-[10px] transition-transform duration-300" id="filterChevron"></i>
+                    <!-- Luxury Curated Button -->
+                    <button id="luxuryBtn" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg font-bold text-sm transition-all bg-gray-50 text-gray-500 border border-gray-100 hover:text-amber-500 hover:bg-amber-50" data-filter="luxury">
+                        <i class="fas fa-crown text-amber-500"></i>
+                        <span>Luxury Curated</span>
                     </button>
 
-                    <!-- Consolidated Filter Panel -->
-                    <div id="filterPanel" class="hidden absolute top-full left-0 right-0 md:left-auto md:right-0 mt-4 w-full md:w-[350px] bg-slate-900/95 backdrop-blur-3xl p-6 rounded-[2.5rem] border border-white/10 shadow-2xl z-[100] space-y-6">
-                        
+                    <!-- Consolidated Filter Button -->
+                    <div class="relative w-full md:w-auto z-[70]">
+                        <button id="filterToggleBtn" class="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2 rounded-lg font-bold text-sm transition-all bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20">
+                            <i class="fas fa-filter text-sm"></i>
+                            <span>Filters</span>
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-300" id="filterChevron"></i>
+                        </button>
 
-                        <!-- Area Filter -->
-                        <div class="space-y-2">
-                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Select Area</span>
-                            <div class="relative">
-                                <select id="areaFilter" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
-                                    <option value="" class="bg-slate-900">All Areas</option>
-                                    @foreach($areas as $area)
-                                        <option value="{{ $area }}" class="bg-slate-900">{{ $area }}</option>
-                                    @endforeach
-                                </select>
-                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
-                            </div>
-                        </div>
-
-                        <!-- Gender Filter -->
-                        <div class="space-y-2">
-                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Gender</span>
-                            <div class="flex bg-white/5 rounded-[1.5rem] p-1 border border-white/10 w-full overflow-hidden">
-                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Boys">Boys</button>
-                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Girls">Girls</button>
-                                <button class="gender-btn flex-1 px-4 py-3 rounded-[1.2rem] text-[9px] font-black uppercase tracking-widest transition-all text-white/40 hover:text-white" data-gender="Co-living">Co-living</button>
-                            </div>
-                        </div>
-
-                        <!-- Max Budget Slider -->
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center px-4">
-                                <span class="text-white/40 text-[9px] font-black uppercase tracking-widest">Max Budget</span>
-                                <span id="priceDisplay" class="text-amber-400 text-[10px] font-black">Any Budget</span>
-                            </div>
-                            <div class="px-4 pb-2">
-                                <input type="range" id="priceSlider" min="0" max="50000" step="500" value="50000" 
-                                    class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amber-500 hover:bg-white/20 transition-colors">
-                                <div class="flex justify-between mt-2 text-[8px] text-white/20 font-black uppercase tracking-widest">
-                                    <span>₹0</span>
-                                    <span>₹50,000+</span>
+                        <!-- Consolidated Filter Panel -->
+                        <div id="filterPanel" class="hidden absolute top-full left-0 right-0 md:left-auto md:right-0 mt-4 w-full md:w-[350px] bg-white p-6 rounded-2xl border border-gray-100 shadow-2xl z-[100] space-y-6">
+                            
+                            <!-- Area Filter -->
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Select Area</span>
+                                <div class="relative">
+                                    <select id="areaFilter" class="w-full appearance-none bg-gray-50 text-gray-800 text-sm font-medium rounded-lg px-4 py-3 pr-10 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer">
+                                        <option value="">All Areas</option>
+                                        @foreach($areas as $area)
+                                            <option value="{{ $area }}">{{ $area }}</option>
+                                        @endforeach
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Max Distance Dropdown -->
-                        <div class="space-y-2">
-                            <span class="text-white/40 text-[9px] font-black uppercase tracking-widest px-4">Max Distance</span>
-                            <div class="relative">
-                                <select id="distanceDropdown" class="w-full appearance-none bg-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-[1.5rem] px-6 py-4 pr-12 border border-white/10 focus:outline-none focus:border-amber-400 transition-all cursor-pointer hover:bg-white/10">
-                                    <option value="" class="bg-slate-900">Any Distance</option>
-                                    <option value="1" class="bg-slate-900">Under 1 km</option>
-                                    <option value="2" class="bg-slate-900">Under 2 km</option>
-                                    <option value="5" class="bg-slate-900">Under 5 km</option>
-                                    <option value="10" class="bg-slate-900">Under 10 km</option>
-                                    <option value="15" class="bg-slate-900">Under 15 km</option>
-                                </select>
-                                <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none text-xs"></i>
+                            <!-- Gender Filter -->
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Gender</span>
+                                <div class="flex bg-gray-50 rounded-lg p-1 border border-gray-100 w-full overflow-hidden">
+                                    <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Boys">Boys</button>
+                                    <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Girls">Girls</button>
+                                    <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Co-living">Co-living</button>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Clear All Filters -->
-                        <button id="clearFiltersBtn" class="w-full py-3 text-[9px] font-black uppercase tracking-widest text-amber-500/60 hover:text-amber-500 transition-colors">
-                            Clear All Filters
-                        </button>
+                            <!-- Max Budget Slider -->
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center px-1">
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Max Budget</span>
+                                    <span id="priceDisplay" class="text-primary text-sm font-bold">Any Budget</span>
+                                </div>
+                                <div class="px-1 pb-2">
+                                    <input type="range" id="priceSlider" min="0" max="50000" step="500" value="50000" 
+                                        class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary hover:bg-gray-300 transition-colors">
+                                    <div class="flex justify-between mt-2 text-xs text-gray-400 font-medium tracking-wider">
+                                        <span>₹0</span>
+                                        <span>₹50,000+</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Max Distance Dropdown -->
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Max Distance</span>
+                                <div class="relative">
+                                    <select id="distanceDropdown" class="w-full appearance-none bg-gray-50 text-gray-800 text-sm font-medium rounded-lg px-4 py-3 pr-10 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer">
+                                        <option value="">Any Distance</option>
+                                        <option value="1">Under 1 km</option>
+                                        <option value="2">Under 2 km</option>
+                                        <option value="5">Under 5 km</option>
+                                        <option value="10">Under 10 km</option>
+                                        <option value="15">Under 15 km</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                                </div>
+                            </div>
+
+                            <!-- Clear All Filters -->
+                            <button id="clearFiltersBtn" class="w-full py-3 text-sm font-bold text-red-500 hover:text-red-700 transition-colors">
+                                Clear All Filters
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="grid gap-12 max-w-6xl mx-auto" id="staysListing">
-            @include('customer.partials.stay-listings', ['stays' => $stays])
+<!-- Stays Listing Section -->
+<section class="py-12 bg-gray-50 min-h-[400px]">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto" id="staysListing">
+            @include("customer.partials.stay-listings", ["stays" => $stays])
         </div>
     </div>
 </section>
 
-@push('styles')
+@push("styles")
 <style>
-    html, body {
-        background: #000000 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        min-height: 100vh !important;
-        display: flex;
-        flex-direction: column;
-    }
-
-    main {
-        flex: 1 0 auto;
-        padding-top: 64px !important;
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-        background: transparent !important;
-    }
-
-    section {
-        margin-bottom: 0 !important;
-        padding-bottom: 2rem !important;
-    }
-
-    footer {
-        flex-shrink: 0;
-        margin-top: 0 !important;
-        border-top: 1px solid rgba(255,255,255,0.05);
-        background-color: rgba(0,0,0,0.3) !important;
-    }
-
-    nav {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(10px);
-    }
-
-    .filter-main-btn.active {
-        background: #f59e0b !important;
-        color: white !important;
-    }
-
-    .gender-btn.active {
-        background: rgba(255,255,255,0.1);
-        color: #f59e0b !important;
-    }
-
     .loading-overlay {
         position: relative;
     }
-
     .loading-overlay::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(0,0,0,0.3);
+        background: rgba(255,255,255,0.6);
         backdrop-filter: blur(2px);
         z-index: 10;
         border-radius: 1rem;
     }
 
     /* Range Slider Styling */
-    input[type='range']::-webkit-slider-runnable-track {
-        background: rgba(255, 255, 255, 0.1);
+    input[type="range"]::-webkit-slider-runnable-track {
+        background: #e5e7eb;
         border-radius: 9999px;
         height: 6px;
     }
-    input[type='range']::-webkit-slider-thumb {
+    input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
         margin-top: -5px;
-        background-color: #f59e0b;
+        background-color: #3b82f6;
         border-radius: 9999px;
         height: 16px;
         width: 16px;
-        box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         border: 2px solid white;
         cursor: pointer;
     }
@@ -304,8 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
     typeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
-            btn.classList.toggle('text-amber-400');
-            btn.classList.toggle('bg-white/10');
+            btn.classList.toggle('text-primary');
+            btn.classList.toggle('bg-primary/10');
             updateListing();
         });
     });
@@ -314,11 +269,11 @@ document.addEventListener('DOMContentLoaded', function() {
     luxuryBtn.addEventListener('click', () => {
         luxuryBtn.classList.toggle('active');
         if (luxuryBtn.classList.contains('active')) {
-            luxuryBtn.classList.add('bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
-            luxuryBtn.classList.remove('bg-white/5', 'text-white/40');
+            luxuryBtn.classList.add('bg-amber-500', 'text-white', 'shadow-xl', 'shadow-amber-500/20');
+            luxuryBtn.classList.remove('bg-gray-50', 'text-gray-500');
         } else {
-            luxuryBtn.classList.remove('bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
-            luxuryBtn.classList.add('bg-white/5', 'text-white/40');
+            luxuryBtn.classList.remove('bg-amber-500', 'text-white', 'shadow-xl', 'shadow-amber-500/20');
+            luxuryBtn.classList.add('bg-gray-50', 'text-gray-500');
         }
         updateListing();
     });
@@ -330,8 +285,8 @@ document.addEventListener('DOMContentLoaded', function() {
     genderBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
-            btn.classList.toggle('text-amber-400');
-            btn.classList.toggle('bg-white/10');
+            btn.classList.toggle('text-primary');
+            btn.classList.toggle('bg-primary/10');
             updateListing();
         });
     });
@@ -355,11 +310,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clear All
     clearFiltersBtn.addEventListener('click', () => {
         // Reset all buttons
-        typeBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
-        genderBtns.forEach(btn => btn.classList.remove('active', 'text-amber-400', 'bg-white/10'));
+        typeBtns.forEach(btn => btn.classList.remove('active', 'text-primary', 'bg-primary/10'));
+        genderBtns.forEach(btn => btn.classList.remove('active', 'text-primary', 'bg-primary/10'));
         
-        luxuryBtn.classList.remove('active', 'bg-amber-500', 'text-slate-900', 'shadow-xl', 'shadow-amber-500/20');
-        luxuryBtn.classList.add('bg-white/5', 'text-white/40');
+        luxuryBtn.classList.remove('active', 'bg-amber-500', 'text-white', 'shadow-xl', 'shadow-amber-500/20');
+        luxuryBtn.classList.add('bg-gray-50', 'text-gray-500');
         
         areaFilter.value = "";
         distanceDropdown.value = "";
@@ -376,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.bookVisit = async function(stay) {
         // Disclaimer Popup
         const disclaimerResult = await Swal.fire({
-            title: '<h2 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Terms of Use & Disclaimer</h2>',
+            title: '<h2 class="text-xl font-bold text-slate-900 uppercase tracking-tighter">Terms of Use & Disclaimer</h2>',
             html: `
                 <div class="text-left py-4 px-2 space-y-6">
                     <!-- Policy Highlight -->
@@ -385,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <i class="fas fa-hand-holding-heart text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest leading-none mb-1">SIU UNIVERSE POLICY</p>
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest leading-none mb-1">SIU UNIVERSE POLICY</p>
                             <p class="text-sm font-bold text-slate-700">We charge <strong>ZERO fees</strong> or commission from students.</p>
                         </div>
                     </div>
@@ -395,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/30 flex gap-4">
                             <div class="text-slate-400 mt-1"><i class="fas fa-search-dollar"></i></div>
                             <div>
-                                <h4 class="text-[10px] font-black text-slate-900 uppercase tracking-wider mb-1">Data Accuracy</h4>
+                                <h4 class="text-[10px] font-bold text-slate-900 uppercase tracking-wider mb-1">Data Accuracy</h4>
                                 <p class="text-[11px] leading-relaxed text-slate-500 font-medium">We do not guarantee the accuracy of rent, deposit, amenities, or availability for any PG or Flat listed.</p>
                             </div>
                         </div>
@@ -403,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/30 flex gap-4">
                             <div class="text-slate-400 mt-1"><i class="fas fa-user-shield"></i></div>
                             <div>
-                                <h4 class="text-[10px] font-black text-slate-900 uppercase tracking-wider mb-1">Agreement Privacy</h4>
+                                <h4 class="text-[10px] font-bold text-slate-900 uppercase tracking-wider mb-1">Agreement Privacy</h4>
                                 <p class="text-[11px] leading-relaxed text-slate-500 font-medium">SIU Universe is NOT a party to any legal agreement or financial transaction between you and the property owner.</p>
                             </div>
                         </div>
@@ -411,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/30 flex gap-4">
                             <div class="text-slate-400 mt-1"><i class="fas fa-exclamation-triangle"></i></div>
                             <div>
-                                <h4 class="text-[10px] font-black text-slate-900 uppercase tracking-wider mb-1">Liability Notice</h4>
+                                <h4 class="text-[10px] font-bold text-slate-900 uppercase tracking-wider mb-1">Liability Notice</h4>
                                 <p class="text-[11px] leading-relaxed text-slate-500 font-medium">We are not responsible for any disputes, fraud, loss of deposits, or issues arising from your property selection.</p>
                             </div>
                         </div>
@@ -427,13 +382,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `,
             confirmButtonText: 'I ACCEPT ALL TERMS',
-            confirmButtonColor: '#0f172a',
+            confirmButtonColor: '#3b82f6',
             showCancelButton: true,
             cancelButtonText: 'CANCEL',
             reverseButtons: true,
             customClass: {
                 popup: 'rounded-[1.5rem] border border-slate-100',
-                confirmButton: 'px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-2xl',
+                confirmButton: 'px-10 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-2xl',
                 cancelButton: 'px-10 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest text-slate-400'
             }
         });
