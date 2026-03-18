@@ -121,7 +121,6 @@
                                         $min = min($stay->weekday_meals_price, $stay->weekend_meals_price);
                                         $max = max($stay->weekday_meals_price, $stay->weekend_meals_price);
                                         $formatPrice = function($price) {
-                                            if ($price >= 1000 && $price % 1000 === 0) return ($price / 1000) . 'k';
                                             return number_format($price);
                                         };
                                     @endphp
