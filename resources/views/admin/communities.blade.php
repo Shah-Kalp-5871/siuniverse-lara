@@ -359,6 +359,7 @@
                                 <option value="PG">PG</option>
                                 <option value="Day Scholars">Day Scholars</option>
                                 <option value="International">International</option>
+                                <option value="All">All Students</option>
                             </select>
                         </div>
                         
@@ -484,6 +485,7 @@
                                 <option value="PG" ${community.category === 'PG' ? 'selected' : ''}>PG</option>
                                 <option value="Day Scholars" ${community.category === 'Day Scholars' ? 'selected' : ''}>Day Scholars</option>
                                 <option value="International" ${community.category === 'International' ? 'selected' : ''}>International</option>
+                                <option value="All" ${community.category === 'All' ? 'selected' : ''}>All Students</option>
                             </select>
                         </div>
 
@@ -666,7 +668,7 @@
                     },
                     body: JSON.stringify({
                         name: name,
-                        category: 'General',
+                        category: 'All',
                         invite_link: link,
                         status: 'Active'
                     })

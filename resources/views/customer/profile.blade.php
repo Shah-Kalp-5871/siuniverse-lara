@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-4">
+                    <!-- <div class="flex items-center space-x-4">
                         <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
                             <i class="fas fa-dumbbell"></i>
                         </div>
@@ -94,7 +94,7 @@
                             <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Gym Preference</span>
                             <span class="text-gray-800 font-semibold">{{ $student->gym_choice ?? 'Not set' }}</span>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="flex items-center space-x-4">
                         <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">

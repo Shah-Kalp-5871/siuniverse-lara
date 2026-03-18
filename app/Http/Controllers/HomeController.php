@@ -65,6 +65,9 @@ class HomeController extends Controller
                 if ($origin === 'international') {
                     $query->orWhere('category', 'International');
                 }
+
+                // 3. OR Match "All Students" category
+                $query->orWhere('category', 'All');
             })
             ->get();
 
@@ -126,9 +129,12 @@ class HomeController extends Controller
             $query->where('distance', '<=', $request->max_distance);
         }
 
+        // Always prioritize luxury stays first
+        $query->orderBy('is_luxury', 'desc');
+
         // Luxury filter - Keep it special, it might override default sort
         if ($request->boolean('luxury')) {
-            $query->where('is_luxury', true)->orderBy('luxury_order', 'asc');
+            $query->orderBy('luxury_order', 'asc');
         } else {
             // Apply a default ordering if not luxury
             $query->orderBy('created_at', 'desc');

@@ -86,6 +86,12 @@
                             $textColor = 'text-red-600';
                             $tag = 'HOSTEL';
                         }
+                    } elseif ($community->category === 'All') {
+                        $icon = 'fas fa-bullhorn';
+                        $colorClass = 'border-indigo-500';
+                        $bgColor = 'bg-indigo-100';
+                        $textColor = 'text-indigo-600';
+                        $tag = 'CAMPUS-WIDE';
                     }
                 @endphp
 

@@ -96,8 +96,13 @@
                                 </div>
                             </div>
 
+                            <!-- Apply Filter Button -->
+                            <button id="applyFiltersBtn" class="w-full py-4 rounded-xl bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-200">
+                                Apply Filters
+                            </button>
+
                             <!-- Clear All Filters -->
-                            <button id="clearFiltersBtn" class="w-full py-3 text-sm font-bold text-red-500 hover:text-red-700 transition-colors">
+                            <button id="clearFiltersBtn" class="w-full py-2 text-xs font-bold text-gray-400 hover:text-red-500 transition-colors">
                                 Clear All Filters
                             </button>
                         </div>
@@ -167,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const priceDisplay = document.getElementById('priceDisplay');
     const distanceDropdown = document.getElementById('distanceDropdown');
     const staysListing = document.getElementById('staysListing');
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
     let debounceTimer;
@@ -268,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.add('active', 'text-primary', 'bg-primary/10');
             }
             
+            // Keeping top-level type buttons instant as they are outside the panel
             updateListing();
         });
     });
@@ -287,8 +294,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Apply Filters Button
+    applyFiltersBtn.addEventListener('click', () => {
+        updateListing();
+        filterPanel.classList.add('hidden');
+        filterChevron.classList.remove('rotate-180');
+    });
+
     // Area Filter
-    areaFilter.addEventListener('change', updateListing);
+    // areaFilter.addEventListener('change', updateListing);
 
     // Gender Filter (Multi-select)
     genderBtns.forEach(btn => {
@@ -296,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.classList.toggle('active');
             btn.classList.toggle('text-primary');
             btn.classList.toggle('bg-primary/10');
-            updateListing();
+            // updateListing();
         });
     });
 
@@ -309,12 +323,12 @@ document.addEventListener('DOMContentLoaded', function() {
             priceDisplay.textContent = `Under ₹${val.toLocaleString()}`;
         }
         
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateListing, 500);
+        // clearTimeout(debounceTimer);
+        // debounceTimer = setTimeout(updateListing, 500);
     });
 
     // Distance Filter
-    distanceDropdown.addEventListener('change', updateListing);
+    // distanceDropdown.addEventListener('change', updateListing);
 
     // Clear All
     clearFiltersBtn.addEventListener('click', () => {
