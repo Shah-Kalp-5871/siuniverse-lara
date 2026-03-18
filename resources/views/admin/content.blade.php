@@ -619,6 +619,7 @@
                             <select id="swal-edit-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="Excluded" ${stay.food_inclusion === 'Excluded' ? 'selected' : ''}>Excluded from Rent</option>
                                 <option value="Included" ${stay.food_inclusion === 'Included' ? 'selected' : ''}>Included in Rent</option>
+                                <option value="None" ${stay.food_inclusion === 'None' ? 'selected' : ''}>None</option>
                             </select>
                         </div>
                         <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${stay.food_type === 'None' ? 'hidden' : ''}">

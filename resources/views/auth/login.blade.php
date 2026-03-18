@@ -11,7 +11,7 @@
                 <i class="fas fa-graduation-cap text-3xl"></i>
             </div>
             <h1 class="text-2xl font-bold">Welcome Back</h1>
-            <p class="text-blue-100 mt-2">Sign in with your SI University email</p>
+            <p class="text-blue-100 mt-2">Sign in with your SIU University email</p>
         </div>
 
         <!-- Form -->

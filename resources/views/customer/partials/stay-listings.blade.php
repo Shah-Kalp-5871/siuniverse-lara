@@ -23,13 +23,13 @@
                         <span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider flex items-center">
                             <i class="fas fa-map-marker-alt mr-2 text-rose-400"></i> {{ $stay->distance }} km
                         </span>
-                        <span class="bg-blue-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider">
+                        <!-- <span class="bg-blue-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider">
                             {{ $stay->type }}
-                        </span>
+                        </span> -->
                     </div>
 
                     @if($stay->is_luxury)
-                    <div class="absolute bottom-4 left-4 bg-amber-400 text-slate-900 text-[10px] px-4 py-1.5 rounded-full font-bold uppercase tracking-widest flex items-center shadow-2xl animate-pulse">
+                    <div class="absolute top-4 right-4 bg-amber-400 text-slate-900 text-[10px] px-4 py-1.5 rounded-full font-bold uppercase tracking-widest flex items-center shadow-2xl animate-pulse">
                         <i class="fas fa-crown mr-2"></i> Luxury Curated
                     </div>
                     @endif
@@ -40,7 +40,7 @@
             <div class="lg:w-3/5 p-6 lg:pl-2 flex flex-col">
                 <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
                     <div>
-                        <h2 class="text-3xl font-bold text-slate-900 mb-1 tracking-tight leading-tight uppercase">{{ $stay->name }}</h2>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-1 tracking-tight leading-tight">{{ $stay->name }}</h2>
                         <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <i class="fas fa-map-pin mr-2 text-rose-500"></i>
                             {{ $stay->area ?: 'Pune North' }}
@@ -56,7 +56,7 @@
                 <!-- Amenities -->
                 <div class="flex flex-wrap gap-1.5 mb-6">
                     @foreach (array_slice($stay->amenities ?? [], 0, 5) as $amenity)
-                        <span class="bg-slate-50 text-slate-500 text-[10px] px-3 py-1 rounded-md font-bold uppercase border border-slate-100 italic">
+                        <span class="bg-slate-50 text-slate-500 text-[10px] px-3 py-1 rounded-md font-bold uppercase border border-slate-100">
                             {{ $amenity }}
                         </span>
                     @endforeach
@@ -86,12 +86,12 @@
                             </div>
                             @endif
 
-                            <div class="flex justify-between items-center py-2 px-3 bg-white rounded-xl border border-blue-100 shadow-sm ring-2 ring-blue-50">
+                            <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-[9px] font-bold text-blue-600 uppercase tracking-wider">Most Popular</span>
-                                    <span class="text-xs font-bold text-slate-800">Double Sharing</span>
+                                    <!-- <span class="text-[9px] font-bold text-blue-600 uppercase tracking-wider">Most Popular</span> -->
+                                    <span class="text-xs font-bold text-slate-500">Double Sharing</span>
                                 </div>
-                                <span class="text-lg font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
+                                <span class="text-sm font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
                             </div>
 
                             @if($stay->triple_sharing_rent)
@@ -162,7 +162,7 @@
             <i class="fas fa-search text-slate-300 text-4xl"></i>
         </div>
         <h3 class="text-2xl font-bold text-slate-800 mb-3 tracking-tight">NO STAYS MATCH YOUR FILTERS</h3>
-        <p class="text-slate-400 font-medium max-w-sm mx-auto">Try broadening your search or resetting filters to find our hand-picked curated PGs.</p>
+        <p class="text-slate-400 font-medium max-w-sm mx-auto">Flats Coming soon or resetting filters to find our hand-picked curated PGs.</p>
         <button onclick="window.location.reload()" class="mt-8 text-blue-600 font-bold text-xs uppercase tracking-widest hover:text-blue-800 transition-colors">
             <i class="fas fa-undo mr-2"></i> Reset Search
         </button>

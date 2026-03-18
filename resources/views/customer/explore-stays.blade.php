@@ -255,12 +255,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Type Filter (Multi-select)
+    // Type Filter (Mutually Exclusive)
     typeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-            btn.classList.toggle('text-primary');
-            btn.classList.toggle('bg-primary/10');
+            const isActive = btn.classList.contains('active');
+            
+            // Deactivate all first
+            typeBtns.forEach(b => b.classList.remove('active', 'text-primary', 'bg-primary/10'));
+            
+            // If it wasn't active, activate it now
+            if (!isActive) {
+                btn.classList.add('active', 'text-primary', 'bg-primary/10');
+            }
+            
             updateListing();
         });
     });
