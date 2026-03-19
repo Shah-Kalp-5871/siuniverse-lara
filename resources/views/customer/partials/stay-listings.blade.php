@@ -154,7 +154,7 @@
                     @if($stay->website_url)
                         <a href="{{ $stay->website_url }}" target="_blank" class="w-full mt-3 bg-white border-2 border-slate-200 text-slate-600 font-bold py-3 px-8 rounded-2xl transition-all duration-300 hover:bg-slate-50 flex items-center justify-center group active:scale-95 uppercase tracking-widest text-[9px]">
                             <i class="fas fa-external-link-alt mr-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                            View My Website
+                            360° Virtual Tour
                         </a>
                     @endif
                 </div>

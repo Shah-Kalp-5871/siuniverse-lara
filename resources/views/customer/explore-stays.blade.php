@@ -81,19 +81,19 @@
                                 </div>
                             </div>
 
-                            <!-- Max Distance Dropdown -->
-                            <div class="space-y-2">
-                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Max Distance</span>
-                                <div class="relative">
-                                    <select id="distanceDropdown" class="w-full appearance-none bg-gray-50 text-gray-800 text-sm font-medium rounded-lg px-4 py-3 pr-10 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer">
-                                        <option value="">Any Distance</option>
-                                        <option value="1">Under 1 km</option>
-                                        <option value="2">Under 2 km</option>
-                                        <option value="5">Under 5 km</option>
-                                        <option value="10">Under 10 km</option>
-                                        <option value="15">Under 15 km</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                            <!-- Max Distance Slider -->
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center px-1">
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Max Distance</span>
+                                    <span id="distanceDisplay" class="text-primary text-sm font-bold">Any Distance</span>
+                                </div>
+                                <div class="px-1 pb-2">
+                                    <input type="range" id="distanceSlider" min="1" max="15" step="1" value="15" 
+                                        class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary hover:bg-gray-300 transition-colors">
+                                    <div class="flex justify-between mt-2 text-xs text-gray-400 font-medium tracking-wider">
+                                        <span>1 km</span>
+                                        <span>15 km</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -171,7 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeBtns = document.querySelectorAll('.type-btn');
     const priceSlider = document.getElementById('priceSlider');
     const priceDisplay = document.getElementById('priceDisplay');
-    const distanceDropdown = document.getElementById('distanceDropdown');
+    const distanceSlider = document.getElementById('distanceSlider');
+    const distanceDisplay = document.getElementById('distanceDisplay');
     const staysListing = document.getElementById('staysListing');
     const applyFiltersBtn = document.getElementById('applyFiltersBtn');
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
@@ -228,8 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Distance
-        if (distanceDropdown.value) {
-            params.max_distance = distanceDropdown.value;
+        if (parseInt(distanceSlider.value) < 15) {
+            params.max_distance = distanceSlider.value;
         }
 
         return params;
@@ -328,8 +329,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // debounceTimer = setTimeout(updateListing, 500);
     });
 
-    // Distance Filter
-    // distanceDropdown.addEventListener('change', updateListing);
+    // Distance Slider
+    distanceSlider.addEventListener('input', () => {
+        const val = parseInt(distanceSlider.value);
+        if (val >= 15) {
+            distanceDisplay.textContent = 'Any Distance';
+        } else {
+            distanceDisplay.textContent = `Under ${val} km`;
+        }
+    });
 
     // Clear All
     clearFiltersBtn.addEventListener('click', () => {
@@ -343,7 +351,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         areaFilter.value = "";
-        distanceDropdown.value = "";
+        distanceSlider.value = 15;
+        distanceDisplay.textContent = 'Any Distance';
         
         priceSlider.value = 50000;
         priceDisplay.textContent = 'Any Budget';
