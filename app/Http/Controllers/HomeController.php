@@ -134,6 +134,7 @@ class HomeController extends Controller
 
         // Luxury filter - Keep it special, it might override default sort
         if ($request->boolean('luxury')) {
+            $query->where('is_luxury', true);
             $query->orderBy('luxury_order', 'asc');
         } else {
             // Apply a default ordering if not luxury
