@@ -24,10 +24,10 @@
                     </div>
 
                     <!-- Luxury Curated Button -->
-                    <!-- <button id="luxuryBtn" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg font-bold text-sm transition-all bg-gray-50 text-gray-500 border border-gray-100 hover:text-amber-500 hover:bg-amber-50" data-filter="luxury">
+                    <button id="luxuryBtn" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg font-bold text-sm transition-all bg-gray-50 text-gray-500 border border-gray-100 hover:text-amber-500 hover:bg-amber-50" data-filter="luxury">
                         <i class="fas fa-crown text-amber-500"></i>
                         <span>Luxury Curated</span>
-                    </button> -->
+                    </button>
 
                     <!-- Consolidated Filter Button -->
                     <div class="relative w-full md:w-auto z-[70]">
