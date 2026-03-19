@@ -25,7 +25,8 @@ class Stay extends Model
         'food_type',
         'weekday_meals_price',
         'weekend_meals_price',
-        'food_inclusion'
+        'food_inclusion',
+        'website_url'
     ];
 
     protected $casts = [

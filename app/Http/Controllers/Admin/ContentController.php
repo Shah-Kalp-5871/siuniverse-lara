@@ -41,6 +41,7 @@ class ContentController extends Controller
             'food_inclusion' => 'required|in:Included,Excluded',
             'weekday_meals_price' => 'nullable|integer',
             'weekend_meals_price' => 'nullable|integer',
+            'website_url' => 'nullable|url|max:255',
         ]);
         
 
@@ -99,6 +100,7 @@ class ContentController extends Controller
             'food_inclusion' => 'required|in:Included,Excluded',
             'weekday_meals_price' => 'nullable|integer',
             'weekend_meals_price' => 'nullable|integer',
+            'website_url' => 'nullable|url|max:255',
         ]);
 
         if ($validator->fails()) {

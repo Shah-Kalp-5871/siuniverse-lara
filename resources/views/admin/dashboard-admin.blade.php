@@ -132,3 +132,20 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!sessionStorage.getItem('admin_welcomed')) {
+            Swal.fire({
+                title: 'Welcome, Chutiye!',
+                icon: 'success',
+                confirmButtonColor: '#1e293b',
+                timer: 3000,
+                timerProgressBar: true
+            });
+            sessionStorage.setItem('admin_welcomed', 'true');
+        }
+    });
+</script>
+@endpush

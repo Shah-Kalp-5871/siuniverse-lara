@@ -267,6 +267,11 @@
                                 <button onclick='editStay(${JSON.stringify(data)})' title="Edit" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
                                     <i class="fas fa-edit text-xs"></i>
                                 </button>
+                                ${data.website_url ? `
+                                <a href="${data.website_url}" target="_blank" title="View Website" class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all">
+                                    <i class="fas fa-external-link-alt text-xs"></i>
+                                </a>
+                                ` : ''}
                                 <button onclick="deleteStay(${data.id}, '${data.name}')" title="Delete" class="w-8 h-8 rounded-lg bg-slate-50 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all">
                                     <i class="fas fa-trash text-xs"></i>
                                 </button>
@@ -405,8 +410,13 @@
                                 <option value="Co-living">Co-living</option>
                                 <option value="Boys">Boys Only</option>
                                 <option value="Girls">Girls Only</option>
+                                <option value="Couples">Couples</option>
                             </select>
                         </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Website URL (Optional)</label>
+                        <input id="swal-website-url" type="url" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="https://example.com">
                     </div>
                     <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 flex items-center justify-between">
                         <div>
@@ -474,6 +484,7 @@
                 const luxuryOrder = document.getElementById('swal-luxury-order').value;
                 const area = document.getElementById('swal-area').value;
                 const gender = document.getElementById('swal-gender').value;
+                const websiteUrl = document.getElementById('swal-website-url').value;
 
                 // Validation
                 if (!name || !deposit || !doubleSharing) {
@@ -496,6 +507,9 @@
                 formData.append('visiting_schedule', document.getElementById('swal-visiting-schedule').value);
                 formData.append('area', area);
                 formData.append('gender', gender);
+                if (websiteUrl) {
+                    formData.append('website_url', websiteUrl);
+                }
                 if (isLuxury) {
                     formData.append('is_luxury', '1');
                     formData.append('luxury_order', luxuryOrder);
@@ -644,8 +658,13 @@
                                 <option value="Co-living" ${stay.gender === 'Co-living' ? 'selected' : ''}>Co-living</option>
                                 <option value="Boys" ${stay.gender === 'Boys' ? 'selected' : ''}>Boys Only</option>
                                 <option value="Girls" ${stay.gender === 'Girls' ? 'selected' : ''}>Girls Only</option>
+                                <option value="Couples" ${stay.gender === 'Couples' ? 'selected' : ''}>Couples</option>
                             </select>
                         </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Website URL (Optional)</label>
+                        <input id="swal-edit-website-url" type="url" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.website_url || ''}" placeholder="https://example.com">
                     </div>
                     <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 flex items-center justify-between">
                         <div>
@@ -713,6 +732,7 @@
                 const luxuryOrder = document.getElementById('swal-edit-luxury-order').value;
                 const area = document.getElementById('swal-edit-area').value;
                 const gender = document.getElementById('swal-edit-gender').value;
+                const websiteUrl = document.getElementById('swal-edit-website-url').value;
 
                 // Validation
                 if (!name || !deposit || !doubleSharing) {
@@ -736,6 +756,9 @@
                 formData.append('visiting_schedule', document.getElementById('swal-edit-visiting-schedule').value);
                 formData.append('area', area);
                 formData.append('gender', gender);
+                if (websiteUrl) {
+                    formData.append('website_url', websiteUrl);
+                }
                 if (isLuxury) {
                     formData.append('is_luxury', '1');
                     formData.append('luxury_order', luxuryOrder);

@@ -15,7 +15,7 @@ class InquiryController extends Controller
             $validated = $request->validate([
                 'stay_id' => 'required|exists:stays,id',
                 'user_name' => 'required|string|max:255',
-                'user_contact_number' => 'required|string|max:15',
+                'user_contact_number' => ['required', 'string', 'regex:/^[6789]\d{9}$/'],
                 'visit_date' => 'required|date',
                 'visit_time' => 'required|string|max:255',
                 'visiting_schedule' => 'required|string|max:255',

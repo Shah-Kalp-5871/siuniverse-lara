@@ -61,6 +61,7 @@
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Boys">Boys</button>
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Girls">Girls</button>
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Co-living">Co-living</button>
+                                    <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Couples">Couples</button>
                                 </div>
                             </div>
 
@@ -359,17 +360,6 @@ document.addEventListener('DOMContentLoaded', function() {
             title: '<h2 class="text-xl font-bold text-slate-900 uppercase tracking-tighter">Terms of Use & Disclaimer</h2>',
             html: `
                 <div class="text-left py-4 px-2 space-y-6">
-                    <!-- Policy Highlight -->
-                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white shadow-lg">
-                            <i class="fas fa-hand-holding-heart text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest leading-none mb-1">SIU UNIVERSE POLICY</p>
-                            <p class="text-sm font-bold text-slate-700">We charge <strong>ZERO fees</strong> or commission from students.</p>
-                        </div>
-                    </div>
-
                     <!-- Core Disclaimers Grid -->
                     <div class="grid gap-4">
                         <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/30 flex gap-4">
@@ -429,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="text-sm font-bold text-slate-800">${stay.name}</p>
                         <div class="mt-2">
                             <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-0.5">Visiting Schedule</p>
-                            <p class="text-xs text-slate-600">${stay.visiting_schedule || 'Contact owner for schedule'}</p>
+                            <p class="text-xs text-slate-600">${stay.visiting_schedule || 'We will contact you for schedule'}</p>
                         </div>
                     </div>
                     
@@ -440,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">Contact Number</label>
-                        <input id="swal-user-contact" type="text" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="10-digit mobile number">
+                        <input id="swal-user-contact" type="text" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^[^6789]+/, '').slice(0, 10)" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="10-digit mobile number">
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
@@ -456,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     <div class="bg-amber-50 p-3 rounded-lg border border-amber-100 mt-4">
                         <p class="text-xs text-amber-800 text-center font-medium">
-                            <i class="fas fa-info-circle mr-1"></i> Owner will contact you within 24 hours to confirm your visit.
+                            <i class="fas fa-info-circle mr-1"></i> We'll confirm your visit within 12 hours.
                         </p>
                     </div>
                 </div>
@@ -476,8 +466,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     return false;
                 }
 
-                if (!/^\d{10}$/.test(contact)) {
-                    Swal.showValidationMessage('Please enter a valid 10-digit contact number');
+                if (!/^[6789]\d{9}$/.test(contact)) {
+                    Swal.showValidationMessage('Contact number must be 10 digits and start with 6, 7, 8, or 9');
                     return false;
                 }
 
