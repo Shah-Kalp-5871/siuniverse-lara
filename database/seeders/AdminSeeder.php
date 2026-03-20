@@ -21,11 +21,11 @@ class AdminSeeder extends Seeder
             ['password' => Hash::make('demo123')]
         );
 
-        // Second Admin Account
-        // Admin::updateOrCreate(
-        //     ['email' => 'secondadmin@example.com'],
-        //     ['password' => Hash::make('their-password-here')]
-        // );
+        //  Second Admin Account
+         Admin::updateOrCreate(
+             ['email' => 'yuvrajbhati1909twopointo@gmail.com'],
+            ['password' => Hash::make('ramsiyaram@#890532.+/*-')]
+         );
         
         // Add as many as you need...
     }
