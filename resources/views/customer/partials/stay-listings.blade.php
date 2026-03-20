@@ -114,7 +114,12 @@
                                 </span>
                         </div>
                         <div class="p-4 h-full flex flex-col justify-center">
-                            @if($stay->food_type !== 'None')
+                            @if(($stay->food_inclusion ?? 'Excluded') === 'Included')
+                                <div class="flex flex-col items-center text-center py-4">
+                                    <i class="fas fa-check-circle text-emerald-500 text-2xl mb-2"></i>
+                                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Meals Included</span>
+                                </div>
+                            @elseif($stay->food_type !== 'None')
                                 <div class="flex flex-col items-center text-center">
                                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">{{ $stay->food_type }}</span>
                                     @php
@@ -166,8 +171,9 @@
         <div class="inline-block p-6 rounded-3xl bg-white shadow-sm mb-6">
             <i class="fas fa-search text-slate-300 text-4xl"></i>
         </div>
-        <h3 class="text-2xl font-bold text-slate-800 mb-3 tracking-tight">NO STAYS MATCH YOUR FILTERS</h3>
-        <p class="text-slate-400 font-medium max-w-sm mx-auto">Flats Coming soon or resetting filters to find our hand-picked curated PGs.</p>
+        <h3 class="text-2xl font-bold text-slate-800 mb-3 tracking-tight">No flats available right now.</h3>
+        <p class="text-slate-400 font-medium max-w-sm mx-auto">You can explore our Luxury Curated PGs — with food, laundry, and essentials taken care of. Move in comfortably after vacation.</p>
+        <p class="text-slate-400 font-medium max-w-sm mx-auto">If you're planning for a flat, limited no-brokerage options will be available in May or July move-ins.</p>
         <button onclick="window.location.reload()" class="mt-8 text-blue-600 font-bold text-xs uppercase tracking-widest hover:text-blue-800 transition-colors">
             <i class="fas fa-undo mr-2"></i> Reset Search
         </button>

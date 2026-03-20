@@ -15,9 +15,19 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        // Your Admin Account
         Admin::updateOrCreate(
-            ['username' => 'admin@2026'],
-            ['password' => Hash::make('Admin2026')]
+            ['email' => 'shivansh2915@gmail.com'],
+            ['password' => Hash::make('demo123')]
         );
+
+        // Second Admin Account
+        // Admin::updateOrCreate(
+        //     ['email' => 'secondadmin@example.com'],
+        //     ['password' => Hash::make('their-password-here')]
+        // );
+        
+        // Add as many as you need...
     }
+
 }

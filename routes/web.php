@@ -40,7 +40,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Guest Admin Routes
     Route::middleware('guest:admin')->group(function () {
         Route::get('/login', [\App\Http\Controllers\Admin\AuthController::class, 'showLogin'])->name('login');
-        Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login.post');
+        Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.post');
+        Route::get('/login/verify', [\App\Http\Controllers\Admin\AuthController::class, 'showVerifyOtp'])->name('login.verify');
+        Route::post('/login/verify', [\App\Http\Controllers\Admin\AuthController::class, 'verifyOtp'])->name('login.verify.post');
     });
 
     // Authenticated Admin Routes

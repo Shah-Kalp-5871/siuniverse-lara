@@ -212,10 +212,16 @@
                                 ${data.food_type !== 'None' ? `
                                 <div class="pt-1 mt-1 border-t border-slate-100">
                                     <p class="text-[9px] font-bold text-blue-500 uppercase">${data.food_type}</p>
-                                    <div class="flex justify-between text-[8px] text-slate-500 font-bold">
+                                    ${data.food_inclusion === 'Included' ? `
+                                    <div class="flex justify-start text-[9px] text-emerald-600 font-bold mt-0.5">
+                                        <span>Food included</span>
+                                    </div>
+                                    ` : `
+                                    <div class="flex justify-between text-[8px] text-slate-500 font-bold mt-0.5">
                                         <span>WD: ₹${data.weekday_meals_price || 0}</span>
                                         <span>WE: ₹${data.weekend_meals_price || 0}</span>
                                     </div>
+                                    `}
                                 </div>
                                 ` : ''}
                             </div>
@@ -374,7 +380,7 @@
                     <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-blue-700 mb-2">Food / Tiffin Service</label>
-                            <select id="swal-food-type" onchange="toggleFoodPrices()" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                            <select id="swal-food-type" onchange="toggleFoodPrices('add')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="None">None</option>
                                 <option value="Food Service">Food Service (Provided by PG)</option>
                                 <option value="Tiffin Service">Tiffin Service (Arranged by PG)</option>
@@ -382,7 +388,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-blue-700 mb-2">Meal Inclusion</label>
-                            <select id="swal-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                            <select id="swal-food-inclusion" onchange="toggleFoodPrices('add')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="Excluded">Excluded from Rent</option>
                                 <option value="Included">Included in Rent</option>
                                 <option value="None">None</option>
@@ -630,13 +636,13 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-blue-700 mb-2">Meal Inclusion</label>
-                            <select id="swal-edit-food-inclusion" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
+                            <select id="swal-edit-food-inclusion" onchange="toggleFoodPrices('edit')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="Excluded" ${stay.food_inclusion === 'Excluded' ? 'selected' : ''}>Excluded from Rent</option>
                                 <option value="Included" ${stay.food_inclusion === 'Included' ? 'selected' : ''}>Included in Rent</option>
                                 <option value="None" ${stay.food_inclusion === 'None' ? 'selected' : ''}>None</option>
                             </select>
                         </div>
-                        <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${stay.food_type === 'None' ? 'hidden' : ''}">
+                        <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${(stay.food_type === 'None' || stay.food_inclusion === 'Included') ? 'hidden' : ''}">
                             <div>
                                 <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekday (2 Meals)</label>
                                 <input id="swal-edit-weekday-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekday_meals_price || ''}" placeholder="Price ₹">
@@ -974,12 +980,14 @@
 
     function toggleFoodPrices(context = 'add') {
         const typeId = context === 'add' ? 'swal-food-type' : 'swal-edit-food-type';
+        const inclusionId = context === 'add' ? 'swal-food-inclusion' : 'swal-edit-food-inclusion';
         const containerId = context === 'add' ? 'food-prices-container' : 'edit-food-prices-container';
         
         const type = document.getElementById(typeId).value;
+        const inclusion = document.getElementById(inclusionId).value;
         const container = document.getElementById(containerId);
         
-        if (type === 'None') {
+        if (type === 'None' || inclusion === 'Included') {
             container.classList.add('hidden');
         } else {
             container.classList.remove('hidden');

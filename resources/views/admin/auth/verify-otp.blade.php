@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - SI UNIVERSE</title>
+    <title>Admin Verify OTP - SI UNIVERSE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -25,13 +25,13 @@
         <!-- Logo/Header -->
         <div class="text-center mb-8">
             <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/40 mx-auto mb-4 scale-110">
-                <i class="fas fa-shield-alt text-white text-2xl"></i>
+                <i class="fas fa-fingerprint text-white text-2xl"></i>
             </div>
-            <h1 class="text-3xl font-extrabold text-white tracking-tight">SIU Admin</h1>
-            <p class="text-slate-400 mt-2 text-sm font-medium">Command Center Authentication</p>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">Security Check</h1>
+            <p class="text-slate-400 mt-2 text-sm font-medium">Enter the 6-digit OTP sent to your email.</p>
         </div>
 
-        <!-- Login Card -->
+        <!-- Verify Card -->
         <div class="glass-panel p-8 rounded-[2rem] shadow-2xl">
             @if(session('error'))
                 <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center space-x-3 text-red-500 text-sm animate-shake">
@@ -39,51 +39,38 @@
                     <span>{{ session('error') }}</span>
                 </div>
             @endif
-
-            @if($errors->any())
-                <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-sm">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            @if(session('success'))
+                <div class="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center space-x-3 text-green-500 text-sm">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ session('success') }}</span>
                 </div>
             @endif
 
-            <form action="{{ route('admin.login.post') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.login.verify.post') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <label class="block text-slate-700 text-xs font-bold uppercase tracking-widest mb-2 ml-1">Email Address</label>
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <input type="email" name="email" required 
-                            class="block w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-slate-800 placeholder-slate-400 transition-all outline-none font-medium" 
-                            placeholder="admin@example.com" value="{{ old('email') }}">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-slate-700 text-xs font-bold uppercase tracking-widest mb-2 ml-1">Secret Key</label>
+                    <label class="block text-slate-700 text-xs font-bold uppercase tracking-widest mb-2 ml-1">One-Time Password</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
                             <i class="fas fa-key"></i>
                         </div>
-                        <input type="password" name="password" required 
-                            class="block w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-slate-800 placeholder-slate-400 transition-all outline-none font-medium" 
-                            placeholder="••••••••">
+                        <input type="text" name="otp" required maxlength="6" pattern="\d{6}"
+                            class="block w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-slate-800 placeholder-slate-400 transition-all outline-none font-medium text-center tracking-[0.5em] text-lg" 
+                            placeholder="------">
                     </div>
                 </div>
 
                 <div class="pt-2">
                     <button type="submit" 
                         class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-500/25 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
-                        <span>Initialize Session</span>
-                        <i class="fas fa-arrow-right text-xs opacity-70"></i>
+                        <span>Verify & Authenticate</span>
+                        <i class="fas fa-check text-xs opacity-70"></i>
                     </button>
                 </div>
             </form>
+            <div class="mt-6 text-center">
+                <a href="{{ route('admin.login') }}" class="text-sm text-slate-500 hover:text-blue-600 transition-colors font-medium">Cancel and return to login</a>
+            </div>
         </div>
 
         <!-- Footer -->

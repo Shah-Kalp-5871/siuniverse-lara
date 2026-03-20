@@ -19,8 +19,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
-            AllowedDomainSeeder::class,
-            OptionSeeder::class,
         ]);
     }
 }
