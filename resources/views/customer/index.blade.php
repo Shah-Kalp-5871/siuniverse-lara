@@ -15,10 +15,10 @@
                 <p class="text-gray-600 text-lg mb-8">
                     <span id="typed-text" class="text-secondary font-semibold"></span>
                 </p>
-                <div class="bg-yellow-50 border-l-4 border-accent p-4 mb-8">
+                <!-- <div class="bg-yellow-50 border-l-4 border-accent p-4 mb-8">
                     <p class="text-gray-800 font-bold mb-2">Core Philosophy:</p>
                     <p class="text-gray-700">"Empowering SIU students to organize, collaborate, and grow together. A focused space for a purposeful student life."</p>
-                </div> 
+                </div>  -->
              </div> 
         </div>
     </div>
@@ -204,10 +204,9 @@
         // Typed text animation
         new Typed('#typed-text', {
             strings: [
-                'Decide online. Meet offline.',
-                'Verified student communities.',
-                'No random chatting.',
-                'WhatsApp groups for planning only.'
+                'Explore your accommodation,',
+                'Connect with communities,',
+                'And meet peers across campus.',
             ],
             typeSpeed: 50,
             backSpeed: 30,

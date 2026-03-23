@@ -38,7 +38,7 @@
                 @csrf
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
-                        SI University Email Address <span class="text-red-500">*</span>
+                        SIU University Email Address <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

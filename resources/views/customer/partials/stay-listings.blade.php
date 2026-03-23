@@ -70,7 +70,7 @@
                     <!-- Room Tariffs -->
                     <div class="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden">
                         <div class="bg-slate-100/50 px-4 py-2 border-b border-slate-100 flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monthly Rent</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Monthly Rent</span>
                             <div class="flex items-center gap-2">
                                 <!-- <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
                                     Meals {{ $stay->food_inclusion ?? 'Excluded' }}
@@ -81,23 +81,22 @@
                         <div class="p-4 space-y-3">
                             @if($stay->single_sharing_rent)
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-slate-500">Single Sharing</span>
-                                <span class="text-sm font-bold text-slate-800">₹{{ number_format($stay->single_sharing_rent) }}</span>
+                                <span class="text-sm font-bold text-slate-500">Single Sharing</span>
+                                <span class="text-lg font-bold text-slate-800">₹{{ number_format($stay->single_sharing_rent) }}</span>
                             </div>
                             @endif
 
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <!-- <span class="text-[9px] font-bold text-blue-600 uppercase tracking-wider">Most Popular</span> -->
-                                    <span class="text-xs font-bold text-slate-500">Double Sharing</span>
+                                    <span class="text-sm font-bold text-slate-500">Double Sharing</span>
                                 </div>
-                                <span class="text-sm font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
+                                <span class="text-lg font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
                             </div>
 
                             @if($stay->triple_sharing_rent)
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-slate-500">Triple Sharing</span>
-                                <span class="text-sm font-bold text-slate-800">₹{{ number_format($stay->triple_sharing_rent) }}</span>
+                                <span class="text-sm font-bold text-slate-500">Triple Sharing</span>
+                                <span class="text-lg font-bold text-slate-800">₹{{ number_format($stay->triple_sharing_rent) }}</span>
                             </div>
                             @endif
                         </div>
@@ -106,39 +105,19 @@
                     <!-- Food Service -->
                     <div class="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden">
                         <div class="bg-slate-100/50 px-4 py-2 border-b border-slate-100 flex items-center justify-between">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Meal Services</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Meal Services</span>
                             <i class="fas fa-utensils text-slate-400 text-[10px]"></i>
-
-                            <span class="text-[8px] font-bold uppercase px-2 py-0.5 rounded-full {{ ($stay->food_inclusion ?? 'Excluded') === 'Included' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">
-                                    Meals {{ $stay->food_inclusion ?? 'Excluded' }}
-                                </span>
                         </div>
                         <div class="p-4 h-full flex flex-col justify-center">
                             @if(($stay->food_inclusion ?? 'Excluded') === 'Included')
                                 <div class="flex flex-col items-center text-center py-4">
                                     <i class="fas fa-check-circle text-emerald-500 text-2xl mb-2"></i>
-                                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Meals Included</span>
+                                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Meal Included</span>
                                 </div>
                             @elseif($stay->food_type !== 'None')
-                                <div class="flex flex-col items-center text-center">
-                                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">{{ $stay->food_type }}</span>
-                                    @php
-                                        $min = min($stay->weekday_meals_price, $stay->weekend_meals_price);
-                                        $max = max($stay->weekday_meals_price, $stay->weekend_meals_price);
-                                        $formatPrice = function($price) {
-                                            return number_format($price);
-                                        };
-                                    @endphp
-                                    <div class="text-xl font-bold text-slate-800 mb-1">
-                                        @if($min == $max)
-                                            ₹{{ $formatPrice($min) }} <small class="text-[10px] text-slate-400">/mo</small>
-                                        @else
-                                            ₹{{ $formatPrice($min) }}-{{ $formatPrice($max) }} <small class="text-[10px] text-slate-400">/mo</small>
-                                        @endif
-                                    </div>
-                                    <p class="text-[9px] text-slate-400 font-bold leading-tight uppercase italic">
-                                        Includes Weekday (2 Meals) <br>& Weekend (3 Meals)
-                                    </p>
+                                <div class="flex flex-col items-center text-center py-4">
+                                    <i class="fas fa-minus-circle text-slate-400 text-2xl mb-2"></i>
+                                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Meal Excluded</span>
                                 </div>
                             @else
                                 <div class="flex flex-col items-center justify-center py-4 opacity-50">

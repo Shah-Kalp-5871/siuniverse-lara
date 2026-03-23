@@ -211,15 +211,13 @@
                                 </div>
                                 ${data.food_type !== 'None' ? `
                                 <div class="pt-1 mt-1 border-t border-slate-100">
-                                    <p class="text-[9px] font-bold text-blue-500 uppercase">${data.food_type}</p>
                                     ${data.food_inclusion === 'Included' ? `
                                     <div class="flex justify-start text-[9px] text-emerald-600 font-bold mt-0.5">
                                         <span>Food included</span>
                                     </div>
                                     ` : `
-                                    <div class="flex justify-between text-[8px] text-slate-500 font-bold mt-0.5">
-                                        <span>WD: ₹${data.weekday_meals_price || 0}</span>
-                                        <span>WE: ₹${data.weekend_meals_price || 0}</span>
+                                    <div class="flex justify-start text-[9px] text-slate-500 font-bold mt-0.5">
+                                        <span>Food excluded</span>
                                     </div>
                                     `}
                                 </div>
@@ -382,8 +380,7 @@
                             <label class="block text-xs font-bold text-blue-700 mb-2">Food / Tiffin Service</label>
                             <select id="swal-food-type" onchange="toggleFoodPrices('add')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="None">None</option>
-                                <option value="Food Service">Food Service (Provided by PG)</option>
-                                <option value="Tiffin Service">Tiffin Service (Arranged by PG)</option>
+                                <option value="Food Service">Meal Service</option>
                             </select>
                         </div>
                         <div>
@@ -630,8 +627,7 @@
                             <label class="block text-xs font-bold text-blue-700 mb-2">Food / Tiffin Service</label>
                             <select id="swal-edit-food-type" onchange="toggleFoodPrices('edit')" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none bg-white">
                                 <option value="None" ${stay.food_type === 'None' ? 'selected' : ''}>None</option>
-                                <option value="Food Service" ${stay.food_type === 'Food Service' ? 'selected' : ''}>Food Service (Provided by PG)</option>
-                                <option value="Tiffin Service" ${stay.food_type === 'Tiffin Service' ? 'selected' : ''}>Tiffin Service (Arranged by PG)</option>
+                                <option value="Food Service" ${stay.food_type === 'Food Service' || stay.food_type === 'Tiffin Service' ? 'selected' : ''}>Meal Service</option>
                             </select>
                         </div>
                         <div>
