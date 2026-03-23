@@ -61,7 +61,6 @@
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Boys">Boys</button>
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Girls">Girls</button>
                                     <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Co-living">Co-living</button>
-                                    <button class="gender-btn flex-1 px-3 py-2 rounded-md text-sm font-bold transition-all text-gray-500 hover:text-primary" data-gender="Couples">Couples</button>
                                 </div>
                             </div>
 

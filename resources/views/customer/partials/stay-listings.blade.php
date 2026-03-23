@@ -54,15 +54,13 @@
                 </div>
                 
                 <!-- Amenities -->
-                <div class="flex flex-wrap gap-1.5 mb-6">
-                    @foreach (array_slice($stay->amenities ?? [], 0, 5) as $amenity)
-                        <span class="bg-slate-50 text-slate-500 text-[10px] px-3 py-1 rounded-md font-bold uppercase border border-slate-100">
-                            {{ $amenity }}
-                        </span>
+                <div class="grid grid-cols-2 gap-x-6 gap-y-3 mb-6 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                    @foreach ($stay->amenities ?? [] as $amenity)
+                        <div class="flex items-center text-slate-600">
+                            <i class="fas fa-check-circle text-emerald-500 text-[10px] mr-2.5 opacity-70"></i>
+                            <span class="text-[11px] font-bold uppercase tracking-wide">{{ $amenity }}</span>
+                        </div>
                     @endforeach
-                    @if(count($stay->amenities ?? []) > 5)
-                        <span class="text-slate-300 text-[10px] font-bold self-center">+{{ count($stay->amenities) - 5 }} More</span>
-                    @endif
                 </div>
 
                 <!-- Structured Pricing Grid -->
@@ -82,7 +80,7 @@
                             @if($stay->single_sharing_rent)
                             <div class="flex justify-between items-center">
                                 <span class="text-sm font-bold text-slate-500">Single Sharing</span>
-                                <span class="text-lg font-bold text-slate-800">₹{{ number_format($stay->single_sharing_rent) }}</span>
+                                <span class="text-lg font-bold text-slate-800">₹{{ is_numeric($stay->single_sharing_rent) ? number_format($stay->single_sharing_rent) : $stay->single_sharing_rent }}</span>
                             </div>
                             @endif
 
@@ -90,13 +88,13 @@
                                 <div class="flex flex-col">
                                     <span class="text-sm font-bold text-slate-500">Double Sharing</span>
                                 </div>
-                                <span class="text-lg font-bold text-black-700">₹{{ number_format($stay->double_sharing_rent) }}</span>
+                                <span class="text-lg font-bold text-black-700">₹{{ is_numeric($stay->double_sharing_rent) ? number_format($stay->double_sharing_rent) : $stay->double_sharing_rent }}</span>
                             </div>
 
                             @if($stay->triple_sharing_rent)
                             <div class="flex justify-between items-center">
                                 <span class="text-sm font-bold text-slate-500">Triple Sharing</span>
-                                <span class="text-lg font-bold text-slate-800">₹{{ number_format($stay->triple_sharing_rent) }}</span>
+                                <span class="text-lg font-bold text-slate-800">₹{{ is_numeric($stay->triple_sharing_rent) ? number_format($stay->triple_sharing_rent) : $stay->triple_sharing_rent }}</span>
                             </div>
                             @endif
                         </div>

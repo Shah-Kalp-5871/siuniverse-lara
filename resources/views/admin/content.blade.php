@@ -356,18 +356,17 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1">Single Sharing Rent (Optional)</label>
-                            <input id="swal-single-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
+                            <input id="swal-single-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Double Sharing Rent (Required)</label>
-                            <input id="swal-double-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
+                            <input id="swal-double-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Triple Sharing Rent (Optional)</label>
-                            <input id="swal-triple-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
+                            <input id="swal-triple-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" placeholder="₹">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
@@ -394,11 +393,11 @@
                         <div id="food-prices-container" class="grid grid-cols-2 gap-4 hidden">
                             <div>
                                 <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekday (2 Meals) Monthly Price</label>
-                                <input id="swal-weekday-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
+                                <input id="swal-weekday-price" type="text" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekend (3 Meals) Monthly Price</label>
-                                <input id="swal-weekend-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
+                                <input id="swal-weekend-price" type="text" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" placeholder="Monthly ₹">
                             </div>
                         </div>
                     </div>
@@ -413,7 +412,6 @@
                                 <option value="Co-living">Co-living</option>
                                 <option value="Boys">Boys Only</option>
                                 <option value="Girls">Girls Only</option>
-                                <option value="Couples">Couples</option>
                             </select>
                         </div>
                     </div>
@@ -604,17 +602,17 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Single Sharing Rent (Optional)</label>
-                            <input id="swal-edit-single-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.single_sharing_rent || ''}">
+                            <input id="swal-edit-single-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.single_sharing_rent || ''}" placeholder="₹">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Double Sharing Rent (Required)</label>
-                            <input id="swal-edit-double-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.double_sharing_rent}">
+                            <input id="swal-edit-double-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.double_sharing_rent || ''}" placeholder="₹">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Triple Sharing Rent (Optional)</label>
-                            <input id="swal-edit-triple-rent" type="number" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.triple_sharing_rent || ''}">
+                            <input id="swal-edit-triple-rent" type="text" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none" value="${stay.triple_sharing_rent || ''}" placeholder="₹">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">Visiting Schedule</label>
@@ -641,11 +639,11 @@
                         <div id="edit-food-prices-container" class="grid grid-cols-2 gap-4 ${(stay.food_type === 'None' || stay.food_inclusion === 'Included') ? 'hidden' : ''}">
                             <div>
                                 <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekday (2 Meals)</label>
-                                <input id="swal-edit-weekday-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekday_meals_price || ''}" placeholder="Price ₹">
+                                <input id="swal-edit-weekday-price" type="text" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekday_meals_price || ''}" placeholder="Price ₹">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Weekend (3 Meals)</label>
-                                <input id="swal-edit-weekend-price" type="number" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekend_meals_price || ''}" placeholder="Price ₹">
+                                <input id="swal-edit-weekend-price" type="text" class="w-full px-4 py-2 rounded-lg border border-blue-200 focus:outline-none" value="${stay.weekend_meals_price || ''}" placeholder="Price ₹">
                             </div>
                         </div>
                     </div>
@@ -660,7 +658,6 @@
                                 <option value="Co-living" ${stay.gender === 'Co-living' ? 'selected' : ''}>Co-living</option>
                                 <option value="Boys" ${stay.gender === 'Boys' ? 'selected' : ''}>Boys Only</option>
                                 <option value="Girls" ${stay.gender === 'Girls' ? 'selected' : ''}>Girls Only</option>
-                                <option value="Couples" ${stay.gender === 'Couples' ? 'selected' : ''}>Couples</option>
                             </select>
                         </div>
                     </div>

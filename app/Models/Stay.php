@@ -35,10 +35,10 @@ class Stay extends Model
         'distance' => 'float',
         'is_luxury' => 'boolean',
         'luxury_order' => 'integer',
-        'single_sharing_rent' => 'integer',
-        'double_sharing_rent' => 'integer',
-        'triple_sharing_rent' => 'integer',
-        'weekday_meals_price' => 'integer',
-        'weekend_meals_price' => 'integer'
+        'single_sharing_rent' => 'string',
+        'double_sharing_rent' => 'string',
+        'triple_sharing_rent' => 'string',
+        'weekday_meals_price' => 'string',
+        'weekend_meals_price' => 'string'
     ];
 }
