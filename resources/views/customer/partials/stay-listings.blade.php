@@ -150,7 +150,7 @@
         </div>
         <h3 class="text-2xl font-bold text-slate-800 mb-3 tracking-tight">No flats available right now.</h3>
         <p class="text-slate-400 font-medium max-w-sm mx-auto">You can explore our Luxury Curated PGs — with food, laundry, and essentials taken care of. Move in comfortably after vacation.</p>
-        <p class="text-slate-400 font-medium max-w-sm mx-auto">If you're planning for a flat, limited no-brokerage options will be available in May or July move-ins.</p>
+        <p class="text-slate-400 font-medium max-w-sm mx-auto">If you're planning for a flat, limited no-brokerage options will be available in May for July move-ins.</p>
         <button onclick="window.location.reload()" class="mt-8 text-blue-600 font-bold text-xs uppercase tracking-widest hover:text-blue-800 transition-colors">
             <i class="fas fa-undo mr-2"></i> Reset Search
         </button>
